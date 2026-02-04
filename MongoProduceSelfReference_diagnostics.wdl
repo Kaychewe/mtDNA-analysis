@@ -129,6 +129,11 @@ task MakePseudoVcfs {
     File mt_vcf = "mt.vcf"
     File nuc_vcf = "nuc.vcf"
   }
+
+  runtime {
+    docker: "docker.io/rahulg603/genomes_cloud_bcftools"
+    memory: "1 GB"
+  }
 }
 
 task PreflightCheck {
@@ -199,5 +204,10 @@ task PreflightCheck {
 
   output {
     File report = "preflight_report.txt"
+  }
+
+  runtime {
+    docker: "docker.io/rahulg603/genomes_cloud_bcftools"
+    memory: "1 GB"
   }
 }

@@ -371,7 +371,7 @@ task RScriptSmokeTest {
         echo "MISSING_OR_EMPTY: ${f}" >> r_script_report.txt
       fi
     done
-    Rscript --vanilla -e 'cat(\"R_OK\\n\")' >> r_script_report.txt
+    Rscript --vanilla -e 'cat("R_OK\n")' >> r_script_report.txt
   >>>
 
   output {

@@ -265,14 +265,14 @@ task MergeMitoMultiSampleOutputsInternal {
     mkdir tmp
 
     # now merge coverage
-    python3.7 ~{MergePerBatch} \
+    python3 ~{MergePerBatch} \
     --run-coverage \
     --input-tsv coverage_paths.tsv \
     --temp-dir tmp/ \
     --output-flat-file batch_merged_mt_coverage.tsv.bgz
 
     # finally merge variant calls
-    python3.7 ~{MergePerBatch} \
+    python3 ~{MergePerBatch} \
     --run-variants \
     --input-tsv vcf_paths.tsv \
     --temp-dir tmp/ \

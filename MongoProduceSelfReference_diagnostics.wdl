@@ -28,10 +28,13 @@ workflow MongoProduceSelfReferenceDiagnostics {
     Int n_shift = 8000
     String genomes_cloud_docker = "docker.io/rahulg603/genomes_cloud_bcftools"
     String gotc_docker = "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.2-1552931386"
+    String bcftools_docker = "quay.io/biocontainers/bcftools:1.17--h3cc50cf_1"
     String intertext = ""
 
     # Only run the full ProduceSelfReference task if true.
     Boolean run_full = false
+    # Run split diagnostics (multi-image) if true.
+    Boolean run_split = true
   }
 
   if (use_pseudo_vcfs) {
@@ -64,6 +67,35 @@ workflow MongoProduceSelfReferenceDiagnostics {
       genomes_cloud_docker = gotc_docker
   }
 
+  call ProbeDockerTools as ProbeBcftoolsDocker {
+    input:
+      genomes_cloud_docker = bcftools_docker
+  }
+
+  if (run_split) {
+    call BcftoolsFilterMt {
+      input:
+        mt_vcf = mt_vcf_to_use,
+        bcftools_docker = bcftools_docker
+    }
+
+    call PicardSmokeTest {
+      input:
+        mt_ref_fasta = mt_ref_fasta,
+        mt_ref_fasta_index = mt_ref_fasta_index,
+        mt_interval_list = mt_interval_list,
+        gotc_docker = gotc_docker
+    }
+
+    call RScriptSmokeTest {
+      input:
+        fa_renaming_script = fa_renaming_script,
+        variant_bounds_script = variant_bounds_script,
+        check_hom_overlap_script = check_hom_overlap_script,
+        gotc_docker = gotc_docker
+    }
+  }
+
   if (run_full) {
     call MongoTasks_Single.MongoProduceSelfReference as ProduceSelfReference {
       input:
@@ -92,8 +124,13 @@ workflow MongoProduceSelfReferenceDiagnostics {
     File preflight_report = PreflightCheck.report
     File docker_probe_report = ProbeDockerTools.report
     File gotc_probe_report = ProbeGotcDocker.report
+    File bcftools_probe_report = ProbeBcftoolsDocker.report
     File mt_vcf_used = mt_vcf_to_use
     File nuc_vcf_used = nuc_vcf_to_use
+    File? mt_vcf_filtered = BcftoolsFilterMt.filtered_mt_vcf
+    File? mt_vcf_filtered_index = BcftoolsFilterMt.filtered_mt_vcf_index
+    File? picard_dict = PicardSmokeTest.mt_dict
+    File? r_script_report = RScriptSmokeTest.report
 
     File? mt_self = ProduceSelfReference.self_fasta
     File? mt_self_index = ProduceSelfReference.self_fasta_index
@@ -126,7 +163,7 @@ task MakePseudoVcfs {
     ##contig=<ID=chrM>
     ##FORMAT=<ID=AF,Number=A,Type=Float,Description="Allele Frequency">
     #CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\t~{sample_name}
-    chrM\t100\t.\tA\tG\t60\tPASS\t.\tAF\t0.99
+    chrM\t100\t.\tA\tG\t60\tPASS\t.\tGT:AF\t0/1:0.99
     EOF
 
     cat > nuc.vcf <<'EOF'
@@ -134,7 +171,7 @@ task MakePseudoVcfs {
     ##contig=<ID=chr1>
     ##FORMAT=<ID=AF,Number=A,Type=Float,Description="Allele Frequency">
     #CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\t~{sample_name}
-    chr1\t100\t.\tA\tC\t60\tPASS\t.\tAF\t0.99
+    chr1\t100\t.\tA\tC\t60\tPASS\t.\tGT:AF\t0/1:0.99
     EOF
   >>>
 
@@ -167,7 +204,7 @@ task PreflightCheck {
     echo "sample_name=~{sample_name}" >> preflight_report.txt
 
     echo "## tool availability" >> preflight_report.txt
-    for tool in java Rscript samtools bcftools python3.7 python3; do
+    for tool in java Rscript samtools bcftools python3; do
       if command -v ${tool} >/dev/null 2>&1; then
         echo "OK: ${tool} -> $(command -v ${tool})" >> preflight_report.txt
       else
@@ -238,7 +275,7 @@ task ProbeDockerTools {
     echo "# Docker tool probe" > docker_probe_report.txt
     echo "image=~{genomes_cloud_docker}" >> docker_probe_report.txt
 
-    for tool in java Rscript samtools bcftools python3.7 python3; do
+    for tool in java Rscript samtools bcftools python3; do
       if command -v ${tool} >/dev/null 2>&1; then
         echo "OK: ${tool} -> $(command -v ${tool})" >> docker_probe_report.txt
         ${tool} --version >> docker_probe_report.txt 2>&1 || true
@@ -254,6 +291,95 @@ task ProbeDockerTools {
 
   runtime {
     docker: genomes_cloud_docker
+    memory: "1 GB"
+  }
+}
+
+task BcftoolsFilterMt {
+  input {
+    File mt_vcf
+    String bcftools_docker
+  }
+
+  command <<<
+    set -e
+
+    bgzip -c "~{mt_vcf}" > mt.vcf.gz
+    tabix mt.vcf.gz
+    bcftools view -Oz -i 'FORMAT/AF>0.95' mt.vcf.gz > mt.filtered.vcf.gz
+    tabix mt.filtered.vcf.gz
+  >>>
+
+  output {
+    File filtered_mt_vcf = "mt.filtered.vcf.gz"
+    File filtered_mt_vcf_index = "mt.filtered.vcf.gz.tbi"
+  }
+
+  runtime {
+    docker: bcftools_docker
+    memory: "1 GB"
+  }
+}
+
+task PicardSmokeTest {
+  input {
+    File mt_ref_fasta
+    File mt_ref_fasta_index
+    File mt_interval_list
+    String gotc_docker
+  }
+
+  command <<<
+    set -e
+
+    java -jar /usr/gitc/picard.jar IntervalListTools \
+      SORT=true I=~{mt_interval_list} O=internal_mt.interval_list
+
+    java -jar /usr/gitc/picard.jar CreateSequenceDictionary \
+      REFERENCE=~{mt_ref_fasta} \
+      OUTPUT=mt_ref.dict
+
+    samtools faidx ~{mt_ref_fasta}
+  >>>
+
+  output {
+    File mt_dict = "mt_ref.dict"
+  }
+
+  runtime {
+    docker: gotc_docker
+    memory: "1 GB"
+  }
+}
+
+task RScriptSmokeTest {
+  input {
+    File fa_renaming_script
+    File variant_bounds_script
+    File check_hom_overlap_script
+    String gotc_docker
+  }
+
+  command <<<
+    set -e
+
+    echo "# R script probe" > r_script_report.txt
+    for f in "~{fa_renaming_script}" "~{variant_bounds_script}" "~{check_hom_overlap_script}"; do
+      if [ -s "${f}" ]; then
+        echo "OK: ${f}" >> r_script_report.txt
+      else
+        echo "MISSING_OR_EMPTY: ${f}" >> r_script_report.txt
+      fi
+    done
+    Rscript --vanilla -e 'cat(\"R_OK\\n\")' >> r_script_report.txt
+  >>>
+
+  output {
+    File report = "r_script_report.txt"
+  }
+
+  runtime {
+    docker: gotc_docker
     memory: "1 GB"
   }
 }

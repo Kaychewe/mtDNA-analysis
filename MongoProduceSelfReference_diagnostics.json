@@ -2,6 +2,7 @@
   "MongoProduceSelfReferenceDiagnostics.sample_name": "1000000",
   "MongoProduceSelfReferenceDiagnostics.use_pseudo_vcfs": true,
   "MongoProduceSelfReferenceDiagnostics.run_full": false,
+  "MongoProduceSelfReferenceDiagnostics.run_split": true,
 
   "MongoProduceSelfReferenceDiagnostics.ref_fasta": "gs://gcp-public-data--broad-references/hg38/v0/Homo_sapiens_assembly38.fasta",
   "MongoProduceSelfReferenceDiagnostics.ref_fasta_index": "gs://gcp-public-data--broad-references/hg38/v0/Homo_sapiens_assembly38.fasta.fai",
@@ -17,5 +18,6 @@
   "MongoProduceSelfReferenceDiagnostics.check_hom_overlap_script": "gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/code/check_overlapping_homoplasmies.R",
 
   "MongoProduceSelfReferenceDiagnostics.genomes_cloud_docker": "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.2-1552931386",
+  "MongoProduceSelfReferenceDiagnostics.bcftools_docker": "quay.io/biocontainers/bcftools:1.17--h3cc50cf_1",
   "MongoProduceSelfReferenceDiagnostics.intertext": ""
 }

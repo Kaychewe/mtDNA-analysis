@@ -74,14 +74,14 @@ task LiftOverVcf {
       exit 1;
     fi
 
-    java -jar /usr/gitc/picard.jar LiftoverVcf \
+    picard LiftoverVcf \
       I=./intersected_vcfs/0000.vcf \
       O=~{this_basename}.selfToRef.pre.vcf \
       R=~{ref_fasta} \
       CHAIN=~{chain_self_to_ref} \
       REJECT=~{this_basename}.selfToRef.rejected.pre.vcf
 
-    java -jar /usr/gitc/picard.jar MergeVcfs \
+    picard MergeVcfs \
       I=~{this_basename}.selfToRef.rejected.pre.vcf \
       I=./intersected_vcfs/0002.vcf \
       O=~{this_basename}.selfToRef.rejected.vcf
@@ -118,7 +118,7 @@ task LiftOverVcf {
     echo "$n_filtered sites are changed in self-reference. $n_original sites were found variant after second-round Mutect. Of these, $n_pass passed first-round Liftover and $n_rejected failed and are being piped to Hail pipeline for rescue."
 
     # now run hail script to fix the rejects
-    python3.7 ~{HailLiftover} \
+    python3 ~{HailLiftover} \
     --vcf-file ~{this_basename}.selfToRef.rejected.vcf \
     --success-vcf-file ~{this_basename}.selfToRef.pre.vcf \
     --self-homoplasmies ~{reversed_hom_ref_vcf} \
@@ -138,7 +138,7 @@ task LiftOverVcf {
     bgzip -cd ~{this_basename}.round2liftover.fixed.vcf.bgz > ~{this_basename}.round2liftover.fixed.vcf
     bgzip -cd ~{this_basename}.round2liftover.updated_success.vcf.bgz > ~{this_basename}.round2liftover.updated_success.vcf
 
-    java -jar /usr/gitc/picard.jar MergeVcfs \
+    picard MergeVcfs \
       I=~{this_basename}.round2liftover.updated_success.vcf \
       I=~{this_basename}.round2liftover.fixed.vcf \
       O=~{this_basename}.selfToRef.final.vcf

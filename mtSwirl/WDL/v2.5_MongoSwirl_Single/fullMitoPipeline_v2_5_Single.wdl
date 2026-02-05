@@ -418,7 +418,7 @@ task NucCoverageAtEveryBase {
   command <<<
     set -e
 
-    java -jar /usr/gitc/picard.jar CollectHsMetrics \
+    picard CollectHsMetrics \
       I=~{input_bam_regular_ref} \
       R=~{ref_fasta} \
       PER_BASE_COVERAGE=reference_pre_realignment.tsv \
@@ -428,7 +428,7 @@ task NucCoverageAtEveryBase {
       COVMAX=20000 \
       SAMPLE_SIZE=1
 
-    java -jar /usr/gitc/picard.jar CollectHsMetrics \
+    picard CollectHsMetrics \
       I=~{input_bam_self_ref} \
       R=~{self_fasta} \
       PER_BASE_COVERAGE=self_post_realignment.tsv \
@@ -438,7 +438,7 @@ task NucCoverageAtEveryBase {
       COVMAX=20000 \
       SAMPLE_SIZE=1
 
-    java -jar /usr/gitc/picard.jar CollectHsMetrics \
+    picard CollectHsMetrics \
       I=~{input_bam_self_ref_shifted} \
       R=~{self_shifted_fasta} \
       PER_BASE_COVERAGE=self_post_realignment_shifted.tsv \

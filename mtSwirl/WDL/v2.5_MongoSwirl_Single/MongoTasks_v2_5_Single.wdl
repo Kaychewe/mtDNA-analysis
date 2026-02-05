@@ -376,10 +376,10 @@ task MongoProduceSelfReference {
 
     mkdir out
 
-    java -jar /usr/gitc/picard.jar IntervalListTools SORT=true I=~{mt_interval_list} O=internal_mt.interval_list
-    java -jar /usr/gitc/picard.jar IntervalListTools SORT=true I=~{nuc_interval_list} O=internal_nuc.interval_list
+    picard IntervalListTools SORT=true I=~{mt_interval_list} O=internal_mt.interval_list
+    picard IntervalListTools SORT=true I=~{nuc_interval_list} O=internal_nuc.interval_list
 
-    java -jar /usr/gitc/picard.jar ExtractSequences \
+    picard ExtractSequences \
       INTERVAL_LIST=internal_mt.interval_list \
       R=~{mt_ref_fasta} \
       O=mt_fasta.fasta
@@ -451,7 +451,7 @@ task MongoProduceSelfReference {
 
     bcftools consensus -f mt_fasta_renamed.fasta -o mt_fasta_lifted.fasta -c "~{d}{this_mt_chain}" "~{d}{this_filt_vcf}.gz"
     Rscript --vanilla ~{fa_renaming_script} mt_fasta_lifted.fasta internal_mt.interval_list TRUE "~{d}{this_mt_fasta}" TRUE
-    java -Xmx1000m -jar /usr/gitc/picard.jar \
+    picard --java-options "-Xmx1000m" \
       CreateSequenceDictionary \
       REFERENCE="~{d}{this_mt_fasta}" \
       OUTPUT="~{d}{this_basename}.dict"
@@ -468,7 +468,7 @@ task MongoProduceSelfReference {
     fi
     cat ./intersected_vcfs/0002.vcf | grep ^chr | wc -l | sed 's/^ *//g' > "~{d}{this_sample}.nuc.removed.txt"
 
-    java -jar /usr/gitc/picard.jar ExtractSequences \
+    picard ExtractSequences \
       INTERVAL_LIST=internal_nuc.interval_list \
       R=~{ref_fasta} \
       O=nuc_fasta.fasta
@@ -479,13 +479,13 @@ task MongoProduceSelfReference {
     Rscript --vanilla ~{fa_renaming_script} nuc_fasta_lifted.fasta internal_nuc.interval_list TRUE "~{d}{this_nuc_only_fasta}" FALSE
     cat "~{d}{this_nuc_only_fasta}" "~{d}{this_mt_fasta}" > "~{d}{this_nuc_mt_fasta}"
     #/usr/gitc/bwa index ~{d}{this_nuc_mt_fasta}
-    java -Xmx1000m -jar /usr/gitc/picard.jar \
+    picard --java-options "-Xmx1000m" \
       CreateSequenceDictionary \
       REFERENCE="~{d}{this_nuc_mt_fasta}" \
       OUTPUT="~{d}{this_basename_both}.dict"
     samtools faidx "~{d}{this_nuc_mt_fasta}"
 
-    java -Xmx1000m -jar /usr/gitc/picard.jar \
+    picard --java-options "-Xmx1000m" \
       CreateSequenceDictionary \
       REFERENCE="~{d}{this_nuc_only_fasta}" \
       OUTPUT="~{d}{this_basename_nuc}.dict"
@@ -517,13 +517,13 @@ task MongoProduceSelfReference {
     cat "~{d}{this_fasta_shifted}" "~{d}{this_nuc_only_fasta}" > "~{d}{this_fasta_cat_shifted}"
 
     #/usr/gitc/bwa index ~{d}{this_fasta_cat_shifted}
-    java -Xmx1000m -jar /usr/gitc/picard.jar \
+    picard --java-options "-Xmx1000m" \
       CreateSequenceDictionary \
       REFERENCE="~{d}{this_fasta_cat_shifted}" \
       OUTPUT="~{d}{this_shifted_basename_append}.dict"
     samtools faidx "~{d}{this_fasta_cat_shifted}"
 
-    java -Xmx1000m -jar /usr/gitc/picard.jar \
+    picard --java-options "-Xmx1000m" \
       CreateSequenceDictionary \
       REFERENCE="~{d}{this_fasta_shifted}" \
       OUTPUT="~{d}{this_shifted_basename}.dict"
@@ -542,7 +542,7 @@ task MongoProduceSelfReference {
     CODE
 
     echo "Now shifting the noncontrol region..."
-    java -jar /usr/gitc/picard.jar LiftOverIntervalList \
+    picard LiftOverIntervalList \
       I="~{non_control_region_interval_list}" \
       O="~{d}{this_nonctrl_interval}" \
       SD="~{d}{this_basename}.dict" \
@@ -573,7 +573,7 @@ task MongoProduceSelfReference {
     CODE
 
     echo "Now making force call variants..."
-    python3.7 <<CODE
+    python3 <<CODE
     import hail as hl
 
     def fai_to_len(fai):
@@ -1391,14 +1391,14 @@ task MongoAlignToMtRegShiftedAndMetrics {
     # set the bash variable needed for the command-line
     /usr/gitc/bwa index "~{d}{this_mt_cat_fasta}"
     bash_ref_fasta="~{d}{this_mt_cat_fasta}"
-    java -Xms5000m -jar /usr/gitc/picard.jar \
+    picard --java-options "-Xms5000m" \
       SamToFastq \
       INPUT="~{d}{this_bam}" \
       FASTQ=/dev/stdout \
       INTERLEAVE=true \
       NON_PF=true | \
     /usr/gitc/~{this_bwa_commandline} /dev/stdin - 2> >(tee "~{d}{this_output_bam_basename}.bwa.stderr.log" >&2) | \
-    java -Xms5000m -jar /usr/gitc/picard.jar \
+    picard --java-options "-Xms5000m" \
       MergeBamAlignment \
       VALIDATION_STRINGENCY=SILENT \
       EXPECTED_ORIENTATIONS=FR \
@@ -1427,7 +1427,7 @@ task MongoAlignToMtRegShiftedAndMetrics {
       UNMAP_CONTAMINANT_READS=true \
       ADD_PG_TAG_TO_READS=false
 
-    java -Xms5000m -jar /usr/gitc/picard.jar \
+    picard --java-options "-Xms5000m" \
       MarkDuplicates \
       INPUT=mba.bam \
       OUTPUT=md.bam \
@@ -1439,7 +1439,7 @@ task MongoAlignToMtRegShiftedAndMetrics {
       CLEAR_DT="false" \
       ADD_PG_TAG_TO_READS=false
 
-    java -Xms5000m -jar /usr/gitc/picard.jar \
+    picard --java-options "-Xms5000m" \
       SortSam \
       INPUT=md.bam \
       OUTPUT="~{d}{this_output_bam_basename}_pre_mt_filt.bam" \
@@ -1448,7 +1448,7 @@ task MongoAlignToMtRegShiftedAndMetrics {
       MAX_RECORDS_IN_RAM=300000
 
     # now we have to subset to mito and update sequence dictionary
-    java -Xms5000m -jar /usr/gitc/picard.jar \
+    picard --java-options "-Xms5000m" \
       ReorderSam \
       I="~{d}{this_output_bam_basename}_pre_mt_filt.bam" \
       O="~{d}{this_output_bam_basename}.bam" \
@@ -1460,14 +1460,14 @@ task MongoAlignToMtRegShiftedAndMetrics {
     # set the bash variable needed for the command-line
     /usr/gitc/bwa index "~{d}{this_mt_shifted_cat_fasta}"
     bash_ref_fasta="~{d}{this_mt_shifted_cat_fasta}"
-    java -Xms5000m -jar /usr/gitc/picard.jar \
+    picard --java-options "-Xms5000m" \
       SamToFastq \
       INPUT="~{d}{this_bam}" \
       FASTQ=/dev/stdout \
       INTERLEAVE=true \
       NON_PF=true | \
     /usr/gitc/~{this_bwa_commandline} /dev/stdin - 2> >(tee "~{d}{this_output_bam_basename}.shifted.bwa.stderr.log" >&2) | \
-    java -Xms5000m -jar /usr/gitc/picard.jar \
+    picard --java-options "-Xms5000m" \
       MergeBamAlignment \
       VALIDATION_STRINGENCY=SILENT \
       EXPECTED_ORIENTATIONS=FR \
@@ -1496,7 +1496,7 @@ task MongoAlignToMtRegShiftedAndMetrics {
       UNMAP_CONTAMINANT_READS=true \
       ADD_PG_TAG_TO_READS=false
 
-    java -Xms5000m -jar /usr/gitc/picard.jar \
+    picard --java-options "-Xms5000m" \
       MarkDuplicates \
       INPUT=mba.shifted.bam \
       OUTPUT=md.shifted.bam \
@@ -1508,7 +1508,7 @@ task MongoAlignToMtRegShiftedAndMetrics {
       CLEAR_DT="false" \
       ADD_PG_TAG_TO_READS=false
 
-    java -Xms5000m -jar /usr/gitc/picard.jar \
+    picard --java-options "-Xms5000m" \
       SortSam \
       INPUT=md.shifted.bam \
       OUTPUT="~{d}{this_output_bam_basename}.shifted_pre_mt_filt.bam" \
@@ -1517,7 +1517,7 @@ task MongoAlignToMtRegShiftedAndMetrics {
       MAX_RECORDS_IN_RAM=300000
 
     # now we have to subset to mito and update sequence dictionary
-    java -Xms5000m -jar /usr/gitc/picard.jar \
+    picard --java-options "-Xms5000m" \
       ReorderSam \
       I="~{d}{this_output_bam_basename}.shifted_pre_mt_filt.bam" \
       O="~{d}{this_output_bam_basename}.shifted.bam" \
@@ -1526,7 +1526,7 @@ task MongoAlignToMtRegShiftedAndMetrics {
       CREATE_INDEX=true
 
     echo "Now collecting wgs metrics..."
-    java -Xms5000m -jar /usr/gitc/picard.jar \
+    picard --java-options "-Xms5000m" \
       CollectWgsMetrics \
       INPUT="~{d}{this_output_bam_basename}.bam" \
       INTERVALS="~{d}{this_mt_intervals}" \
@@ -1963,14 +1963,14 @@ task MongoLiftoverVCFAndGetCoverage {
       exit 1;
     fi
 
-    java -jar /usr/gitc/picard.jar LiftoverVcf \
+    picard LiftoverVcf \
       I=./intersected_vcfs/0000.vcf \
       O="~{d}{this_basename}.selfToRef.pre.vcf" \
       R=~{ref_fasta} \
       CHAIN="~{d}{this_self_to_ref_chain}" \
       REJECT="~{d}{this_basename}.selfToRef.rejected.pre.vcf"
 
-    java -jar /usr/gitc/picard.jar MergeVcfs \
+    picard MergeVcfs \
       I="~{d}{this_basename}.selfToRef.rejected.pre.vcf" \
       I=./intersected_vcfs/0002.vcf \
       O="~{d}{this_basename}.selfToRef.rejected.vcf"
@@ -2007,7 +2007,7 @@ task MongoLiftoverVCFAndGetCoverage {
     echo "$n_filtered sites are changed in self-reference. $n_original sites were found variant after second-round Mutect. Of these, $n_pass passed first-round Liftover and $n_rejected failed and are being piped to Hail pipeline for rescue."
 
     # now run hail script to fix the rejects
-    python3.7 ~{HailLiftover} \
+    python3 ~{HailLiftover} \
     --vcf-file "~{d}{this_basename}.selfToRef.rejected.vcf" \
     --success-vcf-file "~{d}{this_basename}.selfToRef.pre.vcf" \
     --self-homoplasmies "~{d}{this_rev_hom_ref_vcf}" \
@@ -2027,7 +2027,7 @@ task MongoLiftoverVCFAndGetCoverage {
     bgzip -cd "~{d}{this_basename}.round2liftover.fixed.vcf.bgz" > "~{d}{this_basename}.round2liftover.fixed.vcf"
     bgzip -cd "~{d}{this_basename}.round2liftover.updated_success.vcf.bgz" > "~{d}{this_basename}.round2liftover.updated_success.vcf"
 
-    java -jar /usr/gitc/picard.jar MergeVcfs \
+    picard MergeVcfs \
       I="~{d}{this_basename}.round2liftover.updated_success.vcf" \
       I="~{d}{this_basename}.round2liftover.fixed.vcf" \
       O="~{d}{this_basename}.selfToRef.final.vcf"
@@ -2036,7 +2036,7 @@ task MongoLiftoverVCFAndGetCoverage {
     echo $n_final_pass > "~{d}{this_sample}_n_final_pass.txt"
 
     echo "Now producing coverage file..."
-    java -jar /usr/gitc/picard.jar CollectHsMetrics \
+    picard CollectHsMetrics \
       I="~{d}{this_self_bam}" \
       R="~{d}{this_self_fasta}" \
       PER_BASE_COVERAGE=non_control_region.tsv \
@@ -2046,7 +2046,7 @@ task MongoLiftoverVCFAndGetCoverage {
       COVMAX=20000 \
       SAMPLE_SIZE=1
 
-    java -jar /usr/gitc/picard.jar CollectHsMetrics \
+    picard CollectHsMetrics \
       I="~{d}{this_self_shifted_bam}" \
       R="~{d}{this_self_shifted_fasta}" \
       PER_BASE_COVERAGE=control_region_shifted.tsv \

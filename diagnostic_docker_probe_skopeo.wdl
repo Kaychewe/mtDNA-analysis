@@ -29,10 +29,12 @@ workflow DiagnosticDockerProbeSkopeo {
           reason = DetectBashWithSkopeo.reason
       }
     }
+
+    File report = select_first([ProbeDockerToolsSafe.report, WriteUnsupportedReport.report])
   }
 
   output {
-    Array[File] reports = select_all(ProbeDockerToolsSafe.report) + select_all(WriteUnsupportedReport.report)
+    Array[File] reports = report
   }
 }
 

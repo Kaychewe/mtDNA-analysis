@@ -131,7 +131,8 @@ task MakePseudoVcfs {
   }
 
   runtime {
-    docker: "docker.io/rahulg603/genomes_cloud_bcftools"
+    # Use a minimal image with /bin/bash to avoid container startup failures.
+    docker: "ubuntu:22.04"
     memory: "1 GB"
   }
 }
@@ -207,7 +208,8 @@ task PreflightCheck {
   }
 
   runtime {
-    docker: "docker.io/rahulg603/genomes_cloud_bcftools"
+    # Use a minimal image with /bin/bash to avoid container startup failures.
+    docker: "ubuntu:22.04"
     memory: "1 GB"
   }
 }

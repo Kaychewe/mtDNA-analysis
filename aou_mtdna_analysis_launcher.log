@@ -1,0 +1,181 @@
+[2026-02-04 17:53:12] Defining parameters.
+[2026-02-04 17:53:12] Cleaning prior run artifacts.
+[2026-02-04 17:53:12] Checking for running Cromwell.
+[2026-02-04 17:53:12] Cleaning Cromwell DB lock/tmp if no Cromwell is running.
+[2026-02-04 17:53:12] Batch location resolved to: us-central1
+[2026-02-04 17:53:12] VPC subnetwork resolved to: projects/terra-vpc-sc-17dda7e1/regions/us-central1/subnetworks/subnetwork
+[2026-02-04 17:53:12] Writing Cromwell Batch config template.
+[2026-02-04 17:53:12] Rendering Cromwell Batch config at cromwell.batch.conf.
+[2026-02-04 17:53:12] Installing dependency: pyhocon.
+[2026-02-04 17:53:15] mtSwirl repo already present, skipping clone.
+[2026-02-04 17:53:15] File already present, skipping download: scatterWrapper_MitoPipeline_v2_5.wdl
+[2026-02-04 17:53:15] File already present, skipping download: check_variant_bounds.R
+[2026-02-04 17:53:15] File already present, skipping download: compatibilify_fa_intervals_consensus.R
+[2026-02-04 17:53:15] File already present, skipping download: jsontools.py
+[2026-02-04 17:53:15] File already present, skipping download: merge_per_batch.py
+[2026-02-04 17:53:15] File already present, skipping download: check_overlapping_homoplasmies.R
+[2026-02-04 17:53:15] File already present, skipping download: fix_liftover.py
+[2026-02-04 17:53:15] Downloading NUMTv3_all385.hg38.interval_list
+[2026-02-04 17:53:15] Downloading input_allofus.json
+[2026-02-04 17:53:15] Downloading haplocheck.zip
+[2026-02-04 17:53:18] Downloading cromwell-91.jar
+[2026-02-04 17:53:36] Downloading womtool-91.jar
+[2026-02-04 17:53:38] File already present, skipping download: install_sdkman.sh
+[2026-02-04 17:53:38] Installing sdkman.
+[2026-02-04 17:54:06] Preparing filesystem at mtDNA_v25_pilot_5.
+[2026-02-04 17:54:06] Munging inputs and preparing Cromwell submission scripts.
+[2026-02-04 17:54:06] WDL in use: /home/jupyter/workspaces/mtdnaheteroplasmyandaginganalysis/mtDNA-analysis/scatterWrapper_MitoPipeline_v2_5.wdl
+[2026-02-04 17:54:06] WDL sha256: 64cd794a1765d5890e78107451a0dc99b2dffd02daeae6fbadd740e477220785
+[2026-02-04 17:54:17] Munge/prepare step complete.
+[2026-02-04 17:54:17] Launching Cromwell server (Batch config) in background.
+[2026-02-04 17:56:47] Server started.
+[2026-02-04 17:56:47] Here is the tail of the current stdout.log. Examine this to make sure the server is running:
+[2026-02-04 17:56:47] Run cromwell_submission_script_batch.sh to submit the desired jobs.
+[2026-02-04 17:56:47] Run the following command to track the progress of the various runs:
+[2026-02-04 17:56:47] We have outputted this command in check_workflow_status.sh.
+[2026-02-04 17:56:47] Preparing compile_paths.sh for post-run uploads.
+[2026-02-04 17:56:47] compile_paths.sh written.
+[2026-02-04 19:36:33] Defining parameters.
+[2026-02-04 19:36:33] Cleaning prior run artifacts.
+[2026-02-04 19:36:33] Checking for running Cromwell.
+[2026-02-04 19:36:33] Cleaning Cromwell DB lock/tmp if no Cromwell is running.
+[2026-02-04 19:36:33] Batch location resolved to: us-central1
+[2026-02-04 19:36:33] VPC subnetwork resolved to: projects/terra-vpc-sc-17dda7e1/regions/us-central1/subnetworks/subnetwork
+[2026-02-04 19:36:33] Writing Cromwell Batch config template.
+[2026-02-04 19:36:33] Rendering Cromwell Batch config at cromwell.batch.conf.
+[2026-02-04 19:36:33] Dependency already installed: pyhocon.
+[2026-02-04 19:36:33] mtSwirl repo already present, skipping clone.
+[2026-02-04 19:36:33] File already present, skipping download: scatterWrapper_MitoPipeline_v2_5.wdl
+[2026-02-04 19:36:33] File already present, skipping download: check_variant_bounds.R
+[2026-02-04 19:36:33] File already present, skipping download: compatibilify_fa_intervals_consensus.R
+[2026-02-04 19:36:33] File already present, skipping download: jsontools.py
+[2026-02-04 19:36:33] File already present, skipping download: merge_per_batch.py
+[2026-02-04 19:36:33] File already present, skipping download: check_overlapping_homoplasmies.R
+[2026-02-04 19:36:33] File already present, skipping download: fix_liftover.py
+[2026-02-04 19:36:33] File already present, skipping download: NUMTv3_all385.hg38.interval_list
+[2026-02-04 19:36:33] File already present, skipping download: input_allofus.json
+[2026-02-04 19:36:33] File already present, skipping download: haplocheck.zip
+[2026-02-04 19:36:33] File already present, skipping download: cromwell-91.jar
+[2026-02-04 19:36:33] File already present, skipping download: womtool-91.jar
+[2026-02-04 19:36:33] sdkman already installed.
+[2026-02-04 19:36:53] Preparing filesystem at mtDNA_v25_pilot_5.
+[2026-02-04 19:36:53] Munging inputs and preparing Cromwell submission scripts.
+[2026-02-04 19:36:53] WDL in use: /home/jupyter/workspaces/mtdnaheteroplasmyandaginganalysis/mtDNA-analysis/scatterWrapper_MitoPipeline_v2_5.wdl
+[2026-02-04 19:36:53] WDL sha256: 64cd794a1765d5890e78107451a0dc99b2dffd02daeae6fbadd740e477220785
+[2026-02-04 19:36:57] Munge/prepare step complete.
+[2026-02-04 19:36:57] Launching Cromwell server (Batch config) in background.
+[2026-02-04 19:39:27] Server started.
+[2026-02-04 19:39:27] Here is the tail of the current stdout.log. Examine this to make sure the server is running:
+[2026-02-04 19:39:27] Run cromwell_submission_script_batch.sh to submit the desired jobs.
+[2026-02-04 19:39:27] Run the following command to track the progress of the various runs:
+[2026-02-04 19:39:27] We have outputted this command in check_workflow_status.sh.
+[2026-02-04 19:39:27] Preparing compile_paths.sh for post-run uploads.
+[2026-02-04 19:39:27] compile_paths.sh written.
+[2026-02-04 22:09:14] Defining parameters.
+[2026-02-04 22:09:14] Cleaning prior run artifacts.
+[2026-02-04 22:09:14] Checking for running Cromwell.
+[2026-02-04 22:09:14] Cleaning Cromwell DB lock/tmp if no Cromwell is running.
+[2026-02-04 22:09:14] Batch location resolved to: us-central1
+[2026-02-04 22:09:14] VPC subnetwork resolved to: projects/terra-vpc-sc-17dda7e1/regions/us-central1/subnetworks/subnetwork
+[2026-02-04 22:09:14] Writing Cromwell Batch config template.
+[2026-02-04 22:09:14] Rendering Cromwell Batch config at cromwell.batch.conf.
+[2026-02-04 22:09:15] Dependency already installed: pyhocon.
+[2026-02-04 22:09:15] mtSwirl repo already present, skipping clone.
+[2026-02-04 22:09:15] File already present, skipping download: scatterWrapper_MitoPipeline_v2_5.wdl
+[2026-02-04 22:09:15] File already present, skipping download: check_variant_bounds.R
+[2026-02-04 22:09:15] File already present, skipping download: compatibilify_fa_intervals_consensus.R
+[2026-02-04 22:09:15] File already present, skipping download: jsontools.py
+[2026-02-04 22:09:15] File already present, skipping download: merge_per_batch.py
+[2026-02-04 22:09:15] File already present, skipping download: check_overlapping_homoplasmies.R
+[2026-02-04 22:09:15] File already present, skipping download: fix_liftover.py
+[2026-02-04 22:09:15] File already present, skipping download: NUMTv3_all385.hg38.interval_list
+[2026-02-04 22:09:15] Downloading input_allofus.json
+[2026-02-04 22:09:15] File already present, skipping download: haplocheck.zip
+[2026-02-04 22:09:15] File already present, skipping download: cromwell-91.jar
+[2026-02-04 22:09:15] File already present, skipping download: womtool-91.jar
+[2026-02-04 22:09:15] sdkman already installed.
+[2026-02-04 22:09:37] Preparing filesystem at mtDNA_v25_pilot_5.
+[2026-02-04 22:09:37] Munging inputs and preparing Cromwell submission scripts.
+[2026-02-04 22:09:37] WDL in use: /home/jupyter/workspaces/mtdnaheteroplasmyandaginganalysis/mtDNA-analysis/scatterWrapper_MitoPipeline_v2_5.wdl
+[2026-02-04 22:09:37] WDL sha256: 64cd794a1765d5890e78107451a0dc99b2dffd02daeae6fbadd740e477220785
+[2026-02-04 22:09:44] Munge/prepare step complete.
+[2026-02-04 22:09:44] Launching Cromwell server (Batch config) in background.
+[2026-02-04 22:12:14] Server started.
+[2026-02-04 22:12:14] Here is the tail of the current stdout.log. Examine this to make sure the server is running:
+[2026-02-04 22:12:14] Run cromwell_submission_script_batch.sh to submit the desired jobs.
+[2026-02-04 22:12:14] Run the following command to track the progress of the various runs:
+[2026-02-04 22:12:14] We have outputted this command in check_workflow_status.sh.
+[2026-02-04 22:12:14] Preparing compile_paths.sh for post-run uploads.
+[2026-02-04 22:12:14] compile_paths.sh written.
+[2026-02-05 15:13:28] Defining parameters.
+[2026-02-05 15:13:28] Cleaning prior run artifacts.
+[2026-02-05 15:13:28] Checking for running Cromwell.
+[2026-02-05 15:13:28] Cleaning Cromwell DB lock/tmp if no Cromwell is running.
+[2026-02-05 15:13:28] Batch location resolved to: us-central1
+[2026-02-05 15:13:28] VPC subnetwork resolved to: projects/terra-vpc-sc-17dda7e1/regions/us-central1/subnetworks/subnetwork
+[2026-02-05 15:13:28] Writing Cromwell Batch config template.
+[2026-02-05 15:13:28] Rendering Cromwell Batch config at cromwell.batch.conf.
+[2026-02-05 15:13:29] Dependency already installed: pyhocon.
+[2026-02-05 15:13:29] mtSwirl repo already present, skipping clone.
+[2026-02-05 15:13:29] File already present, skipping download: scatterWrapper_MitoPipeline_v2_5.wdl
+[2026-02-05 15:13:29] File already present, skipping download: check_variant_bounds.R
+[2026-02-05 15:13:29] File already present, skipping download: compatibilify_fa_intervals_consensus.R
+[2026-02-05 15:13:29] File already present, skipping download: jsontools.py
+[2026-02-05 15:13:29] File already present, skipping download: merge_per_batch.py
+[2026-02-05 15:13:29] File already present, skipping download: check_overlapping_homoplasmies.R
+[2026-02-05 15:13:29] File already present, skipping download: fix_liftover.py
+[2026-02-05 15:13:29] File already present, skipping download: NUMTv3_all385.hg38.interval_list
+[2026-02-05 15:13:29] File already present, skipping download: input_allofus.json
+[2026-02-05 15:13:29] File already present, skipping download: haplocheck.zip
+[2026-02-05 15:13:29] File already present, skipping download: cromwell-91.jar
+[2026-02-05 15:13:29] File already present, skipping download: womtool-91.jar
+[2026-02-05 15:13:29] sdkman already installed.
+[2026-02-05 15:13:57] Preparing filesystem at mtDNA_v25_pilot_5.
+[2026-02-05 15:13:57] Munging inputs and preparing Cromwell submission scripts.
+[2026-02-05 15:13:57] WDL in use: /home/jupyter/workspaces/mtdnaheteroplasmyandaginganalysis/mtDNA-analysis/scatterWrapper_MitoPipeline_v2_5.wdl
+[2026-02-05 15:13:57] WDL sha256: bd0182a77c2bcc740c503935ceb559b03d1f779154f0241b1b3aa0bb5afeae46
+[2026-02-05 15:14:06] Munge/prepare step complete.
+[2026-02-05 15:14:06] Launching Cromwell server (Batch config) in background.
+[2026-02-05 15:16:36] Server started.
+[2026-02-05 15:16:36] Here is the tail of the current stdout.log. Examine this to make sure the server is running:
+[2026-02-05 15:16:36] Run cromwell_submission_script_batch.sh to submit the desired jobs.
+[2026-02-05 15:16:36] Run the following command to track the progress of the various runs:
+[2026-02-05 15:16:36] We have outputted this command in check_workflow_status.sh.
+[2026-02-05 15:16:36] Preparing compile_paths.sh for post-run uploads.
+[2026-02-05 15:16:36] compile_paths.sh written.
+[2026-02-05 20:10:42] Defining parameters.
+[2026-02-05 20:10:42] Cleaning prior run artifacts.
+[2026-02-05 20:10:42] Checking for running Cromwell.
+[2026-02-05 20:10:42] Cleaning Cromwell DB lock/tmp if no Cromwell is running.
+[2026-02-05 20:10:42] Batch location resolved to: us-central1
+[2026-02-05 20:10:42] VPC subnetwork resolved to: projects/terra-vpc-sc-17dda7e1/regions/us-central1/subnetworks/subnetwork
+[2026-02-05 20:10:42] Writing Cromwell Batch config template.
+[2026-02-05 20:10:42] Rendering Cromwell Batch config at cromwell.batch.conf.
+[2026-02-05 20:10:42] Dependency already installed: pyhocon.
+[2026-02-05 20:10:42] mtSwirl repo already present, skipping clone.
+[2026-02-05 20:10:42] File already present, skipping download: scatterWrapper_MitoPipeline_v2_5.wdl
+[2026-02-05 20:10:42] File already present, skipping download: check_variant_bounds.R
+[2026-02-05 20:10:42] File already present, skipping download: compatibilify_fa_intervals_consensus.R
+[2026-02-05 20:10:42] File already present, skipping download: jsontools.py
+[2026-02-05 20:10:42] File already present, skipping download: merge_per_batch.py
+[2026-02-05 20:10:42] File already present, skipping download: check_overlapping_homoplasmies.R
+[2026-02-05 20:10:42] File already present, skipping download: fix_liftover.py
+[2026-02-05 20:10:42] File already present, skipping download: NUMTv3_all385.hg38.interval_list
+[2026-02-05 20:10:42] File already present, skipping download: input_allofus.json
+[2026-02-05 20:10:42] File already present, skipping download: haplocheck.zip
+[2026-02-05 20:10:42] File already present, skipping download: cromwell-91.jar
+[2026-02-05 20:10:42] File already present, skipping download: womtool-91.jar
+[2026-02-05 20:10:42] sdkman already installed.
+[2026-02-05 20:11:01] Preparing filesystem at mtDNA_v25_pilot_5.
+[2026-02-05 20:11:01] Munging inputs and preparing Cromwell submission scripts.
+[2026-02-05 20:11:01] WDL in use: /home/jupyter/workspaces/mtdnaheteroplasmyandaginganalysis/mtDNA-analysis/scatterWrapper_MitoPipeline_v2_5.wdl
+[2026-02-05 20:11:01] WDL sha256: bd0182a77c2bcc740c503935ceb559b03d1f779154f0241b1b3aa0bb5afeae46
+[2026-02-05 20:11:04] Munge/prepare step complete.
+[2026-02-05 20:11:04] Launching Cromwell server (Batch config) in background.
+[2026-02-05 20:13:34] Server started.
+[2026-02-05 20:13:34] Here is the tail of the current stdout.log. Examine this to make sure the server is running:
+[2026-02-05 20:13:34] Run cromwell_submission_script_batch.sh to submit the desired jobs.
+[2026-02-05 20:13:34] Run the following command to track the progress of the various runs:
+[2026-02-05 20:13:34] We have outputted this command in check_workflow_status.sh.
+[2026-02-05 20:13:34] Preparing compile_paths.sh for post-run uploads.
+[2026-02-05 20:13:34] compile_paths.sh written.

@@ -68,6 +68,7 @@ workflow MitochondriaPipeline {
     String ucsc_docker
     String gotc_docker
     String genomes_cloud_docker
+    String bcftools_docker
     String haplochecker_docker
     String gatk_samtools_docker
     File haplocheck_zip
@@ -176,6 +177,7 @@ workflow MitochondriaPipeline {
       CheckVariantBoundsScript = CheckVariantBoundsScript,
       CheckHomOverlapScript = CheckHomOverlapScript,
       genomes_cloud_docker = genomes_cloud_docker,
+      bcftools_docker = bcftools_docker,
       gotc_docker = gotc_docker,
       ucsc_docker = ucsc_docker,
       preemptible_tries = preemptible_tries

@@ -28,7 +28,7 @@ workflow MongoProduceSelfReferenceDiagnostics {
     Int n_shift = 8000
     String genomes_cloud_docker = "docker.io/rahulg603/genomes_cloud_bcftools"
     String gotc_docker = "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.2-1552931386"
-    String bcftools_docker = "quay.io/biocontainers/bcftools:1.17--h3cc50cf_1"
+    String bcftools_docker = "us.gcr.io/broad-dsp-lrma/lr-basic:0.1.1"
     String intertext = ""
 
     # Only run the full ProduceSelfReference task if true.

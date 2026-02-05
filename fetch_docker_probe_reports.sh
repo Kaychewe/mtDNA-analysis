@@ -62,14 +62,15 @@ fi
 
 # Build a summary TSV
 summary="$OUT_DIR/$WF_ID/summary.tsv"
-echo -e "file\timage\tstatus\tok_tools\tmissing_tools" > "$summary"
+echo -e "file\timage\tstatus\tok_tools\tmissing_tools\tmissing_list" > "$summary"
 while IFS= read -r -d '' file; do
   image=$(grep -m1 '^image=' "$file" | sed 's/^image=//')
   status=$(grep -m1 '^status=' "$file" | sed 's/^status=//' )
   [ -z "$status" ] && status="probed"
   ok_tools=$(grep -c '^OK: ' "$file" || true)
   missing_tools=$(grep -c '^MISSING: ' "$file" || true)
-  echo -e "${file}\t${image}\t${status}\t${ok_tools}\t${missing_tools}" >> "$summary"
+  missing_list=$(grep '^MISSING: ' "$file" | sed 's/^MISSING: //' | paste -sd ',' -)
+  echo -e "${file}\t${image}\t${status}\t${ok_tools}\t${missing_tools}\t${missing_list}" >> "$summary"
 done < <(find "$OUT_DIR/$WF_ID" -name 'docker_probe_report.txt' -print0)
 
 echo "Summary written to $summary"

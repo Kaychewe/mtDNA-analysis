@@ -1,3 +1,7 @@
 file	image	status	ok_tools	missing_tools
+docker_probe_reports/88f3447d-be52-4a34-8469-1c94d4f61114/call-ProbeDockerToolsSafe/shard-0/docker_probe_report.txt	us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.2-1552931386	probed	8	5
+docker_probe_reports/88f3447d-be52-4a34-8469-1c94d4f61114/call-ProbeDockerToolsSafe/shard-1/docker_probe_report.txt	eclipse-temurin:17-jdk	probed	4	9
+docker_probe_reports/88f3447d-be52-4a34-8469-1c94d4f61114/call-ProbeDockerToolsSafe/shard-2/docker_probe_report.txt	docker.io/broadinstitute/gatk:4.2.6.0	probed	11	2
+docker_probe_reports/88f3447d-be52-4a34-8469-1c94d4f61114/call-ProbeDockerToolsSafe/shard-3/docker_probe_report.txt	us.gcr.io/broad-dsp-lrma/lr-basic:0.1.1	probed	7	6
 docker_probe_reports/88f3447d-be52-4a34-8469-1c94d4f61114/call-WriteUnsupportedReport/shard-0/docker_probe_report.txt	quay.io/biocontainers/ucsc-bedgraphtobigwig:377--h73cb82a_3	skipped	0	0
 docker_probe_reports/88f3447d-be52-4a34-8469-1c94d4f61114/call-WriteUnsupportedReport/shard-1/docker_probe_report.txt	quay.io/biocontainers/bcftools:1.17--h3cc50cf_1	skipped	0	0

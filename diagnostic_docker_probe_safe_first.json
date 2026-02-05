@@ -3,7 +3,8 @@
     "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.2-1552931386",
     "eclipse-temurin:17-jdk",
     "docker.io/broadinstitute/gatk:4.2.6.0",
-    "us.gcr.io/broad-dsp-lrma/lr-basic:0.1.1"
+    "us.gcr.io/broad-dsp-lrma/lr-basic:0.1.1",
+    "us.gcr.io/broad-dsp-lrma/lr-basic:latest"
   ],
   "DiagnosticDockerProbeSafeFirst.risky_images": [
     "quay.io/biocontainers/ucsc-bedgraphtobigwig:377--h73cb82a_3",

@@ -66,6 +66,7 @@ workflow ProduceSelfReferenceFiles {
     #Optional runtime arguments
     Int? preemptible_tries
     File genomes_cloud_docker
+    String gotc_docker
     String ucsc_docker
   }
 
@@ -110,6 +111,7 @@ workflow ProduceSelfReferenceFiles {
         input_intervals = nuc_interval_list,
         target_dict = ProduceSelfReference.self_cat_dict,
         intertext = '.nuc',
+        gotc_docker = gotc_docker,
         preemptible_tries = preemptible_tries
     }
 
@@ -118,6 +120,7 @@ workflow ProduceSelfReferenceFiles {
         input_intervals = nuc_interval_list,
         target_dict = ProduceSelfReference.self_shifted_cat_dict,
         intertext = '.nuc.shifted',
+        gotc_docker = gotc_docker,
         preemptible_tries = preemptible_tries
     }
 
@@ -134,6 +137,7 @@ workflow ProduceSelfReferenceFiles {
       input:
         source_chain = SelfToRefNucLiftoverChain.chain,
         ref_intervals = nuc_interval_list,
+        gotc_docker = gotc_docker,
         preemptible_tries = preemptible_tries
     }
   }
@@ -187,6 +191,7 @@ task CreateSpanIntervalsWithDict {
     File input_intervals
     File target_dict
     String intertext
+    String gotc_docker
 
     Int? preemptible_tries
   }
@@ -215,7 +220,7 @@ task CreateSpanIntervalsWithDict {
   runtime {
     disks: "local-disk " + disk_size + " HDD"
     memory: "500 MB"
-    docker: "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.2-1552931386"
+    docker: gotc_docker
     preemptible: select_first([preemptible_tries, 5])
   }
 }
@@ -224,6 +229,7 @@ task MoveChainToZero {
   input {
     File source_chain
     File ref_intervals
+    String gotc_docker
 
     Int? preemptible_tries
   }
@@ -264,7 +270,7 @@ task MoveChainToZero {
   runtime {
     disks: "local-disk " + disk_size + " HDD"
     memory: "1 MB"
-    docker: "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.2-1552931386"
+    docker: gotc_docker
     preemptible: select_first([preemptible_tries, 5])
   }
 }

@@ -27,6 +27,7 @@ workflow MongoProduceSelfReferenceDiagnostics {
 
     Int n_shift = 8000
     String genomes_cloud_docker = "docker.io/rahulg603/genomes_cloud_bcftools"
+    String gotc_docker = "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.2-1552931386"
     String intertext = ""
 
     # Only run the full ProduceSelfReference task if true.
@@ -58,6 +59,11 @@ workflow MongoProduceSelfReferenceDiagnostics {
       genomes_cloud_docker = genomes_cloud_docker
   }
 
+  call ProbeDockerTools as ProbeGotcDocker {
+    input:
+      genomes_cloud_docker = gotc_docker
+  }
+
   if (run_full) {
     call MongoTasks_Single.MongoProduceSelfReference as ProduceSelfReference {
       input:
@@ -85,6 +91,7 @@ workflow MongoProduceSelfReferenceDiagnostics {
   output {
     File preflight_report = PreflightCheck.report
     File docker_probe_report = ProbeDockerTools.report
+    File gotc_probe_report = ProbeGotcDocker.report
     File mt_vcf_used = mt_vcf_to_use
     File nuc_vcf_used = nuc_vcf_to_use
 

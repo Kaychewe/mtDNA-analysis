@@ -60,6 +60,7 @@ workflow MitochondriaPipelineWrapper {
     File? gatk_override
     String? gatk_docker_override
     String ucsc_docker = "docker.io/rahulg603/ucsc_genome_toolkit"
+    String gotc_docker = "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.2-1552931386"
     String genomes_cloud_docker = "docker.io/rahulg603/genomes_cloud_bcftools"
     String haplochecker_docker = "eclipse-temurin:17-jdk"
     String gatk_samtools_docker = "docker.io/rahulg603/gatk46_samtools"
@@ -125,6 +126,7 @@ workflow MitochondriaPipelineWrapper {
           gatk_override = gatk_override,
           gatk_docker_override = gatk_docker_override,
           ucsc_docker = ucsc_docker,
+          gotc_docker = gotc_docker,
           genomes_cloud_docker = genomes_cloud_docker,
           haplochecker_docker = haplochecker_docker,
           gatk_samtools_docker = gatk_samtools_docker,

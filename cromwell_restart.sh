@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 
-ROOT="/home/jupyter/workspaces/mtdnaheteroplasmyandaginganalysis"
+ROOT="/home/jupyter/workspaces/mtdnaheteroplasmyandaginganalysis/mtDNA-analysis"
 cd "$ROOT"
 
 SDKMAN_INIT="/home/jupyter/.sdkman/bin/sdkman-init.sh"

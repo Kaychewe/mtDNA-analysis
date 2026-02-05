@@ -222,3 +222,37 @@ java.net.BindException: Address already in use
 Required workflow input 'MitochondriaPipelineWrapper.MitochondriaPipeline_v2_5.bcftools_docker' not specified
 
 2026-02-05 20:22:13 cromwell-system-akka.dispatchers.engine-dispatcher-47 INFO  - WorkflowManagerActor: Workflow actor for c6ff552d-7c5e-4e46-9fc8-c124d7a03166 completed with status 'Failed'. The workflow will be removed from the workflow store.
+2026-02-05 21:08:58 cromwell-system-akka.actor.default-dispatcher-5 INFO  - Workflow polling stopped
+2026-02-05 21:08:58 cromwell-system-akka.actor.default-dispatcher-37 INFO  - Http server unbound.
+2026-02-05 21:08:58 cromwell-system-akka.actor.default-dispatcher-3 INFO  - 0 workflows released by cromid-ed11c15
+2026-02-05 21:08:58 cromwell-system-akka.actor.default-dispatcher-37 INFO  - Shutting down WorkflowStoreActor - Timeout = 5 seconds
+2026-02-05 21:08:58 cromwell-system-akka.actor.default-dispatcher-37 INFO  - Shutting down WorkflowLogCopyRouter - Timeout = 5 seconds
+2026-02-05 21:08:58 cromwell-system-akka.actor.default-dispatcher-31 INFO  - WorkflowStoreActor stopped
+2026-02-05 21:08:58 cromwell-system-akka.actor.default-dispatcher-37 INFO  - Shutting down JobExecutionTokenDispenser - Timeout = 5 seconds
+2026-02-05 21:08:58 cromwell-system-akka.actor.default-dispatcher-37 INFO  - Shutting down WorkflowManagerActor - Timeout = 5 seconds
+2026-02-05 21:08:58 cromwell-system-akka.actor.default-dispatcher-33 INFO  - JobExecutionTokenDispenser stopped
+2026-02-05 21:08:58 cromwell-system-akka.actor.default-dispatcher-31 INFO  - WorkflowManagerActor stopped
+2026-02-05 21:08:58 cromwell-system-akka.actor.default-dispatcher-2 INFO  - WorkflowLogCopyRouter stopped
+2026-02-05 21:08:58 cromwell-system-akka.actor.default-dispatcher-36 INFO  - Connection pools shut down
+2026-02-05 21:08:58 cromwell-system-akka.actor.default-dispatcher-32 INFO  - Shutting down SubWorkflowStoreActor - Timeout = 1800 seconds
+2026-02-05 21:08:58 cromwell-system-akka.actor.default-dispatcher-32 INFO  - Shutting down JobStoreActor - Timeout = 1800 seconds
+2026-02-05 21:08:58 cromwell-system-akka.actor.default-dispatcher-32 INFO  - Shutting down CallCacheWriteActor - Timeout = 1800 seconds
+2026-02-05 21:08:58 cromwell-system-akka.actor.default-dispatcher-32 INFO  - Shutting down ServiceRegistryActor - Timeout = 1800 seconds
+2026-02-05 21:08:58 cromwell-system-akka.actor.default-dispatcher-32 INFO  - Shutting down DockerHashActor - Timeout = 1800 seconds
+2026-02-05 21:08:58 cromwell-system-akka.actor.default-dispatcher-32 INFO  - Shutting down IoProxy - Timeout = 1800 seconds
+2026-02-05 21:08:58 cromwell-system-akka.dispatchers.engine-dispatcher-42 INFO  - CallCacheWriteActor Shutting down: 0 queued messages to process
+2026-02-05 21:08:58 cromwell-system-akka.actor.default-dispatcher-62 INFO  - SubWorkflowStoreActor stopped
+2026-02-05 21:08:58 cromwell-system-akka.actor.default-dispatcher-62 INFO  - CallCacheWriteActor stopped
+2026-02-05 21:08:58 cromwell-system-akka.dispatchers.engine-dispatcher-41 INFO  - JobStoreWriterActor Shutting down: 0 queued messages to process
+2026-02-05 21:08:58 cromwell-system-akka.actor.default-dispatcher-35 INFO  - JobStoreActor stopped
+2026-02-05 21:08:58 cromwell-system-akka.actor.default-dispatcher-35 INFO  - IoProxy stopped
+2026-02-05 21:08:58 cromwell-system-akka.actor.default-dispatcher-62 INFO  - DockerHashActor stopped
+2026-02-05 21:08:58 cromwell-system-akka.dispatchers.service-dispatcher-18 INFO  - WriteMetadataActor Shutting down: 0 queued messages to process
+2026-02-05 21:08:58 cromwell-system-akka.actor.default-dispatcher-36 INFO  - KvWriteActor Shutting down: 0 queued messages to process
+2026-02-05 21:08:58 pool-6-thread-1 INFO  - Shutting down connection pool: curAllocated=1 idleQueues.size=1 waitQueue.size=0 maxWaitQueueLimit=256 closed=false
+2026-02-05 21:08:58 pool-5-thread-8 INFO  - Shutting down connection pool: curAllocated=1 idleQueues.size=1 waitQueue.size=0 maxWaitQueueLimit=256 closed=false
+2026-02-05 21:08:58 pool-7-thread-5 INFO  - Shutting down connection pool: curAllocated=1 idleQueues.size=1 waitQueue.size=0 maxWaitQueueLimit=256 closed=false
+2026-02-05 21:08:58 cromwell-system-akka.actor.default-dispatcher-37 INFO  - ServiceRegistryActor stopped
+2026-02-05 21:08:58 cromwell-system-akka.actor.default-dispatcher-37 INFO  - Database closed
+2026-02-05 21:08:58 cromwell-system-akka.actor.default-dispatcher-37 INFO  - Stream materializer shut down
+2026-02-05 21:08:58 cromwell-system-akka.actor.default-dispatcher-2 INFO  - WDL HTTP import resolver closed

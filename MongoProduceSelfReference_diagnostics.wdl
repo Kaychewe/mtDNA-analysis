@@ -53,6 +53,11 @@ workflow MongoProduceSelfReferenceDiagnostics {
       check_hom_overlap_script = check_hom_overlap_script
   }
 
+  call ProbeDockerTools {
+    input:
+      genomes_cloud_docker = genomes_cloud_docker
+  }
+
   if (run_full) {
     call MongoTasks_Single.MongoProduceSelfReference as ProduceSelfReference {
       input:
@@ -79,6 +84,7 @@ workflow MongoProduceSelfReferenceDiagnostics {
 
   output {
     File preflight_report = PreflightCheck.report
+    File docker_probe_report = ProbeDockerTools.report
     File mt_vcf_used = mt_vcf_to_use
     File nuc_vcf_used = nuc_vcf_to_use
 
@@ -210,6 +216,37 @@ task PreflightCheck {
   runtime {
     # Use a minimal image with /bin/bash to avoid container startup failures.
     docker: "ubuntu:22.04"
+    memory: "1 GB"
+  }
+}
+
+task ProbeDockerTools {
+  input {
+    String genomes_cloud_docker
+  }
+
+  command <<<
+    set -e
+
+    echo "# Docker tool probe" > docker_probe_report.txt
+    echo "image=~{genomes_cloud_docker}" >> docker_probe_report.txt
+
+    for tool in java Rscript samtools bcftools python3.7 python3; do
+      if command -v ${tool} >/dev/null 2>&1; then
+        echo "OK: ${tool} -> $(command -v ${tool})" >> docker_probe_report.txt
+        ${tool} --version >> docker_probe_report.txt 2>&1 || true
+      else
+        echo "MISSING: ${tool}" >> docker_probe_report.txt
+      fi
+    done
+  >>>
+
+  output {
+    File report = "docker_probe_report.txt"
+  }
+
+  runtime {
+    docker: genomes_cloud_docker
     memory: "1 GB"
   }
 }

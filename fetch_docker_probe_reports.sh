@@ -69,7 +69,7 @@ while IFS= read -r -d '' file; do
   [ -z "$status" ] && status="probed"
   ok_tools=$(grep -c '^OK: ' "$file" || true)
   missing_tools=$(grep -c '^MISSING: ' "$file" || true)
-  missing_list=$(grep '^MISSING: ' "$file" | sed 's/^MISSING: //' | paste -sd ',' -)
+  missing_list=$(grep '^MISSING: ' "$file" | sed 's/^MISSING: //' | paste -sd ',' - || true)
   echo -e "${file}\t${image}\t${status}\t${ok_tools}\t${missing_tools}\t${missing_list}" >> "$summary"
 done < <(find "$OUT_DIR/$WF_ID" -name 'docker_probe_report.txt' -print0)
 

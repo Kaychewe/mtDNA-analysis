@@ -6202,3 +6202,1088 @@
 Required workflow input 'MitochondriaPipelineWrapper.MitochondriaPipeline_v2_5.bcftools_docker' not specified
 
 2026-02-05 21:30:07 cromwell-system-akka.dispatchers.engine-dispatcher-33 INFO  - WorkflowManagerActor: Workflow actor for 0913b160-0c80-4ab9-b844-65f1d6a06c06 completed with status 'Failed'. The workflow will be removed from the workflow store.
+2026-02-05 21:59:41 cromwell-system-akka.dispatchers.api-dispatcher-67 INFO  - Unspecified type (Unspecified version) workflow 6cdd2af7-1cc9-45d0-8b9e-4bee12d614b0 submitted
+2026-02-05 21:59:42 cromwell-system-akka.dispatchers.engine-dispatcher-31 INFO  - 1 new workflows fetched by cromid-cffa39a: 6cdd2af7-1cc9-45d0-8b9e-4bee12d614b0
+2026-02-05 21:59:42 cromwell-system-akka.dispatchers.engine-dispatcher-31 INFO  - WorkflowManagerActor: Starting workflow UUID(6cdd2af7-1cc9-45d0-8b9e-4bee12d614b0)
+2026-02-05 21:59:42 cromwell-system-akka.dispatchers.engine-dispatcher-31 INFO  - WorkflowManagerActor: Successfully started WorkflowActor-6cdd2af7-1cc9-45d0-8b9e-4bee12d614b0
+2026-02-05 21:59:42 cromwell-system-akka.dispatchers.engine-dispatcher-31 INFO  - Retrieved 1 workflows from the WorkflowStoreActor
+2026-02-05 21:59:42 cromwell-system-akka.dispatchers.engine-dispatcher-31 INFO  - MaterializeWorkflowDescriptorActor [UUID(6cdd2af7)]: Parsing workflow as WDL 1.0
+2026-02-05 21:59:42 cromwell-system-akka.dispatchers.engine-dispatcher-31 INFO  - MaterializeWorkflowDescriptorActor [UUID(6cdd2af7)]: Call-to-Backend assignments: DiagnosticDockerProbe.ProbeDockerTools -> GCPBATCH
+2026-02-05 21:59:47 cromwell-system-akka.dispatchers.engine-dispatcher-44 INFO  - WorkflowExecutionActor-6cdd2af7-1cc9-45d0-8b9e-4bee12d614b0 [UUID(6cdd2af7)]: Starting DiagnosticDockerProbe.ProbeDockerTools (6 shards)
+2026-02-05 21:59:48 cromwell-system-akka.dispatchers.engine-dispatcher-33 INFO  - Assigned new job execution tokens to the following groups: 6cdd2af7: 6
+2026-02-05 21:59:49 pool-7-thread-10 INFO  - Manifest request failed for docker manifest V2, falling back to OCI manifest. Image: DockerImageIdentifierWithoutHash(Some(quay.io),Some(biocontainers),ucsc-bedgraphtobigwig,377--h73cb82a_3)
+cromwell.docker.registryv2.DockerRegistryV2Abstract$NotFound: 404 NOT FOUND {"errors":[{"code":"MANIFEST_UNKNOWN","detail":{},"message":"manifest unknown"}]}
+
+2026-02-05 21:59:49 cromwell-system-akka.dispatchers.engine-dispatcher-42 WARN  - BackendPreparationActor_for_6cdd2af7:DiagnosticDockerProbe.ProbeDockerTools:0:1 [UUID(6cdd2af7)]: Docker lookup failed
+java.lang.Exception: Docker image quay.io/biocontainers/ucsc-bedgraphtobigwig:377--h73cb82a_3 not found
+	at cromwell.engine.workflow.WorkflowDockerLookupActor.cromwell$engine$workflow$WorkflowDockerLookupActor$$handleLookupFailure(WorkflowDockerLookupActor.scala:279)
+	at cromwell.engine.workflow.WorkflowDockerLookupActor$$anonfun$3.applyOrElse(WorkflowDockerLookupActor.scala:93)
+	at cromwell.engine.workflow.WorkflowDockerLookupActor$$anonfun$3.applyOrElse(WorkflowDockerLookupActor.scala:78)
+	at scala.runtime.AbstractPartialFunction.apply(AbstractPartialFunction.scala:35)
+	at akka.actor.FSM.processEvent(FSM.scala:707)
+	at akka.actor.FSM.processEvent$(FSM.scala:704)
+	at cromwell.engine.workflow.WorkflowDockerLookupActor.akka$actor$LoggingFSM$$super$processEvent(WorkflowDockerLookupActor.scala:45)
+	at akka.actor.LoggingFSM.processEvent(FSM.scala:847)
+	at akka.actor.LoggingFSM.processEvent$(FSM.scala:829)
+	at cromwell.engine.workflow.WorkflowDockerLookupActor.processEvent(WorkflowDockerLookupActor.scala:45)
+	at akka.actor.FSM.akka$actor$FSM$$processMsg(FSM.scala:701)
+	at akka.actor.FSM$$anonfun$receive$1.applyOrElse(FSM.scala:695)
+	at scala.runtime.AbstractPartialFunction.apply(AbstractPartialFunction.scala:35)
+	at cromwell.docker.DockerClientHelper$$anonfun$dockerResponseReceive$1.applyOrElse(DockerClientHelper.scala:16)
+	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:269)
+	at scala.PartialFunction$OrElse.applyOrElse(PartialFunction.scala:270)
+	at akka.actor.Actor.aroundReceive(Actor.scala:539)
+	at akka.actor.Actor.aroundReceive$(Actor.scala:537)
+	at cromwell.engine.workflow.WorkflowDockerLookupActor.aroundReceive(WorkflowDockerLookupActor.scala:45)
+	at akka.actor.ActorCell.receiveMessage(ActorCell.scala:614)
+	at akka.actor.ActorCell.invoke(ActorCell.scala:583)
+	at akka.dispatch.Mailbox.processMailbox(Mailbox.scala:268)
+	at akka.dispatch.Mailbox.run(Mailbox.scala:229)
+	at akka.dispatch.Mailbox.exec(Mailbox.scala:241)
+	at akka.dispatch.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260)
+	at akka.dispatch.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339)
+	at akka.dispatch.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979)
+	at akka.dispatch.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107)
+
+2026-02-05 21:59:49 cromwell-system-akka.dispatchers.backend-dispatcher-55 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(6cdd2af7)DiagnosticDockerProbe.ProbeDockerTools:2:1]: `    set -e
+
+    echo "image=${docker_image}" > docker_probe_report.txt
+    echo "date_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> docker_probe_report.txt
+    echo "whoami=$(whoami 2>/dev/null || true)" >> docker_probe_report.txt
+    echo "uname=$(uname -a 2>/dev/null || true)" >> docker_probe_report.txt
+    echo "PATH=${PATH}" >> docker_probe_report.txt
+    echo "" >> docker_probe_report.txt
+
+    cat > tools.list <<'TOOLS'
+    bcftools
+samtools
+gatk
+java
+python
+python3
+R
+bgzip
+tabix
+bedGraphToBigWig
+awk
+sed
+bash
+TOOLS
+
+    while IFS= read -r tool; do
+      if [ -z "$tool" ]; then
+        continue
+      fi
+      if command -v "$tool" >/dev/null 2>&1; then
+        echo "OK: ${tool} -> $(command -v ${tool})" >> docker_probe_report.txt
+        (${tool} --version || ${tool} -version || ${tool} -V || ${tool} -h || true) >> docker_probe_report.txt 2>&1
+      else
+        echo "MISSING: ${tool}" >> docker_probe_report.txt
+      fi
+      echo "" >> docker_probe_report.txt
+    done < tools.list
+
+    if [ -n "" ]; then
+      echo "EXTRA_CMD:" >> docker_probe_report.txt
+      bash -lc "" >> docker_probe_report.txt 2>&1 || echo "EXTRA_CMD_FAILED" >> docker_probe_report.txt
+    fi`
+2026-02-05 21:59:49 cromwell-system-akka.dispatchers.backend-dispatcher-35 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(6cdd2af7)DiagnosticDockerProbe.ProbeDockerTools:1:1]: `    set -e
+
+    echo "image=${docker_image}" > docker_probe_report.txt
+    echo "date_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> docker_probe_report.txt
+    echo "whoami=$(whoami 2>/dev/null || true)" >> docker_probe_report.txt
+    echo "uname=$(uname -a 2>/dev/null || true)" >> docker_probe_report.txt
+    echo "PATH=${PATH}" >> docker_probe_report.txt
+    echo "" >> docker_probe_report.txt
+
+    cat > tools.list <<'TOOLS'
+    bcftools
+samtools
+gatk
+java
+python
+python3
+R
+bgzip
+tabix
+bedGraphToBigWig
+awk
+sed
+bash
+TOOLS
+
+    while IFS= read -r tool; do
+      if [ -z "$tool" ]; then
+        continue
+      fi
+      if command -v "$tool" >/dev/null 2>&1; then
+        echo "OK: ${tool} -> $(command -v ${tool})" >> docker_probe_report.txt
+        (${tool} --version || ${tool} -version || ${tool} -V || ${tool} -h || true) >> docker_probe_report.txt 2>&1
+      else
+        echo "MISSING: ${tool}" >> docker_probe_report.txt
+      fi
+      echo "" >> docker_probe_report.txt
+    done < tools.list
+
+    if [ -n "" ]; then
+      echo "EXTRA_CMD:" >> docker_probe_report.txt
+      bash -lc "" >> docker_probe_report.txt 2>&1 || echo "EXTRA_CMD_FAILED" >> docker_probe_report.txt
+    fi`
+2026-02-05 21:59:49 cromwell-system-akka.dispatchers.backend-dispatcher-36 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(6cdd2af7)DiagnosticDockerProbe.ProbeDockerTools:0:1]: `    set -e
+
+    echo "image=${docker_image}" > docker_probe_report.txt
+    echo "date_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> docker_probe_report.txt
+    echo "whoami=$(whoami 2>/dev/null || true)" >> docker_probe_report.txt
+    echo "uname=$(uname -a 2>/dev/null || true)" >> docker_probe_report.txt
+    echo "PATH=${PATH}" >> docker_probe_report.txt
+    echo "" >> docker_probe_report.txt
+
+    cat > tools.list <<'TOOLS'
+    bcftools
+samtools
+gatk
+java
+python
+python3
+R
+bgzip
+tabix
+bedGraphToBigWig
+awk
+sed
+bash
+TOOLS
+
+    while IFS= read -r tool; do
+      if [ -z "$tool" ]; then
+        continue
+      fi
+      if command -v "$tool" >/dev/null 2>&1; then
+        echo "OK: ${tool} -> $(command -v ${tool})" >> docker_probe_report.txt
+        (${tool} --version || ${tool} -version || ${tool} -V || ${tool} -h || true) >> docker_probe_report.txt 2>&1
+      else
+        echo "MISSING: ${tool}" >> docker_probe_report.txt
+      fi
+      echo "" >> docker_probe_report.txt
+    done < tools.list
+
+    if [ -n "" ]; then
+      echo "EXTRA_CMD:" >> docker_probe_report.txt
+      bash -lc "" >> docker_probe_report.txt 2>&1 || echo "EXTRA_CMD_FAILED" >> docker_probe_report.txt
+    fi`
+2026-02-05 21:59:49 cromwell-system-akka.dispatchers.backend-dispatcher-65 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(6cdd2af7)DiagnosticDockerProbe.ProbeDockerTools:5:1]: `    set -e
+
+    echo "image=${docker_image}" > docker_probe_report.txt
+    echo "date_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> docker_probe_report.txt
+    echo "whoami=$(whoami 2>/dev/null || true)" >> docker_probe_report.txt
+    echo "uname=$(uname -a 2>/dev/null || true)" >> docker_probe_report.txt
+    echo "PATH=${PATH}" >> docker_probe_report.txt
+    echo "" >> docker_probe_report.txt
+
+    cat > tools.list <<'TOOLS'
+    bcftools
+samtools
+gatk
+java
+python
+python3
+R
+bgzip
+tabix
+bedGraphToBigWig
+awk
+sed
+bash
+TOOLS
+
+    while IFS= read -r tool; do
+      if [ -z "$tool" ]; then
+        continue
+      fi
+      if command -v "$tool" >/dev/null 2>&1; then
+        echo "OK: ${tool} -> $(command -v ${tool})" >> docker_probe_report.txt
+        (${tool} --version || ${tool} -version || ${tool} -V || ${tool} -h || true) >> docker_probe_report.txt 2>&1
+      else
+        echo "MISSING: ${tool}" >> docker_probe_report.txt
+      fi
+      echo "" >> docker_probe_report.txt
+    done < tools.list
+
+    if [ -n "" ]; then
+      echo "EXTRA_CMD:" >> docker_probe_report.txt
+      bash -lc "" >> docker_probe_report.txt 2>&1 || echo "EXTRA_CMD_FAILED" >> docker_probe_report.txt
+    fi`
+2026-02-05 21:59:49 cromwell-system-akka.dispatchers.backend-dispatcher-39 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(6cdd2af7)DiagnosticDockerProbe.ProbeDockerTools:3:1]: `    set -e
+
+    echo "image=${docker_image}" > docker_probe_report.txt
+    echo "date_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> docker_probe_report.txt
+    echo "whoami=$(whoami 2>/dev/null || true)" >> docker_probe_report.txt
+    echo "uname=$(uname -a 2>/dev/null || true)" >> docker_probe_report.txt
+    echo "PATH=${PATH}" >> docker_probe_report.txt
+    echo "" >> docker_probe_report.txt
+
+    cat > tools.list <<'TOOLS'
+    bcftools
+samtools
+gatk
+java
+python
+python3
+R
+bgzip
+tabix
+bedGraphToBigWig
+awk
+sed
+bash
+TOOLS
+
+    while IFS= read -r tool; do
+      if [ -z "$tool" ]; then
+        continue
+      fi
+      if command -v "$tool" >/dev/null 2>&1; then
+        echo "OK: ${tool} -> $(command -v ${tool})" >> docker_probe_report.txt
+        (${tool} --version || ${tool} -version || ${tool} -V || ${tool} -h || true) >> docker_probe_report.txt 2>&1
+      else
+        echo "MISSING: ${tool}" >> docker_probe_report.txt
+      fi
+      echo "" >> docker_probe_report.txt
+    done < tools.list
+
+    if [ -n "" ]; then
+      echo "EXTRA_CMD:" >> docker_probe_report.txt
+      bash -lc "" >> docker_probe_report.txt 2>&1 || echo "EXTRA_CMD_FAILED" >> docker_probe_report.txt
+    fi`
+2026-02-05 21:59:49 cromwell-system-akka.dispatchers.backend-dispatcher-59 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(6cdd2af7)DiagnosticDockerProbe.ProbeDockerTools:4:1]: `    set -e
+
+    echo "image=${docker_image}" > docker_probe_report.txt
+    echo "date_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> docker_probe_report.txt
+    echo "whoami=$(whoami 2>/dev/null || true)" >> docker_probe_report.txt
+    echo "uname=$(uname -a 2>/dev/null || true)" >> docker_probe_report.txt
+    echo "PATH=${PATH}" >> docker_probe_report.txt
+    echo "" >> docker_probe_report.txt
+
+    cat > tools.list <<'TOOLS'
+    bcftools
+samtools
+gatk
+java
+python
+python3
+R
+bgzip
+tabix
+bedGraphToBigWig
+awk
+sed
+bash
+TOOLS
+
+    while IFS= read -r tool; do
+      if [ -z "$tool" ]; then
+        continue
+      fi
+      if command -v "$tool" >/dev/null 2>&1; then
+        echo "OK: ${tool} -> $(command -v ${tool})" >> docker_probe_report.txt
+        (${tool} --version || ${tool} -version || ${tool} -V || ${tool} -h || true) >> docker_probe_report.txt 2>&1
+      else
+        echo "MISSING: ${tool}" >> docker_probe_report.txt
+      fi
+      echo "" >> docker_probe_report.txt
+    done < tools.list
+
+    if [ -n "" ]; then
+      echo "EXTRA_CMD:" >> docker_probe_report.txt
+      bash -lc "" >> docker_probe_report.txt 2>&1 || echo "EXTRA_CMD_FAILED" >> docker_probe_report.txt
+    fi`
+2026-02-05 21:59:50 cromwell-system-akka.dispatchers.backend-dispatcher-56 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(6cdd2af7)DiagnosticDockerProbe.ProbeDockerTools:5:1]: Asking singleton actor to submit a job: job-6cdd2af7-diagnosticdockerprobeprobedockertools-5-1-2fa7204d
+2026-02-05 21:59:50 cromwell-system-akka.dispatchers.backend-dispatcher-40 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(6cdd2af7)DiagnosticDockerProbe.ProbeDockerTools:1:1]: Asking singleton actor to submit a job: job-6cdd2af7-diagnosticdockerprobeprobedockertools-1-1-d8d0fbbf
+2026-02-05 21:59:50 cromwell-system-akka.dispatchers.backend-dispatcher-65 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(6cdd2af7)DiagnosticDockerProbe.ProbeDockerTools:0:1]: Asking singleton actor to submit a job: job-6cdd2af7-diagnosticdockerprobeprobedockertools-0-1-5117a5b4
+2026-02-05 21:59:50 cromwell-system-akka.dispatchers.backend-dispatcher-59 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(6cdd2af7)DiagnosticDockerProbe.ProbeDockerTools:2:1]: Asking singleton actor to submit a job: job-6cdd2af7-diagnosticdockerprobeprobedockertools-2-1-39c0d759
+2026-02-05 21:59:50 cromwell-system-akka.dispatchers.backend-dispatcher-35 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(6cdd2af7)DiagnosticDockerProbe.ProbeDockerTools:3:1]: Asking singleton actor to submit a job: job-6cdd2af7-diagnosticdockerprobeprobedockertools-3-1-7e45ce1a
+2026-02-05 21:59:50 cromwell-system-akka.dispatchers.backend-dispatcher-39 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(6cdd2af7)DiagnosticDockerProbe.ProbeDockerTools:4:1]: Asking singleton actor to submit a job: job-6cdd2af7-diagnosticdockerprobeprobedockertools-4-1-e245303f
+2026-02-05 21:59:53 cromwell-system-akka.dispatchers.backend-dispatcher-37 INFO  - Run operation succeeded projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-6cdd2af7-diagnosticdockerprobeprobedockertools-0-1-5117a5b4
+2026-02-05 21:59:53 cromwell-system-akka.dispatchers.backend-dispatcher-70 INFO  - A job was submitted successfully: projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-6cdd2af7-diagnosticdockerprobeprobedockertools-0-1-5117a5b4
+2026-02-05 21:59:53 cromwell-system-akka.dispatchers.backend-dispatcher-56 INFO  - Run operation succeeded projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-6cdd2af7-diagnosticdockerprobeprobedockertools-1-1-d8d0fbbf
+2026-02-05 21:59:53 cromwell-system-akka.dispatchers.backend-dispatcher-56 INFO  - A job was submitted successfully: projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-6cdd2af7-diagnosticdockerprobeprobedockertools-1-1-d8d0fbbf
+2026-02-05 21:59:53 cromwell-system-akka.dispatchers.backend-dispatcher-64 INFO  - Run operation succeeded projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-6cdd2af7-diagnosticdockerprobeprobedockertools-2-1-39c0d759
+2026-02-05 21:59:53 cromwell-system-akka.dispatchers.backend-dispatcher-39 INFO  - A job was submitted successfully: projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-6cdd2af7-diagnosticdockerprobeprobedockertools-2-1-39c0d759
+2026-02-05 21:59:53 cromwell-system-akka.dispatchers.backend-dispatcher-35 INFO  - Run operation succeeded projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-6cdd2af7-diagnosticdockerprobeprobedockertools-3-1-7e45ce1a
+2026-02-05 21:59:53 cromwell-system-akka.dispatchers.backend-dispatcher-35 INFO  - A job was submitted successfully: projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-6cdd2af7-diagnosticdockerprobeprobedockertools-3-1-7e45ce1a
+2026-02-05 21:59:53 cromwell-system-akka.dispatchers.backend-dispatcher-36 INFO  - Run operation succeeded projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-6cdd2af7-diagnosticdockerprobeprobedockertools-5-1-2fa7204d
+2026-02-05 21:59:53 cromwell-system-akka.dispatchers.backend-dispatcher-36 INFO  - A job was submitted successfully: projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-6cdd2af7-diagnosticdockerprobeprobedockertools-5-1-2fa7204d
+2026-02-05 21:59:53 cromwell-system-akka.dispatchers.backend-dispatcher-39 INFO  - Run operation succeeded projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-6cdd2af7-diagnosticdockerprobeprobedockertools-4-1-e245303f
+2026-02-05 21:59:53 cromwell-system-akka.dispatchers.backend-dispatcher-65 INFO  - A job was submitted successfully: projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-6cdd2af7-diagnosticdockerprobeprobedockertools-4-1-e245303f
+2026-02-05 21:59:57 cromwell-system-akka.dispatchers.backend-dispatcher-55 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(6cdd2af7)DiagnosticDockerProbe.ProbeDockerTools:4:1]: job id: projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-6cdd2af7-diagnosticdockerprobeprobedockertools-4-1-e245303f
+2026-02-05 21:59:57 cromwell-system-akka.dispatchers.backend-dispatcher-40 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(6cdd2af7)DiagnosticDockerProbe.ProbeDockerTools:2:1]: job id: projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-6cdd2af7-diagnosticdockerprobeprobedockertools-2-1-39c0d759
+2026-02-05 21:59:57 cromwell-system-akka.dispatchers.backend-dispatcher-56 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(6cdd2af7)DiagnosticDockerProbe.ProbeDockerTools:0:1]: job id: projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-6cdd2af7-diagnosticdockerprobeprobedockertools-0-1-5117a5b4
+2026-02-05 21:59:57 cromwell-system-akka.dispatchers.backend-dispatcher-63 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(6cdd2af7)DiagnosticDockerProbe.ProbeDockerTools:5:1]: job id: projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-6cdd2af7-diagnosticdockerprobeprobedockertools-5-1-2fa7204d
+2026-02-05 21:59:57 cromwell-system-akka.dispatchers.backend-dispatcher-37 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(6cdd2af7)DiagnosticDockerProbe.ProbeDockerTools:3:1]: job id: projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-6cdd2af7-diagnosticdockerprobeprobedockertools-3-1-7e45ce1a
+2026-02-05 21:59:57 cromwell-system-akka.dispatchers.backend-dispatcher-39 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(6cdd2af7)DiagnosticDockerProbe.ProbeDockerTools:1:1]: job id: projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-6cdd2af7-diagnosticdockerprobeprobedockertools-1-1-d8d0fbbf
+2026-02-05 21:59:59 cromwell-system-akka.dispatchers.backend-dispatcher-56 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(6cdd2af7)DiagnosticDockerProbe.ProbeDockerTools:2:1]: Status change from - to Initializing
+2026-02-05 21:59:59 cromwell-system-akka.dispatchers.backend-dispatcher-70 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(6cdd2af7)DiagnosticDockerProbe.ProbeDockerTools:4:1]: Status change from - to Initializing
+2026-02-05 21:59:59 cromwell-system-akka.dispatchers.backend-dispatcher-37 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(6cdd2af7)DiagnosticDockerProbe.ProbeDockerTools:1:1]: Status change from - to Initializing
+2026-02-05 21:59:59 cromwell-system-akka.dispatchers.backend-dispatcher-64 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(6cdd2af7)DiagnosticDockerProbe.ProbeDockerTools:5:1]: Status change from - to Initializing
+2026-02-05 21:59:59 cromwell-system-akka.dispatchers.backend-dispatcher-40 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(6cdd2af7)DiagnosticDockerProbe.ProbeDockerTools:3:1]: Status change from - to Initializing
+2026-02-05 21:59:59 cromwell-system-akka.dispatchers.backend-dispatcher-64 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(6cdd2af7)DiagnosticDockerProbe.ProbeDockerTools:0:1]: Status change from - to Initializing
+2026-02-05 22:02:18 cromwell-system-akka.dispatchers.backend-dispatcher-77 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(6cdd2af7)DiagnosticDockerProbe.ProbeDockerTools:3:1]: Status change from Initializing to Success
+2026-02-05 22:02:58 cromwell-system-akka.dispatchers.backend-dispatcher-73 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(6cdd2af7)DiagnosticDockerProbe.ProbeDockerTools:1:1]: Status change from Initializing to Running
+2026-02-05 22:03:05 cromwell-system-akka.dispatchers.backend-dispatcher-72 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(6cdd2af7)DiagnosticDockerProbe.ProbeDockerTools:5:1]: Status change from Initializing to Success
+2026-02-05 22:03:14 cromwell-system-akka.dispatchers.backend-dispatcher-81 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(6cdd2af7)DiagnosticDockerProbe.ProbeDockerTools:0:1]: Status change from Initializing to Failed
+2026-02-05 22:03:38 cromwell-system-akka.dispatchers.backend-dispatcher-78 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(6cdd2af7)DiagnosticDockerProbe.ProbeDockerTools:1:1]: Status change from Running to Success
+2026-02-05 22:03:59 cromwell-system-akka.dispatchers.backend-dispatcher-72 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(6cdd2af7)DiagnosticDockerProbe.ProbeDockerTools:2:1]: Status change from Initializing to Failed
+2026-02-05 22:04:42 cromwell-system-akka.dispatchers.backend-dispatcher-56 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(6cdd2af7)DiagnosticDockerProbe.ProbeDockerTools:4:1]: Status change from Initializing to Success
+2026-02-05 22:04:44 cromwell-system-akka.dispatchers.engine-dispatcher-27 INFO  - WorkflowManagerActor: Workflow 6cdd2af7-1cc9-45d0-8b9e-4bee12d614b0 failed (during ExecutingWorkflowState): java.lang.Exception: Task DiagnosticDockerProbe.ProbeDockerTools:0:1 failed. The job was stopped before the command finished. GCP Batch task exited with Success(0). 
+	at cromwell.backend.google.batch.actors.GcpBatchAsyncBackendJobExecutionActor$.StandardException(GcpBatchAsyncBackendJobExecutionActor.scala:83)
+	at cromwell.backend.google.batch.actors.GcpBatchAsyncBackendJobExecutionActor.handleFailedRunStatus$1(GcpBatchAsyncBackendJobExecutionActor.scala:1152)
+	at cromwell.backend.google.batch.actors.GcpBatchAsyncBackendJobExecutionActor.$anonfun$handleExecutionFailure$1(GcpBatchAsyncBackendJobExecutionActor.scala:1168)
+	at scala.util.Try$.apply(Try.scala:210)
+	at cromwell.backend.google.batch.actors.GcpBatchAsyncBackendJobExecutionActor.handleExecutionFailure(GcpBatchAsyncBackendJobExecutionActor.scala:1160)
+	at cromwell.backend.google.batch.actors.GcpBatchAsyncBackendJobExecutionActor.handleExecutionFailure(GcpBatchAsyncBackendJobExecutionActor.scala:144)
+	at cromwell.backend.standard.StandardAsyncExecutionActor$$anonfun$handleExecutionResult$11.applyOrElse(StandardAsyncExecutionActor.scala:1506)
+	at cromwell.backend.standard.StandardAsyncExecutionActor$$anonfun$handleExecutionResult$11.applyOrElse(StandardAsyncExecutionActor.scala:1503)
+	at scala.concurrent.impl.Promise$Transformation.run(Promise.scala:490)
+	at akka.dispatch.TaskInvocation.run(AbstractDispatcher.scala:41)
+	at akka.dispatch.ForkJoinExecutorConfigurator$AkkaForkJoinTask.exec(ForkJoinExecutorConfigurator.scala:49)
+	at akka.dispatch.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260)
+	at akka.dispatch.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339)
+	at akka.dispatch.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979)
+	at akka.dispatch.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107)
+
+java.lang.Exception: Task DiagnosticDockerProbe.ProbeDockerTools:2:1 failed. The job was stopped before the command finished. GCP Batch task exited with Success(0). 
+	at cromwell.backend.google.batch.actors.GcpBatchAsyncBackendJobExecutionActor$.StandardException(GcpBatchAsyncBackendJobExecutionActor.scala:83)
+	at cromwell.backend.google.batch.actors.GcpBatchAsyncBackendJobExecutionActor.handleFailedRunStatus$1(GcpBatchAsyncBackendJobExecutionActor.scala:1152)
+	at cromwell.backend.google.batch.actors.GcpBatchAsyncBackendJobExecutionActor.$anonfun$handleExecutionFailure$1(GcpBatchAsyncBackendJobExecutionActor.scala:1168)
+	at scala.util.Try$.apply(Try.scala:210)
+	at cromwell.backend.google.batch.actors.GcpBatchAsyncBackendJobExecutionActor.handleExecutionFailure(GcpBatchAsyncBackendJobExecutionActor.scala:1160)
+	at cromwell.backend.google.batch.actors.GcpBatchAsyncBackendJobExecutionActor.handleExecutionFailure(GcpBatchAsyncBackendJobExecutionActor.scala:144)
+	at cromwell.backend.standard.StandardAsyncExecutionActor$$anonfun$handleExecutionResult$11.applyOrElse(StandardAsyncExecutionActor.scala:1506)
+	at cromwell.backend.standard.StandardAsyncExecutionActor$$anonfun$handleExecutionResult$11.applyOrElse(StandardAsyncExecutionActor.scala:1503)
+	at scala.concurrent.impl.Promise$Transformation.run(Promise.scala:490)
+	at akka.dispatch.TaskInvocation.run(AbstractDispatcher.scala:41)
+	at akka.dispatch.ForkJoinExecutorConfigurator$AkkaForkJoinTask.exec(ForkJoinExecutorConfigurator.scala:49)
+	at akka.dispatch.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260)
+	at akka.dispatch.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339)
+	at akka.dispatch.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979)
+	at akka.dispatch.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107)
+
+2026-02-05 22:04:47 cromwell-system-akka.dispatchers.engine-dispatcher-31 INFO  - WorkflowManagerActor: Workflow actor for 6cdd2af7-1cc9-45d0-8b9e-4bee12d614b0 completed with status 'Failed'. The workflow will be removed from the workflow store.
+2026-02-05 22:16:14 cromwell-system-akka.dispatchers.api-dispatcher-62 INFO  - Unspecified type (Unspecified version) workflow e1f85858-7144-49c3-aa30-a6a37c2a3401 submitted
+2026-02-05 22:16:15 cromwell-system-akka.dispatchers.engine-dispatcher-28 INFO  - 1 new workflows fetched by cromid-cffa39a: e1f85858-7144-49c3-aa30-a6a37c2a3401
+2026-02-05 22:16:15 cromwell-system-akka.dispatchers.engine-dispatcher-28 INFO  - WorkflowManagerActor: Starting workflow UUID(e1f85858-7144-49c3-aa30-a6a37c2a3401)
+2026-02-05 22:16:15 cromwell-system-akka.dispatchers.engine-dispatcher-28 INFO  - WorkflowManagerActor: Successfully started WorkflowActor-e1f85858-7144-49c3-aa30-a6a37c2a3401
+2026-02-05 22:16:15 cromwell-system-akka.dispatchers.engine-dispatcher-28 INFO  - Retrieved 1 workflows from the WorkflowStoreActor
+2026-02-05 22:16:15 cromwell-system-akka.dispatchers.engine-dispatcher-28 INFO  - MaterializeWorkflowDescriptorActor [UUID(e1f85858)]: Parsing workflow as WDL 1.0
+2026-02-05 22:16:15 cromwell-system-akka.dispatchers.engine-dispatcher-28 INFO  - WorkflowManagerActor: Workflow e1f85858-7144-49c3-aa30-a6a37c2a3401 failed (during MaterializingWorkflowDescriptorState): cromwell.engine.workflow.lifecycle.materialization.MaterializeWorkflowDescriptorActor$$anon$1: Workflow input processing failed:
+Failed to process workflow definition 'DiagnosticDockerProbeSkopeo' (reason 1 of 1): Failed to process declaration 'Array[File] reports = (select_all(ProbeDockerToolsSafe.report) + select_all(WriteUnsupportedReport.report))' (reason 1 of 1): Failed to process expression '(select_all(ProbeDockerToolsSafe.report) + select_all(WriteUnsupportedReport.report))' (reason 1 of 1): Type evaluation cannot determine type from expression: WomMaybeEmptyArrayType(WomSingleFileType) + WomMaybeEmptyArrayType(WomSingleFileType)
+
+2026-02-05 22:16:17 cromwell-system-akka.dispatchers.engine-dispatcher-5 INFO  - WorkflowManagerActor: Workflow actor for e1f85858-7144-49c3-aa30-a6a37c2a3401 completed with status 'Failed'. The workflow will be removed from the workflow store.
+2026-02-05 22:18:11 cromwell-system-akka.dispatchers.api-dispatcher-88 INFO  - Unspecified type (Unspecified version) workflow 0292fd8a-d821-490e-b19c-7d680bedf52d submitted
+2026-02-05 22:18:11 cromwell-system-akka.dispatchers.engine-dispatcher-28 INFO  - 1 new workflows fetched by cromid-cffa39a: 0292fd8a-d821-490e-b19c-7d680bedf52d
+2026-02-05 22:18:11 cromwell-system-akka.dispatchers.engine-dispatcher-28 INFO  - WorkflowManagerActor: Starting workflow UUID(0292fd8a-d821-490e-b19c-7d680bedf52d)
+2026-02-05 22:18:11 cromwell-system-akka.dispatchers.engine-dispatcher-28 INFO  - WorkflowManagerActor: Successfully started WorkflowActor-0292fd8a-d821-490e-b19c-7d680bedf52d
+2026-02-05 22:18:11 cromwell-system-akka.dispatchers.engine-dispatcher-28 INFO  - Retrieved 1 workflows from the WorkflowStoreActor
+2026-02-05 22:18:11 cromwell-system-akka.dispatchers.engine-dispatcher-42 INFO  - MaterializeWorkflowDescriptorActor [UUID(0292fd8a)]: Parsing workflow as WDL 1.0
+2026-02-05 22:18:11 cromwell-system-akka.dispatchers.engine-dispatcher-44 INFO  - WorkflowManagerActor: Workflow 0292fd8a-d821-490e-b19c-7d680bedf52d failed (during MaterializingWorkflowDescriptorState): cromwell.engine.workflow.lifecycle.materialization.MaterializeWorkflowDescriptorActor$$anon$1: Workflow input processing failed:
+Failed to process workflow definition 'DiagnosticDockerProbeSkopeo' (reason 1 of 1): Failed to process declaration 'Array[File] reports = (select_all(ProbeDockerToolsSafe.report) + select_all(WriteUnsupportedReport.report))' (reason 1 of 1): Failed to process expression '(select_all(ProbeDockerToolsSafe.report) + select_all(WriteUnsupportedReport.report))' (reason 1 of 1): Type evaluation cannot determine type from expression: WomMaybeEmptyArrayType(WomSingleFileType) + WomMaybeEmptyArrayType(WomSingleFileType)
+
+2026-02-05 22:18:12 cromwell-system-akka.dispatchers.engine-dispatcher-42 INFO  - WorkflowManagerActor: Workflow actor for 0292fd8a-d821-490e-b19c-7d680bedf52d completed with status 'Failed'. The workflow will be removed from the workflow store.
+2026-02-05 22:23:05 cromwell-system-akka.dispatchers.api-dispatcher-91 INFO  - Unspecified type (Unspecified version) workflow 34ba614c-7d9b-4496-80ea-dbc634678cfa submitted
+2026-02-05 22:23:06 cromwell-system-akka.dispatchers.engine-dispatcher-44 INFO  - 1 new workflows fetched by cromid-cffa39a: 34ba614c-7d9b-4496-80ea-dbc634678cfa
+2026-02-05 22:23:06 cromwell-system-akka.dispatchers.engine-dispatcher-44 INFO  - WorkflowManagerActor: Starting workflow UUID(34ba614c-7d9b-4496-80ea-dbc634678cfa)
+2026-02-05 22:23:06 cromwell-system-akka.dispatchers.engine-dispatcher-44 INFO  - WorkflowManagerActor: Successfully started WorkflowActor-34ba614c-7d9b-4496-80ea-dbc634678cfa
+2026-02-05 22:23:06 cromwell-system-akka.dispatchers.engine-dispatcher-44 INFO  - Retrieved 1 workflows from the WorkflowStoreActor
+2026-02-05 22:23:06 cromwell-system-akka.dispatchers.engine-dispatcher-33 INFO  - MaterializeWorkflowDescriptorActor [UUID(34ba614c)]: Parsing workflow as WDL 1.0
+2026-02-05 22:23:06 cromwell-system-akka.dispatchers.engine-dispatcher-33 INFO  - MaterializeWorkflowDescriptorActor [UUID(34ba614c)]: Call-to-Backend assignments: DiagnosticDockerProbeSkopeo.DetectBashWithSkopeo -> GCPBATCH, DiagnosticDockerProbeSkopeo.WriteUnsupportedReport -> GCPBATCH, DiagnosticDockerProbeSkopeo.ProbeDockerToolsSafe -> GCPBATCH
+2026-02-05 22:23:10 cromwell-system-akka.dispatchers.engine-dispatcher-12 INFO  - WorkflowExecutionActor-34ba614c-7d9b-4496-80ea-dbc634678cfa [UUID(34ba614c)]: Starting DiagnosticDockerProbeSkopeo.DetectBashWithSkopeo (6 shards)
+2026-02-05 22:23:12 cromwell-system-akka.dispatchers.engine-dispatcher-32 INFO  - Assigned new job execution tokens to the following groups: 34ba614c: 6
+2026-02-05 22:23:13 cromwell-system-akka.dispatchers.backend-dispatcher-72 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(34ba614c)DiagnosticDockerProbeSkopeo.DetectBashWithSkopeo:2:1]: `# Safe detection: do not run the target image. Use skopeo to inspect layers.
+set +e
+
+echo "image=${docker_image}" > docker_bash_detect_report.txt
+echo "date_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ 2>/dev/null)" >> docker_bash_detect_report.txt
+
+mkdir -p oci
+
+skopeo copy --override-os linux docker://"${docker_image}" oci:./oci:img >> docker_bash_detect_report.txt 2>&1
+if [ $? -ne 0 ]; then
+  echo "has_bash=false" > has_bash.txt
+  echo "reason=skopeo_copy_failed" > reason.txt
+  exit 0
+fi
+
+RAW=$(skopeo inspect --raw docker://"${docker_image}" 2>> docker_bash_detect_report.txt)
+if [ -z "$RAW" ]; then
+  echo "has_bash=false" > has_bash.txt
+  echo "reason=skopeo_inspect_failed" > reason.txt
+  exit 0
+fi
+
+echo "$RAW" | grep -o 'sha256:[a-f0-9]\{64\}' | while read -r digest; do
+  h=${digest#sha256:}
+  blob="oci/blobs/sha256/${h}"
+  if [ ! -f "$blob" ]; then
+    continue
+  fi
+  # Try tar listing (plain or gz). Look for /bin/bash or /usr/bin/bash
+  tar -tf "$blob" >/dev/null 2>&1
+  if [ $? -eq 0 ]; then
+    tar -tf "$blob" | grep -E '(^|/)bin/bash$|(^|/)usr/bin/bash$' && echo "FOUND" > bash_found.txt
+  else
+    tar -tzf "$blob" >/dev/null 2>&1
+    if [ $? -eq 0 ]; then
+      tar -tzf "$blob" | grep -E '(^|/)bin/bash$|(^|/)usr/bin/bash$' && echo "FOUND" > bash_found.txt
+    fi
+  fi
+done
+
+if [ -f bash_found.txt ]; then
+  echo "has_bash=true" > has_bash.txt
+  echo "reason=ok" > reason.txt
+else
+  echo "has_bash=false" > has_bash.txt
+  echo "reason=no_bash_in_layers" > reason.txt
+fi
+
+exit 0`
+2026-02-05 22:23:13 cromwell-system-akka.dispatchers.backend-dispatcher-56 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(34ba614c)DiagnosticDockerProbeSkopeo.DetectBashWithSkopeo:5:1]: `# Safe detection: do not run the target image. Use skopeo to inspect layers.
+set +e
+
+echo "image=${docker_image}" > docker_bash_detect_report.txt
+echo "date_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ 2>/dev/null)" >> docker_bash_detect_report.txt
+
+mkdir -p oci
+
+skopeo copy --override-os linux docker://"${docker_image}" oci:./oci:img >> docker_bash_detect_report.txt 2>&1
+if [ $? -ne 0 ]; then
+  echo "has_bash=false" > has_bash.txt
+  echo "reason=skopeo_copy_failed" > reason.txt
+  exit 0
+fi
+
+RAW=$(skopeo inspect --raw docker://"${docker_image}" 2>> docker_bash_detect_report.txt)
+if [ -z "$RAW" ]; then
+  echo "has_bash=false" > has_bash.txt
+  echo "reason=skopeo_inspect_failed" > reason.txt
+  exit 0
+fi
+
+echo "$RAW" | grep -o 'sha256:[a-f0-9]\{64\}' | while read -r digest; do
+  h=${digest#sha256:}
+  blob="oci/blobs/sha256/${h}"
+  if [ ! -f "$blob" ]; then
+    continue
+  fi
+  # Try tar listing (plain or gz). Look for /bin/bash or /usr/bin/bash
+  tar -tf "$blob" >/dev/null 2>&1
+  if [ $? -eq 0 ]; then
+    tar -tf "$blob" | grep -E '(^|/)bin/bash$|(^|/)usr/bin/bash$' && echo "FOUND" > bash_found.txt
+  else
+    tar -tzf "$blob" >/dev/null 2>&1
+    if [ $? -eq 0 ]; then
+      tar -tzf "$blob" | grep -E '(^|/)bin/bash$|(^|/)usr/bin/bash$' && echo "FOUND" > bash_found.txt
+    fi
+  fi
+done
+
+if [ -f bash_found.txt ]; then
+  echo "has_bash=true" > has_bash.txt
+  echo "reason=ok" > reason.txt
+else
+  echo "has_bash=false" > has_bash.txt
+  echo "reason=no_bash_in_layers" > reason.txt
+fi
+
+exit 0`
+2026-02-05 22:23:13 cromwell-system-akka.dispatchers.backend-dispatcher-75 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(34ba614c)DiagnosticDockerProbeSkopeo.DetectBashWithSkopeo:3:1]: `# Safe detection: do not run the target image. Use skopeo to inspect layers.
+set +e
+
+echo "image=${docker_image}" > docker_bash_detect_report.txt
+echo "date_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ 2>/dev/null)" >> docker_bash_detect_report.txt
+
+mkdir -p oci
+
+skopeo copy --override-os linux docker://"${docker_image}" oci:./oci:img >> docker_bash_detect_report.txt 2>&1
+if [ $? -ne 0 ]; then
+  echo "has_bash=false" > has_bash.txt
+  echo "reason=skopeo_copy_failed" > reason.txt
+  exit 0
+fi
+
+RAW=$(skopeo inspect --raw docker://"${docker_image}" 2>> docker_bash_detect_report.txt)
+if [ -z "$RAW" ]; then
+  echo "has_bash=false" > has_bash.txt
+  echo "reason=skopeo_inspect_failed" > reason.txt
+  exit 0
+fi
+
+echo "$RAW" | grep -o 'sha256:[a-f0-9]\{64\}' | while read -r digest; do
+  h=${digest#sha256:}
+  blob="oci/blobs/sha256/${h}"
+  if [ ! -f "$blob" ]; then
+    continue
+  fi
+  # Try tar listing (plain or gz). Look for /bin/bash or /usr/bin/bash
+  tar -tf "$blob" >/dev/null 2>&1
+  if [ $? -eq 0 ]; then
+    tar -tf "$blob" | grep -E '(^|/)bin/bash$|(^|/)usr/bin/bash$' && echo "FOUND" > bash_found.txt
+  else
+    tar -tzf "$blob" >/dev/null 2>&1
+    if [ $? -eq 0 ]; then
+      tar -tzf "$blob" | grep -E '(^|/)bin/bash$|(^|/)usr/bin/bash$' && echo "FOUND" > bash_found.txt
+    fi
+  fi
+done
+
+if [ -f bash_found.txt ]; then
+  echo "has_bash=true" > has_bash.txt
+  echo "reason=ok" > reason.txt
+else
+  echo "has_bash=false" > has_bash.txt
+  echo "reason=no_bash_in_layers" > reason.txt
+fi
+
+exit 0`
+2026-02-05 22:23:13 cromwell-system-akka.dispatchers.backend-dispatcher-84 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(34ba614c)DiagnosticDockerProbeSkopeo.DetectBashWithSkopeo:0:1]: `# Safe detection: do not run the target image. Use skopeo to inspect layers.
+set +e
+
+echo "image=${docker_image}" > docker_bash_detect_report.txt
+echo "date_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ 2>/dev/null)" >> docker_bash_detect_report.txt
+
+mkdir -p oci
+
+skopeo copy --override-os linux docker://"${docker_image}" oci:./oci:img >> docker_bash_detect_report.txt 2>&1
+if [ $? -ne 0 ]; then
+  echo "has_bash=false" > has_bash.txt
+  echo "reason=skopeo_copy_failed" > reason.txt
+  exit 0
+fi
+
+RAW=$(skopeo inspect --raw docker://"${docker_image}" 2>> docker_bash_detect_report.txt)
+if [ -z "$RAW" ]; then
+  echo "has_bash=false" > has_bash.txt
+  echo "reason=skopeo_inspect_failed" > reason.txt
+  exit 0
+fi
+
+echo "$RAW" | grep -o 'sha256:[a-f0-9]\{64\}' | while read -r digest; do
+  h=${digest#sha256:}
+  blob="oci/blobs/sha256/${h}"
+  if [ ! -f "$blob" ]; then
+    continue
+  fi
+  # Try tar listing (plain or gz). Look for /bin/bash or /usr/bin/bash
+  tar -tf "$blob" >/dev/null 2>&1
+  if [ $? -eq 0 ]; then
+    tar -tf "$blob" | grep -E '(^|/)bin/bash$|(^|/)usr/bin/bash$' && echo "FOUND" > bash_found.txt
+  else
+    tar -tzf "$blob" >/dev/null 2>&1
+    if [ $? -eq 0 ]; then
+      tar -tzf "$blob" | grep -E '(^|/)bin/bash$|(^|/)usr/bin/bash$' && echo "FOUND" > bash_found.txt
+    fi
+  fi
+done
+
+if [ -f bash_found.txt ]; then
+  echo "has_bash=true" > has_bash.txt
+  echo "reason=ok" > reason.txt
+else
+  echo "has_bash=false" > has_bash.txt
+  echo "reason=no_bash_in_layers" > reason.txt
+fi
+
+exit 0`
+2026-02-05 22:23:13 cromwell-system-akka.dispatchers.backend-dispatcher-78 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(34ba614c)DiagnosticDockerProbeSkopeo.DetectBashWithSkopeo:4:1]: `# Safe detection: do not run the target image. Use skopeo to inspect layers.
+set +e
+
+echo "image=${docker_image}" > docker_bash_detect_report.txt
+echo "date_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ 2>/dev/null)" >> docker_bash_detect_report.txt
+
+mkdir -p oci
+
+skopeo copy --override-os linux docker://"${docker_image}" oci:./oci:img >> docker_bash_detect_report.txt 2>&1
+if [ $? -ne 0 ]; then
+  echo "has_bash=false" > has_bash.txt
+  echo "reason=skopeo_copy_failed" > reason.txt
+  exit 0
+fi
+
+RAW=$(skopeo inspect --raw docker://"${docker_image}" 2>> docker_bash_detect_report.txt)
+if [ -z "$RAW" ]; then
+  echo "has_bash=false" > has_bash.txt
+  echo "reason=skopeo_inspect_failed" > reason.txt
+  exit 0
+fi
+
+echo "$RAW" | grep -o 'sha256:[a-f0-9]\{64\}' | while read -r digest; do
+  h=${digest#sha256:}
+  blob="oci/blobs/sha256/${h}"
+  if [ ! -f "$blob" ]; then
+    continue
+  fi
+  # Try tar listing (plain or gz). Look for /bin/bash or /usr/bin/bash
+  tar -tf "$blob" >/dev/null 2>&1
+  if [ $? -eq 0 ]; then
+    tar -tf "$blob" | grep -E '(^|/)bin/bash$|(^|/)usr/bin/bash$' && echo "FOUND" > bash_found.txt
+  else
+    tar -tzf "$blob" >/dev/null 2>&1
+    if [ $? -eq 0 ]; then
+      tar -tzf "$blob" | grep -E '(^|/)bin/bash$|(^|/)usr/bin/bash$' && echo "FOUND" > bash_found.txt
+    fi
+  fi
+done
+
+if [ -f bash_found.txt ]; then
+  echo "has_bash=true" > has_bash.txt
+  echo "reason=ok" > reason.txt
+else
+  echo "has_bash=false" > has_bash.txt
+  echo "reason=no_bash_in_layers" > reason.txt
+fi
+
+exit 0`
+2026-02-05 22:23:13 cromwell-system-akka.dispatchers.backend-dispatcher-73 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(34ba614c)DiagnosticDockerProbeSkopeo.DetectBashWithSkopeo:1:1]: `# Safe detection: do not run the target image. Use skopeo to inspect layers.
+set +e
+
+echo "image=${docker_image}" > docker_bash_detect_report.txt
+echo "date_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ 2>/dev/null)" >> docker_bash_detect_report.txt
+
+mkdir -p oci
+
+skopeo copy --override-os linux docker://"${docker_image}" oci:./oci:img >> docker_bash_detect_report.txt 2>&1
+if [ $? -ne 0 ]; then
+  echo "has_bash=false" > has_bash.txt
+  echo "reason=skopeo_copy_failed" > reason.txt
+  exit 0
+fi
+
+RAW=$(skopeo inspect --raw docker://"${docker_image}" 2>> docker_bash_detect_report.txt)
+if [ -z "$RAW" ]; then
+  echo "has_bash=false" > has_bash.txt
+  echo "reason=skopeo_inspect_failed" > reason.txt
+  exit 0
+fi
+
+echo "$RAW" | grep -o 'sha256:[a-f0-9]\{64\}' | while read -r digest; do
+  h=${digest#sha256:}
+  blob="oci/blobs/sha256/${h}"
+  if [ ! -f "$blob" ]; then
+    continue
+  fi
+  # Try tar listing (plain or gz). Look for /bin/bash or /usr/bin/bash
+  tar -tf "$blob" >/dev/null 2>&1
+  if [ $? -eq 0 ]; then
+    tar -tf "$blob" | grep -E '(^|/)bin/bash$|(^|/)usr/bin/bash$' && echo "FOUND" > bash_found.txt
+  else
+    tar -tzf "$blob" >/dev/null 2>&1
+    if [ $? -eq 0 ]; then
+      tar -tzf "$blob" | grep -E '(^|/)bin/bash$|(^|/)usr/bin/bash$' && echo "FOUND" > bash_found.txt
+    fi
+  fi
+done
+
+if [ -f bash_found.txt ]; then
+  echo "has_bash=true" > has_bash.txt
+  echo "reason=ok" > reason.txt
+else
+  echo "has_bash=false" > has_bash.txt
+  echo "reason=no_bash_in_layers" > reason.txt
+fi
+
+exit 0`
+2026-02-05 22:23:13 cromwell-system-akka.dispatchers.backend-dispatcher-75 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(34ba614c)DiagnosticDockerProbeSkopeo.DetectBashWithSkopeo:4:1]: Asking singleton actor to submit a job: job-34ba614c-diagnosticdockerprobeskopeodetectbash-4-1-99cd301b
+2026-02-05 22:23:13 cromwell-system-akka.dispatchers.backend-dispatcher-72 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(34ba614c)DiagnosticDockerProbeSkopeo.DetectBashWithSkopeo:3:1]: Asking singleton actor to submit a job: job-34ba614c-diagnosticdockerprobeskopeodetectbash-3-1-f27f78ff
+2026-02-05 22:23:13 cromwell-system-akka.dispatchers.backend-dispatcher-72 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(34ba614c)DiagnosticDockerProbeSkopeo.DetectBashWithSkopeo:2:1]: Asking singleton actor to submit a job: job-34ba614c-diagnosticdockerprobeskopeodetectbash-2-1-6291508d
+2026-02-05 22:23:13 cromwell-system-akka.dispatchers.backend-dispatcher-72 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(34ba614c)DiagnosticDockerProbeSkopeo.DetectBashWithSkopeo:1:1]: Asking singleton actor to submit a job: job-34ba614c-diagnosticdockerprobeskopeodetectbash-1-1-952ef77e
+2026-02-05 22:23:13 cromwell-system-akka.dispatchers.backend-dispatcher-72 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(34ba614c)DiagnosticDockerProbeSkopeo.DetectBashWithSkopeo:0:1]: Asking singleton actor to submit a job: job-34ba614c-diagnosticdockerprobeskopeodetectbash-0-1-da91e6cc
+2026-02-05 22:23:13 cromwell-system-akka.dispatchers.backend-dispatcher-73 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(34ba614c)DiagnosticDockerProbeSkopeo.DetectBashWithSkopeo:5:1]: Asking singleton actor to submit a job: job-34ba614c-diagnosticdockerprobeskopeodetectbash-5-1-d4e88ee2
+2026-02-05 22:23:14 cromwell-system-akka.dispatchers.backend-dispatcher-75 INFO  - Run operation succeeded projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-34ba614c-diagnosticdockerprobeskopeodetectbash-1-1-952ef77e
+2026-02-05 22:23:14 cromwell-system-akka.dispatchers.backend-dispatcher-83 INFO  - Run operation succeeded projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-34ba614c-diagnosticdockerprobeskopeodetectbash-0-1-da91e6cc
+2026-02-05 22:23:14 cromwell-system-akka.dispatchers.backend-dispatcher-75 INFO  - A job was submitted successfully: projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-34ba614c-diagnosticdockerprobeskopeodetectbash-1-1-952ef77e
+2026-02-05 22:23:14 cromwell-system-akka.dispatchers.backend-dispatcher-83 INFO  - A job was submitted successfully: projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-34ba614c-diagnosticdockerprobeskopeodetectbash-0-1-da91e6cc
+2026-02-05 22:23:14 cromwell-system-akka.dispatchers.backend-dispatcher-75 INFO  - Run operation succeeded projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-34ba614c-diagnosticdockerprobeskopeodetectbash-3-1-f27f78ff
+2026-02-05 22:23:14 cromwell-system-akka.dispatchers.backend-dispatcher-75 INFO  - A job was submitted successfully: projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-34ba614c-diagnosticdockerprobeskopeodetectbash-3-1-f27f78ff
+2026-02-05 22:23:14 cromwell-system-akka.dispatchers.backend-dispatcher-80 INFO  - Run operation succeeded projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-34ba614c-diagnosticdockerprobeskopeodetectbash-4-1-99cd301b
+2026-02-05 22:23:14 cromwell-system-akka.dispatchers.backend-dispatcher-80 INFO  - A job was submitted successfully: projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-34ba614c-diagnosticdockerprobeskopeodetectbash-4-1-99cd301b
+2026-02-05 22:23:14 cromwell-system-akka.dispatchers.backend-dispatcher-84 INFO  - Run operation succeeded projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-34ba614c-diagnosticdockerprobeskopeodetectbash-2-1-6291508d
+2026-02-05 22:23:14 cromwell-system-akka.dispatchers.backend-dispatcher-78 INFO  - A job was submitted successfully: projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-34ba614c-diagnosticdockerprobeskopeodetectbash-2-1-6291508d
+2026-02-05 22:23:14 cromwell-system-akka.dispatchers.backend-dispatcher-56 INFO  - Run operation succeeded projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-34ba614c-diagnosticdockerprobeskopeodetectbash-5-1-d4e88ee2
+2026-02-05 22:23:14 cromwell-system-akka.dispatchers.backend-dispatcher-56 INFO  - A job was submitted successfully: projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-34ba614c-diagnosticdockerprobeskopeodetectbash-5-1-d4e88ee2
+2026-02-05 22:23:17 cromwell-system-akka.dispatchers.backend-dispatcher-78 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(34ba614c)DiagnosticDockerProbeSkopeo.DetectBashWithSkopeo:2:1]: job id: projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-34ba614c-diagnosticdockerprobeskopeodetectbash-2-1-6291508d
+2026-02-05 22:23:17 cromwell-system-akka.dispatchers.backend-dispatcher-65 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(34ba614c)DiagnosticDockerProbeSkopeo.DetectBashWithSkopeo:3:1]: job id: projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-34ba614c-diagnosticdockerprobeskopeodetectbash-3-1-f27f78ff
+2026-02-05 22:23:17 cromwell-system-akka.dispatchers.backend-dispatcher-83 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(34ba614c)DiagnosticDockerProbeSkopeo.DetectBashWithSkopeo:1:1]: job id: projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-34ba614c-diagnosticdockerprobeskopeodetectbash-1-1-952ef77e
+2026-02-05 22:23:17 cromwell-system-akka.dispatchers.backend-dispatcher-73 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(34ba614c)DiagnosticDockerProbeSkopeo.DetectBashWithSkopeo:5:1]: job id: projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-34ba614c-diagnosticdockerprobeskopeodetectbash-5-1-d4e88ee2
+2026-02-05 22:23:17 cromwell-system-akka.dispatchers.backend-dispatcher-56 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(34ba614c)DiagnosticDockerProbeSkopeo.DetectBashWithSkopeo:4:1]: job id: projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-34ba614c-diagnosticdockerprobeskopeodetectbash-4-1-99cd301b
+2026-02-05 22:23:17 cromwell-system-akka.dispatchers.backend-dispatcher-93 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(34ba614c)DiagnosticDockerProbeSkopeo.DetectBashWithSkopeo:0:1]: job id: projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-34ba614c-diagnosticdockerprobeskopeodetectbash-0-1-da91e6cc
+2026-02-05 22:23:17 cromwell-system-akka.dispatchers.backend-dispatcher-56 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(34ba614c)DiagnosticDockerProbeSkopeo.DetectBashWithSkopeo:1:1]: Status change from - to Initializing
+2026-02-05 22:23:17 cromwell-system-akka.dispatchers.backend-dispatcher-75 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(34ba614c)DiagnosticDockerProbeSkopeo.DetectBashWithSkopeo:3:1]: Status change from - to Initializing
+2026-02-05 22:23:17 cromwell-system-akka.dispatchers.backend-dispatcher-78 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(34ba614c)DiagnosticDockerProbeSkopeo.DetectBashWithSkopeo:5:1]: Status change from - to Initializing
+2026-02-05 22:23:17 cromwell-system-akka.dispatchers.backend-dispatcher-80 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(34ba614c)DiagnosticDockerProbeSkopeo.DetectBashWithSkopeo:2:1]: Status change from - to Initializing
+2026-02-05 22:23:17 cromwell-system-akka.dispatchers.backend-dispatcher-80 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(34ba614c)DiagnosticDockerProbeSkopeo.DetectBashWithSkopeo:4:1]: Status change from - to Initializing
+2026-02-05 22:23:18 cromwell-system-akka.dispatchers.backend-dispatcher-65 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(34ba614c)DiagnosticDockerProbeSkopeo.DetectBashWithSkopeo:0:1]: Status change from - to Initializing
+2026-02-05 22:26:44 cromwell-system-akka.dispatchers.backend-dispatcher-97 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(34ba614c)DiagnosticDockerProbeSkopeo.DetectBashWithSkopeo:1:1]: Status change from Initializing to Failed
+2026-02-05 22:26:47 cromwell-system-akka.dispatchers.backend-dispatcher-100 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(34ba614c)DiagnosticDockerProbeSkopeo.DetectBashWithSkopeo:4:1]: Status change from Initializing to Failed
+2026-02-05 22:26:50 cromwell-system-akka.dispatchers.backend-dispatcher-94 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(34ba614c)DiagnosticDockerProbeSkopeo.DetectBashWithSkopeo:5:1]: Status change from Initializing to Failed
+2026-02-05 22:26:57 cromwell-system-akka.dispatchers.backend-dispatcher-100 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(34ba614c)DiagnosticDockerProbeSkopeo.DetectBashWithSkopeo:2:1]: Status change from Initializing to Failed
+2026-02-05 22:27:04 cromwell-system-akka.dispatchers.backend-dispatcher-100 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(34ba614c)DiagnosticDockerProbeSkopeo.DetectBashWithSkopeo:3:1]: Status change from Initializing to Failed
+2026-02-05 22:27:14 cromwell-system-akka.dispatchers.backend-dispatcher-94 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(34ba614c)DiagnosticDockerProbeSkopeo.DetectBashWithSkopeo:0:1]: Status change from Initializing to Failed
+2026-02-05 22:27:15 cromwell-system-akka.dispatchers.engine-dispatcher-27 INFO  - WorkflowManagerActor: Workflow 34ba614c-7d9b-4496-80ea-dbc634678cfa failed (during ExecutingWorkflowState): java.lang.Exception: Task DiagnosticDockerProbeSkopeo.DetectBashWithSkopeo:0:1 failed. The job was stopped before the command finished. GCP Batch task exited with Success(0). 
+	at cromwell.backend.google.batch.actors.GcpBatchAsyncBackendJobExecutionActor$.StandardException(GcpBatchAsyncBackendJobExecutionActor.scala:83)
+	at cromwell.backend.google.batch.actors.GcpBatchAsyncBackendJobExecutionActor.handleFailedRunStatus$1(GcpBatchAsyncBackendJobExecutionActor.scala:1152)
+	at cromwell.backend.google.batch.actors.GcpBatchAsyncBackendJobExecutionActor.$anonfun$handleExecutionFailure$1(GcpBatchAsyncBackendJobExecutionActor.scala:1168)
+	at scala.util.Try$.apply(Try.scala:210)
+	at cromwell.backend.google.batch.actors.GcpBatchAsyncBackendJobExecutionActor.handleExecutionFailure(GcpBatchAsyncBackendJobExecutionActor.scala:1160)
+	at cromwell.backend.google.batch.actors.GcpBatchAsyncBackendJobExecutionActor.handleExecutionFailure(GcpBatchAsyncBackendJobExecutionActor.scala:144)
+	at cromwell.backend.standard.StandardAsyncExecutionActor$$anonfun$handleExecutionResult$11.applyOrElse(StandardAsyncExecutionActor.scala:1506)
+	at cromwell.backend.standard.StandardAsyncExecutionActor$$anonfun$handleExecutionResult$11.applyOrElse(StandardAsyncExecutionActor.scala:1503)
+	at scala.concurrent.impl.Promise$Transformation.run(Promise.scala:490)
+	at akka.dispatch.TaskInvocation.run(AbstractDispatcher.scala:41)
+	at akka.dispatch.ForkJoinExecutorConfigurator$AkkaForkJoinTask.exec(ForkJoinExecutorConfigurator.scala:49)
+	at akka.dispatch.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260)
+	at akka.dispatch.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339)
+	at akka.dispatch.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979)
+	at akka.dispatch.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107)
+
+java.lang.Exception: Task DiagnosticDockerProbeSkopeo.DetectBashWithSkopeo:5:1 failed. The job was stopped before the command finished. GCP Batch task exited with Success(0). 
+	at cromwell.backend.google.batch.actors.GcpBatchAsyncBackendJobExecutionActor$.StandardException(GcpBatchAsyncBackendJobExecutionActor.scala:83)
+	at cromwell.backend.google.batch.actors.GcpBatchAsyncBackendJobExecutionActor.handleFailedRunStatus$1(GcpBatchAsyncBackendJobExecutionActor.scala:1152)
+	at cromwell.backend.google.batch.actors.GcpBatchAsyncBackendJobExecutionActor.$anonfun$handleExecutionFailure$1(GcpBatchAsyncBackendJobExecutionActor.scala:1168)
+	at scala.util.Try$.apply(Try.scala:210)
+	at cromwell.backend.google.batch.actors.GcpBatchAsyncBackendJobExecutionActor.handleExecutionFailure(GcpBatchAsyncBackendJobExecutionActor.scala:1160)
+	at cromwell.backend.google.batch.actors.GcpBatchAsyncBackendJobExecutionActor.handleExecutionFailure(GcpBatchAsyncBackendJobExecutionActor.scala:144)
+	at cromwell.backend.standard.StandardAsyncExecutionActor$$anonfun$handleExecutionResult$11.applyOrElse(StandardAsyncExecutionActor.scala:1506)
+	at cromwell.backend.standard.StandardAsyncExecutionActor$$anonfun$handleExecutionResult$11.applyOrElse(StandardAsyncExecutionActor.scala:1503)
+	at scala.concurrent.impl.Promise$Transformation.run(Promise.scala:490)
+	at akka.dispatch.TaskInvocation.run(AbstractDispatcher.scala:41)
+	at akka.dispatch.ForkJoinExecutorConfigurator$AkkaForkJoinTask.exec(ForkJoinExecutorConfigurator.scala:49)
+	at akka.dispatch.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260)
+	at akka.dispatch.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339)
+	at akka.dispatch.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979)
+	at akka.dispatch.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107)
+
+java.lang.Exception: Task DiagnosticDockerProbeSkopeo.DetectBashWithSkopeo:1:1 failed. The job was stopped before the command finished. GCP Batch task exited with Success(0). 
+	at cromwell.backend.google.batch.actors.GcpBatchAsyncBackendJobExecutionActor$.StandardException(GcpBatchAsyncBackendJobExecutionActor.scala:83)
+	at cromwell.backend.google.batch.actors.GcpBatchAsyncBackendJobExecutionActor.handleFailedRunStatus$1(GcpBatchAsyncBackendJobExecutionActor.scala:1152)
+	at cromwell.backend.google.batch.actors.GcpBatchAsyncBackendJobExecutionActor.$anonfun$handleExecutionFailure$1(GcpBatchAsyncBackendJobExecutionActor.scala:1168)
+	at scala.util.Try$.apply(Try.scala:210)
+	at cromwell.backend.google.batch.actors.GcpBatchAsyncBackendJobExecutionActor.handleExecutionFailure(GcpBatchAsyncBackendJobExecutionActor.scala:1160)
+	at cromwell.backend.google.batch.actors.GcpBatchAsyncBackendJobExecutionActor.handleExecutionFailure(GcpBatchAsyncBackendJobExecutionActor.scala:144)
+	at cromwell.backend.standard.StandardAsyncExecutionActor$$anonfun$handleExecutionResult$11.applyOrElse(StandardAsyncExecutionActor.scala:1506)
+	at cromwell.backend.standard.StandardAsyncExecutionActor$$anonfun$handleExecutionResult$11.applyOrElse(StandardAsyncExecutionActor.scala:1503)
+	at scala.concurrent.impl.Promise$Transformation.run(Promise.scala:490)
+	at akka.dispatch.TaskInvocation.run(AbstractDispatcher.scala:41)
+	at akka.dispatch.ForkJoinExecutorConfigurator$AkkaForkJoinTask.exec(ForkJoinExecutorConfigurator.scala:49)
+	at akka.dispatch.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260)
+	at akka.dispatch.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339)
+	at akka.dispatch.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979)
+	at akka.dispatch.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107)
+
+java.lang.Exception: Task DiagnosticDockerProbeSkopeo.DetectBashWithSkopeo:3:1 failed. The job was stopped before the command finished. GCP Batch task exited with Success(0). 
+	at cromwell.backend.google.batch.actors.GcpBatchAsyncBackendJobExecutionActor$.StandardException(GcpBatchAsyncBackendJobExecutionActor.scala:83)
+	at cromwell.backend.google.batch.actors.GcpBatchAsyncBackendJobExecutionActor.handleFailedRunStatus$1(GcpBatchAsyncBackendJobExecutionActor.scala:1152)
+	at cromwell.backend.google.batch.actors.GcpBatchAsyncBackendJobExecutionActor.$anonfun$handleExecutionFailure$1(GcpBatchAsyncBackendJobExecutionActor.scala:1168)
+	at scala.util.Try$.apply(Try.scala:210)
+	at cromwell.backend.google.batch.actors.GcpBatchAsyncBackendJobExecutionActor.handleExecutionFailure(GcpBatchAsyncBackendJobExecutionActor.scala:1160)
+	at cromwell.backend.google.batch.actors.GcpBatchAsyncBackendJobExecutionActor.handleExecutionFailure(GcpBatchAsyncBackendJobExecutionActor.scala:144)
+	at cromwell.backend.standard.StandardAsyncExecutionActor$$anonfun$handleExecutionResult$11.applyOrElse(StandardAsyncExecutionActor.scala:1506)
+	at cromwell.backend.standard.StandardAsyncExecutionActor$$anonfun$handleExecutionResult$11.applyOrElse(StandardAsyncExecutionActor.scala:1503)
+	at scala.concurrent.impl.Promise$Transformation.run(Promise.scala:490)
+	at akka.dispatch.TaskInvocation.run(AbstractDispatcher.scala:41)
+	at akka.dispatch.ForkJoinExecutorConfigurator$AkkaForkJoinTask.exec(ForkJoinExecutorConfigurator.scala:49)
+	at akka.dispatch.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260)
+	at akka.dispatch.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339)
+	at akka.dispatch.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979)
+	at akka.dispatch.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107)
+
+java.lang.Exception: Task DiagnosticDockerProbeSkopeo.DetectBashWithSkopeo:2:1 failed. The job was stopped before the command finished. GCP Batch task exited with Success(0). 
+	at cromwell.backend.google.batch.actors.GcpBatchAsyncBackendJobExecutionActor$.StandardException(GcpBatchAsyncBackendJobExecutionActor.scala:83)
+	at cromwell.backend.google.batch.actors.GcpBatchAsyncBackendJobExecutionActor.handleFailedRunStatus$1(GcpBatchAsyncBackendJobExecutionActor.scala:1152)
+	at cromwell.backend.google.batch.actors.GcpBatchAsyncBackendJobExecutionActor.$anonfun$handleExecutionFailure$1(GcpBatchAsyncBackendJobExecutionActor.scala:1168)
+	at scala.util.Try$.apply(Try.scala:210)
+	at cromwell.backend.google.batch.actors.GcpBatchAsyncBackendJobExecutionActor.handleExecutionFailure(GcpBatchAsyncBackendJobExecutionActor.scala:1160)
+	at cromwell.backend.google.batch.actors.GcpBatchAsyncBackendJobExecutionActor.handleExecutionFailure(GcpBatchAsyncBackendJobExecutionActor.scala:144)
+	at cromwell.backend.standard.StandardAsyncExecutionActor$$anonfun$handleExecutionResult$11.applyOrElse(StandardAsyncExecutionActor.scala:1506)
+	at cromwell.backend.standard.StandardAsyncExecutionActor$$anonfun$handleExecutionResult$11.applyOrElse(StandardAsyncExecutionActor.scala:1503)
+	at scala.concurrent.impl.Promise$Transformation.run(Promise.scala:490)
+	at akka.dispatch.TaskInvocation.run(AbstractDispatcher.scala:41)
+	at akka.dispatch.ForkJoinExecutorConfigurator$AkkaForkJoinTask.exec(ForkJoinExecutorConfigurator.scala:49)
+	at akka.dispatch.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260)
+	at akka.dispatch.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339)
+	at akka.dispatch.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979)
+	at akka.dispatch.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107)
+
+java.lang.Exception: Task DiagnosticDockerProbeSkopeo.DetectBashWithSkopeo:4:1 failed. The job was stopped before the command finished. GCP Batch task exited with Success(0). 
+	at cromwell.backend.google.batch.actors.GcpBatchAsyncBackendJobExecutionActor$.StandardException(GcpBatchAsyncBackendJobExecutionActor.scala:83)
+	at cromwell.backend.google.batch.actors.GcpBatchAsyncBackendJobExecutionActor.handleFailedRunStatus$1(GcpBatchAsyncBackendJobExecutionActor.scala:1152)
+	at cromwell.backend.google.batch.actors.GcpBatchAsyncBackendJobExecutionActor.$anonfun$handleExecutionFailure$1(GcpBatchAsyncBackendJobExecutionActor.scala:1168)
+	at scala.util.Try$.apply(Try.scala:210)
+	at cromwell.backend.google.batch.actors.GcpBatchAsyncBackendJobExecutionActor.handleExecutionFailure(GcpBatchAsyncBackendJobExecutionActor.scala:1160)
+	at cromwell.backend.google.batch.actors.GcpBatchAsyncBackendJobExecutionActor.handleExecutionFailure(GcpBatchAsyncBackendJobExecutionActor.scala:144)
+	at cromwell.backend.standard.StandardAsyncExecutionActor$$anonfun$handleExecutionResult$11.applyOrElse(StandardAsyncExecutionActor.scala:1506)
+	at cromwell.backend.standard.StandardAsyncExecutionActor$$anonfun$handleExecutionResult$11.applyOrElse(StandardAsyncExecutionActor.scala:1503)
+	at scala.concurrent.impl.Promise$Transformation.run(Promise.scala:490)
+	at akka.dispatch.TaskInvocation.run(AbstractDispatcher.scala:41)
+	at akka.dispatch.ForkJoinExecutorConfigurator$AkkaForkJoinTask.exec(ForkJoinExecutorConfigurator.scala:49)
+	at akka.dispatch.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260)
+	at akka.dispatch.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339)
+	at akka.dispatch.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979)
+	at akka.dispatch.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107)
+
+2026-02-05 22:27:17 cromwell-system-akka.dispatchers.engine-dispatcher-32 INFO  - WorkflowManagerActor: Workflow actor for 34ba614c-7d9b-4496-80ea-dbc634678cfa completed with status 'Failed'. The workflow will be removed from the workflow store.
+2026-02-05 22:31:25 cromwell-system-akka.dispatchers.api-dispatcher-108 INFO  - Unspecified type (Unspecified version) workflow db039fa4-1622-4a87-ac08-5b9e54847d1e submitted
+2026-02-05 22:31:26 cromwell-system-akka.dispatchers.engine-dispatcher-12 INFO  - 1 new workflows fetched by cromid-cffa39a: db039fa4-1622-4a87-ac08-5b9e54847d1e
+2026-02-05 22:31:26 cromwell-system-akka.dispatchers.engine-dispatcher-12 INFO  - WorkflowManagerActor: Starting workflow UUID(db039fa4-1622-4a87-ac08-5b9e54847d1e)
+2026-02-05 22:31:26 cromwell-system-akka.dispatchers.engine-dispatcher-12 INFO  - WorkflowManagerActor: Successfully started WorkflowActor-db039fa4-1622-4a87-ac08-5b9e54847d1e
+2026-02-05 22:31:26 cromwell-system-akka.dispatchers.engine-dispatcher-12 INFO  - Retrieved 1 workflows from the WorkflowStoreActor
+2026-02-05 22:31:26 cromwell-system-akka.dispatchers.engine-dispatcher-30 INFO  - MaterializeWorkflowDescriptorActor [UUID(db039fa4)]: Parsing workflow as WDL 1.0
+2026-02-05 22:31:26 cromwell-system-akka.dispatchers.engine-dispatcher-30 INFO  - MaterializeWorkflowDescriptorActor [UUID(db039fa4)]: Call-to-Backend assignments: DiagnosticDockerProbeSafeFirst.ProbeDockerToolsSafe -> GCPBATCH, DiagnosticDockerProbeSafeFirst.WriteUnsupportedReport -> GCPBATCH
+2026-02-05 22:31:30 cromwell-system-akka.dispatchers.engine-dispatcher-27 INFO  - WorkflowExecutionActor-db039fa4-1622-4a87-ac08-5b9e54847d1e [UUID(db039fa4)]: Starting DiagnosticDockerProbeSafeFirst.ProbeDockerToolsSafe (4 shards), DiagnosticDockerProbeSafeFirst.WriteUnsupportedReport (2 shards)
+2026-02-05 22:31:30 cromwell-system-akka.dispatchers.engine-dispatcher-12 INFO  - Assigned new job execution tokens to the following groups: db039fa4: 6
+2026-02-05 22:31:30 cromwell-system-akka.dispatchers.backend-dispatcher-100 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(db039fa4)DiagnosticDockerProbeSafeFirst.ProbeDockerToolsSafe:0:1]: `    # Probe tools inside the target image. Always exit 0 and write a report.
+    set +e
+
+    echo "image=${docker_image}" > docker_probe_report.txt
+    echo "date_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ 2>/dev/null)" >> docker_probe_report.txt
+    echo "whoami=$(whoami 2>/dev/null)" >> docker_probe_report.txt
+    echo "uname=$(uname -a 2>/dev/null)" >> docker_probe_report.txt
+    echo "PATH=${PATH}" >> docker_probe_report.txt
+    echo "" >> docker_probe_report.txt
+
+    cat > tools.list <<'TOOLS'
+    bcftools
+samtools
+gatk
+java
+python
+python3
+R
+bgzip
+tabix
+bedGraphToBigWig
+awk
+sed
+bash
+TOOLS
+
+    while IFS= read -r tool; do
+      if [ -z "$tool" ]; then
+        continue
+      fi
+      if command -v "$tool" >/dev/null 2>&1; then
+        echo "OK: ${tool} -> $(command -v ${tool})" >> docker_probe_report.txt
+        (${tool} --version || ${tool} -version || ${tool} -V || ${tool} -h || true) >> docker_probe_report.txt 2>&1
+      else
+        echo "MISSING: ${tool}" >> docker_probe_report.txt
+      fi
+      echo "" >> docker_probe_report.txt
+    done < tools.list
+
+    if [ -n "" ]; then
+      echo "EXTRA_CMD:" >> docker_probe_report.txt
+      bash -lc "" >> docker_probe_report.txt 2>&1
+      echo "EXTRA_CMD_RC=$?" >> docker_probe_report.txt
+    fi
+
+    echo "DONE" >> docker_probe_report.txt
+    exit 0`
+2026-02-05 22:31:30 cromwell-system-akka.dispatchers.backend-dispatcher-100 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(db039fa4)DiagnosticDockerProbeSafeFirst.ProbeDockerToolsSafe:3:1]: `    # Probe tools inside the target image. Always exit 0 and write a report.
+    set +e
+
+    echo "image=${docker_image}" > docker_probe_report.txt
+    echo "date_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ 2>/dev/null)" >> docker_probe_report.txt
+    echo "whoami=$(whoami 2>/dev/null)" >> docker_probe_report.txt
+    echo "uname=$(uname -a 2>/dev/null)" >> docker_probe_report.txt
+    echo "PATH=${PATH}" >> docker_probe_report.txt
+    echo "" >> docker_probe_report.txt
+
+    cat > tools.list <<'TOOLS'
+    bcftools
+samtools
+gatk
+java
+python
+python3
+R
+bgzip
+tabix
+bedGraphToBigWig
+awk
+sed
+bash
+TOOLS
+
+    while IFS= read -r tool; do
+      if [ -z "$tool" ]; then
+        continue
+      fi
+      if command -v "$tool" >/dev/null 2>&1; then
+        echo "OK: ${tool} -> $(command -v ${tool})" >> docker_probe_report.txt
+        (${tool} --version || ${tool} -version || ${tool} -V || ${tool} -h || true) >> docker_probe_report.txt 2>&1
+      else
+        echo "MISSING: ${tool}" >> docker_probe_report.txt
+      fi
+      echo "" >> docker_probe_report.txt
+    done < tools.list
+
+    if [ -n "" ]; then
+      echo "EXTRA_CMD:" >> docker_probe_report.txt
+      bash -lc "" >> docker_probe_report.txt 2>&1
+      echo "EXTRA_CMD_RC=$?" >> docker_probe_report.txt
+    fi
+
+    echo "DONE" >> docker_probe_report.txt
+    exit 0`
+2026-02-05 22:31:31 cromwell-system-akka.dispatchers.backend-dispatcher-100 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(db039fa4)DiagnosticDockerProbeSafeFirst.ProbeDockerToolsSafe:1:1]: `    # Probe tools inside the target image. Always exit 0 and write a report.
+    set +e
+
+    echo "image=${docker_image}" > docker_probe_report.txt
+    echo "date_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ 2>/dev/null)" >> docker_probe_report.txt
+    echo "whoami=$(whoami 2>/dev/null)" >> docker_probe_report.txt
+    echo "uname=$(uname -a 2>/dev/null)" >> docker_probe_report.txt
+    echo "PATH=${PATH}" >> docker_probe_report.txt
+    echo "" >> docker_probe_report.txt
+
+    cat > tools.list <<'TOOLS'
+    bcftools
+samtools
+gatk
+java
+python
+python3
+R
+bgzip
+tabix
+bedGraphToBigWig
+awk
+sed
+bash
+TOOLS
+
+    while IFS= read -r tool; do
+      if [ -z "$tool" ]; then
+        continue
+      fi
+      if command -v "$tool" >/dev/null 2>&1; then
+        echo "OK: ${tool} -> $(command -v ${tool})" >> docker_probe_report.txt
+        (${tool} --version || ${tool} -version || ${tool} -V || ${tool} -h || true) >> docker_probe_report.txt 2>&1
+      else
+        echo "MISSING: ${tool}" >> docker_probe_report.txt
+      fi
+      echo "" >> docker_probe_report.txt
+    done < tools.list
+
+    if [ -n "" ]; then
+      echo "EXTRA_CMD:" >> docker_probe_report.txt
+      bash -lc "" >> docker_probe_report.txt 2>&1
+      echo "EXTRA_CMD_RC=$?" >> docker_probe_report.txt
+    fi
+
+    echo "DONE" >> docker_probe_report.txt
+    exit 0`
+2026-02-05 22:31:31 cromwell-system-akka.dispatchers.backend-dispatcher-96 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(db039fa4)DiagnosticDockerProbeSafeFirst.WriteUnsupportedReport:0:1]: `set +e
+echo "image=${docker_image}" > docker_probe_report.txt
+echo "status=skipped" >> docker_probe_report.txt
+echo "reason=${reason}" >> docker_probe_report.txt
+echo "note=Probe not run for this image." >> docker_probe_report.txt
+exit 0`
+2026-02-05 22:31:31 cromwell-system-akka.dispatchers.backend-dispatcher-73 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(db039fa4)DiagnosticDockerProbeSafeFirst.WriteUnsupportedReport:1:1]: `set +e
+echo "image=${docker_image}" > docker_probe_report.txt
+echo "status=skipped" >> docker_probe_report.txt
+echo "reason=${reason}" >> docker_probe_report.txt
+echo "note=Probe not run for this image." >> docker_probe_report.txt
+exit 0`
+2026-02-05 22:31:31 cromwell-system-akka.dispatchers.backend-dispatcher-73 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(db039fa4)DiagnosticDockerProbeSafeFirst.ProbeDockerToolsSafe:2:1]: `    # Probe tools inside the target image. Always exit 0 and write a report.
+    set +e
+
+    echo "image=${docker_image}" > docker_probe_report.txt
+    echo "date_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ 2>/dev/null)" >> docker_probe_report.txt
+    echo "whoami=$(whoami 2>/dev/null)" >> docker_probe_report.txt
+    echo "uname=$(uname -a 2>/dev/null)" >> docker_probe_report.txt
+    echo "PATH=${PATH}" >> docker_probe_report.txt
+    echo "" >> docker_probe_report.txt
+
+    cat > tools.list <<'TOOLS'
+    bcftools
+samtools
+gatk
+java
+python
+python3
+R
+bgzip
+tabix
+bedGraphToBigWig
+awk
+sed
+bash
+TOOLS
+
+    while IFS= read -r tool; do
+      if [ -z "$tool" ]; then
+        continue
+      fi
+      if command -v "$tool" >/dev/null 2>&1; then
+        echo "OK: ${tool} -> $(command -v ${tool})" >> docker_probe_report.txt
+        (${tool} --version || ${tool} -version || ${tool} -V || ${tool} -h || true) >> docker_probe_report.txt 2>&1
+      else
+        echo "MISSING: ${tool}" >> docker_probe_report.txt
+      fi
+      echo "" >> docker_probe_report.txt
+    done < tools.list
+
+    if [ -n "" ]; then
+      echo "EXTRA_CMD:" >> docker_probe_report.txt
+      bash -lc "" >> docker_probe_report.txt 2>&1
+      echo "EXTRA_CMD_RC=$?" >> docker_probe_report.txt
+    fi
+
+    echo "DONE" >> docker_probe_report.txt
+    exit 0`
+2026-02-05 22:31:31 cromwell-system-akka.dispatchers.backend-dispatcher-95 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(db039fa4)DiagnosticDockerProbeSafeFirst.ProbeDockerToolsSafe:0:1]: Asking singleton actor to submit a job: job-db039fa4-diagnosticdockerprobesafefirstprobedo-0-1-61113bc2
+2026-02-05 22:31:31 cromwell-system-akka.dispatchers.backend-dispatcher-73 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(db039fa4)DiagnosticDockerProbeSafeFirst.ProbeDockerToolsSafe:3:1]: Asking singleton actor to submit a job: job-db039fa4-diagnosticdockerprobesafefirstprobedo-3-1-5fe8256f
+2026-02-05 22:31:31 cromwell-system-akka.dispatchers.backend-dispatcher-73 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(db039fa4)DiagnosticDockerProbeSafeFirst.ProbeDockerToolsSafe:1:1]: Asking singleton actor to submit a job: job-db039fa4-diagnosticdockerprobesafefirstprobedo-1-1-f3ba9e74
+2026-02-05 22:31:31 cromwell-system-akka.dispatchers.backend-dispatcher-73 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(db039fa4)DiagnosticDockerProbeSafeFirst.WriteUnsupportedReport:0:1]: Asking singleton actor to submit a job: job-db039fa4-diagnosticdockerprobesafefirstwriteun-0-1-21a7c215
+2026-02-05 22:31:31 cromwell-system-akka.dispatchers.backend-dispatcher-95 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(db039fa4)DiagnosticDockerProbeSafeFirst.WriteUnsupportedReport:1:1]: Asking singleton actor to submit a job: job-db039fa4-diagnosticdockerprobesafefirstwriteun-1-1-2abb799c
+2026-02-05 22:31:31 cromwell-system-akka.dispatchers.backend-dispatcher-100 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(db039fa4)DiagnosticDockerProbeSafeFirst.ProbeDockerToolsSafe:2:1]: Asking singleton actor to submit a job: job-db039fa4-diagnosticdockerprobesafefirstprobedo-2-1-b8997729
+2026-02-05 22:31:33 cromwell-system-akka.dispatchers.backend-dispatcher-95 INFO  - Run operation succeeded projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-db039fa4-diagnosticdockerprobesafefirstprobedo-2-1-b8997729
+2026-02-05 22:31:33 cromwell-system-akka.dispatchers.backend-dispatcher-105 INFO  - Run operation succeeded projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-db039fa4-diagnosticdockerprobesafefirstwriteun-1-1-2abb799c
+2026-02-05 22:31:33 cromwell-system-akka.dispatchers.backend-dispatcher-95 INFO  - A job was submitted successfully: projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-db039fa4-diagnosticdockerprobesafefirstprobedo-2-1-b8997729
+2026-02-05 22:31:33 cromwell-system-akka.dispatchers.backend-dispatcher-105 INFO  - A job was submitted successfully: projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-db039fa4-diagnosticdockerprobesafefirstwriteun-1-1-2abb799c
+2026-02-05 22:31:33 cromwell-system-akka.dispatchers.backend-dispatcher-100 INFO  - Run operation succeeded projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-db039fa4-diagnosticdockerprobesafefirstprobedo-0-1-61113bc2
+2026-02-05 22:31:33 cromwell-system-akka.dispatchers.backend-dispatcher-100 INFO  - A job was submitted successfully: projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-db039fa4-diagnosticdockerprobesafefirstprobedo-0-1-61113bc2
+2026-02-05 22:31:33 cromwell-system-akka.dispatchers.backend-dispatcher-94 INFO  - Run operation succeeded projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-db039fa4-diagnosticdockerprobesafefirstprobedo-3-1-5fe8256f
+2026-02-05 22:31:33 cromwell-system-akka.dispatchers.backend-dispatcher-94 INFO  - A job was submitted successfully: projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-db039fa4-diagnosticdockerprobesafefirstprobedo-3-1-5fe8256f
+2026-02-05 22:31:33 cromwell-system-akka.dispatchers.backend-dispatcher-72 INFO  - Run operation succeeded projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-db039fa4-diagnosticdockerprobesafefirstprobedo-1-1-f3ba9e74
+2026-02-05 22:31:33 cromwell-system-akka.dispatchers.backend-dispatcher-95 INFO  - A job was submitted successfully: projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-db039fa4-diagnosticdockerprobesafefirstprobedo-1-1-f3ba9e74
+2026-02-05 22:31:33 cromwell-system-akka.dispatchers.backend-dispatcher-110 INFO  - Run operation succeeded projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-db039fa4-diagnosticdockerprobesafefirstwriteun-0-1-21a7c215
+2026-02-05 22:31:33 cromwell-system-akka.dispatchers.backend-dispatcher-95 INFO  - A job was submitted successfully: projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-db039fa4-diagnosticdockerprobesafefirstwriteun-0-1-21a7c215
+2026-02-05 22:31:37 cromwell-system-akka.dispatchers.backend-dispatcher-110 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(db039fa4)DiagnosticDockerProbeSafeFirst.ProbeDockerToolsSafe:0:1]: job id: projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-db039fa4-diagnosticdockerprobesafefirstprobedo-0-1-61113bc2
+2026-02-05 22:31:37 cromwell-system-akka.dispatchers.backend-dispatcher-100 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(db039fa4)DiagnosticDockerProbeSafeFirst.ProbeDockerToolsSafe:3:1]: job id: projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-db039fa4-diagnosticdockerprobesafefirstprobedo-3-1-5fe8256f
+2026-02-05 22:31:37 cromwell-system-akka.dispatchers.backend-dispatcher-73 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(db039fa4)DiagnosticDockerProbeSafeFirst.ProbeDockerToolsSafe:1:1]: job id: projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-db039fa4-diagnosticdockerprobesafefirstprobedo-1-1-f3ba9e74
+2026-02-05 22:31:37 cromwell-system-akka.dispatchers.backend-dispatcher-102 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(db039fa4)DiagnosticDockerProbeSafeFirst.ProbeDockerToolsSafe:2:1]: job id: projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-db039fa4-diagnosticdockerprobesafefirstprobedo-2-1-b8997729
+2026-02-05 22:31:37 cromwell-system-akka.dispatchers.backend-dispatcher-78 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(db039fa4)DiagnosticDockerProbeSafeFirst.WriteUnsupportedReport:1:1]: job id: projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-db039fa4-diagnosticdockerprobesafefirstwriteun-1-1-2abb799c
+2026-02-05 22:31:37 cromwell-system-akka.dispatchers.backend-dispatcher-94 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(db039fa4)DiagnosticDockerProbeSafeFirst.WriteUnsupportedReport:0:1]: job id: projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-db039fa4-diagnosticdockerprobesafefirstwriteun-0-1-21a7c215
+2026-02-05 22:31:39 cromwell-system-akka.dispatchers.backend-dispatcher-72 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(db039fa4)DiagnosticDockerProbeSafeFirst.WriteUnsupportedReport:0:1]: Status change from - to Initializing
+2026-02-05 22:31:39 cromwell-system-akka.dispatchers.backend-dispatcher-112 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(db039fa4)DiagnosticDockerProbeSafeFirst.WriteUnsupportedReport:1:1]: Status change from - to Initializing
+2026-02-05 22:31:39 cromwell-system-akka.dispatchers.backend-dispatcher-102 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(db039fa4)DiagnosticDockerProbeSafeFirst.ProbeDockerToolsSafe:0:1]: Status change from - to Initializing
+2026-02-05 22:31:39 cromwell-system-akka.dispatchers.backend-dispatcher-102 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(db039fa4)DiagnosticDockerProbeSafeFirst.ProbeDockerToolsSafe:1:1]: Status change from - to Initializing
+2026-02-05 22:31:39 cromwell-system-akka.dispatchers.backend-dispatcher-78 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(db039fa4)DiagnosticDockerProbeSafeFirst.ProbeDockerToolsSafe:2:1]: Status change from - to Initializing
+2026-02-05 22:31:39 cromwell-system-akka.dispatchers.backend-dispatcher-94 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(db039fa4)DiagnosticDockerProbeSafeFirst.ProbeDockerToolsSafe:3:1]: Status change from - to Initializing
+2026-02-05 22:33:51 cromwell-system-akka.dispatchers.backend-dispatcher-118 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(db039fa4)DiagnosticDockerProbeSafeFirst.ProbeDockerToolsSafe:1:1]: Status change from Initializing to Running
+2026-02-05 22:33:54 cromwell-system-akka.dispatchers.backend-dispatcher-118 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(db039fa4)DiagnosticDockerProbeSafeFirst.WriteUnsupportedReport:0:1]: Status change from Initializing to Running
+2026-02-05 22:33:54 cromwell-system-akka.dispatchers.backend-dispatcher-122 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(db039fa4)DiagnosticDockerProbeSafeFirst.WriteUnsupportedReport:1:1]: Status change from Initializing to Running
+2026-02-05 22:34:31 cromwell-system-akka.dispatchers.backend-dispatcher-124 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(db039fa4)DiagnosticDockerProbeSafeFirst.ProbeDockerToolsSafe:1:1]: Status change from Running to Success
+2026-02-05 22:34:38 cromwell-system-akka.dispatchers.backend-dispatcher-73 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(db039fa4)DiagnosticDockerProbeSafeFirst.WriteUnsupportedReport:1:1]: Status change from Running to Success
+2026-02-05 22:34:42 cromwell-system-akka.dispatchers.backend-dispatcher-115 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(db039fa4)DiagnosticDockerProbeSafeFirst.ProbeDockerToolsSafe:3:1]: Status change from Initializing to Running
+2026-02-05 22:34:52 cromwell-system-akka.dispatchers.backend-dispatcher-110 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(db039fa4)DiagnosticDockerProbeSafeFirst.ProbeDockerToolsSafe:0:1]: Status change from Initializing to Success
+2026-02-05 22:35:08 cromwell-system-akka.dispatchers.backend-dispatcher-125 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(db039fa4)DiagnosticDockerProbeSafeFirst.WriteUnsupportedReport:0:1]: Status change from Running to Success
+2026-02-05 22:35:22 cromwell-system-akka.dispatchers.backend-dispatcher-72 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(db039fa4)DiagnosticDockerProbeSafeFirst.ProbeDockerToolsSafe:3:1]: Status change from Running to Success
+2026-02-05 22:35:29 cromwell-system-akka.dispatchers.backend-dispatcher-117 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(db039fa4)DiagnosticDockerProbeSafeFirst.ProbeDockerToolsSafe:2:1]: Status change from Initializing to Running
+2026-02-05 22:36:22 cromwell-system-akka.dispatchers.backend-dispatcher-124 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(db039fa4)DiagnosticDockerProbeSafeFirst.ProbeDockerToolsSafe:2:1]: Status change from Running to Success
+2026-02-05 22:36:31 cromwell-system-akka.dispatchers.engine-dispatcher-12 INFO  - WorkflowExecutionActor-db039fa4-1622-4a87-ac08-5b9e54847d1e [UUID(db039fa4)]: Workflow DiagnosticDockerProbeSafeFirst complete. Final Outputs:
+{
+  "DiagnosticDockerProbeSafeFirst.safe_reports": ["gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/workflows/cromwell-executions/DiagnosticDockerProbeSafeFirst/db039fa4-1622-4a87-ac08-5b9e54847d1e/call-ProbeDockerToolsSafe/shard-0/docker_probe_report.txt", "gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/workflows/cromwell-executions/DiagnosticDockerProbeSafeFirst/db039fa4-1622-4a87-ac08-5b9e54847d1e/call-ProbeDockerToolsSafe/shard-1/docker_probe_report.txt", "gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/workflows/cromwell-executions/DiagnosticDockerProbeSafeFirst/db039fa4-1622-4a87-ac08-5b9e54847d1e/call-ProbeDockerToolsSafe/shard-2/docker_probe_report.txt", "gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/workflows/cromwell-executions/DiagnosticDockerProbeSafeFirst/db039fa4-1622-4a87-ac08-5b9e54847d1e/call-ProbeDockerToolsSafe/shard-3/docker_probe_report.txt"],
+  "DiagnosticDockerProbeSafeFirst.skipped_reports": ["gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/workflows/cromwell-executions/DiagnosticDockerProbeSafeFirst/db039fa4-1622-4a87-ac08-5b9e54847d1e/call-WriteUnsupportedReport/shard-0/docker_probe_report.txt", "gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/workflows/cromwell-executions/DiagnosticDockerProbeSafeFirst/db039fa4-1622-4a87-ac08-5b9e54847d1e/call-WriteUnsupportedReport/shard-1/docker_probe_report.txt"]
+}
+2026-02-05 22:36:32 cromwell-system-akka.dispatchers.engine-dispatcher-12 INFO  - WorkflowManagerActor: Workflow actor for db039fa4-1622-4a87-ac08-5b9e54847d1e completed with status 'Succeeded'. The workflow will be removed from the workflow store.

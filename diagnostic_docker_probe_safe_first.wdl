@@ -42,7 +42,7 @@ task ProbeDockerToolsSafe {
     # Probe tools inside the target image. Always exit 0 and write a report.
     set +e
 
-    echo "image=${docker_image}" > docker_probe_report.txt
+    echo "image=~{docker_image}" > docker_probe_report.txt
     echo "date_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ 2>/dev/null)" >> docker_probe_report.txt
     echo "whoami=$(whoami 2>/dev/null)" >> docker_probe_report.txt
     echo "uname=$(uname -a 2>/dev/null)" >> docker_probe_report.txt
@@ -96,9 +96,9 @@ task WriteUnsupportedReport {
 
   command <<<
     set +e
-    echo "image=${docker_image}" > docker_probe_report.txt
+    echo "image=~{docker_image}" > docker_probe_report.txt
     echo "status=skipped" >> docker_probe_report.txt
-    echo "reason=${reason}" >> docker_probe_report.txt
+    echo "reason=~{reason}" >> docker_probe_report.txt
     echo "note=Probe not run for this image." >> docker_probe_report.txt
     exit 0
   >>>

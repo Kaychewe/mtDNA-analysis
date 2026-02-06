@@ -1,5 +1,0 @@
-#define HTS_CC "gcc"
-#define HTS_CPPFLAGS "-I/home/jupyter/workspaces/mtdnaheteroplasmyandaginganalysis/mtDNA-analysis/zlib_build/include -I/home/jupyter/workspaces/mtdnaheteroplasmyandaginganalysis/mtDNA-analysis/bzip2_build/include"
-#define HTS_CFLAGS "-g -Wall -O2 -fvisibility=hidden"
-#define HTS_LDFLAGS "-L/home/jupyter/workspaces/mtdnaheteroplasmyandaginganalysis/mtDNA-analysis/zlib_build/lib -L/home/jupyter/workspaces/mtdnaheteroplasmyandaginganalysis/mtDNA-analysis/bzip2_build/lib"
-#define HTS_LIBS "/home/jupyter/workspaces/mtdnaheteroplasmyandaginganalysis/mtDNA-analysis/zlib_build/lib/libz.a /home/jupyter/workspaces/mtdnaheteroplasmyandaginganalysis/mtDNA-analysis/bzip2_build/lib/libbz2.a -llzma -lm"

@@ -31,15 +31,14 @@ make -j "$(nproc)" HTSDIR=htslib
 make install prefix="$PREFIX_DIR"
 
 cd "$PREFIX_DIR"
-# Bundle bin + lib to keep it runnable when staged
-# bcftools needs htslib shared libs from lib/
-# Include bcftools, bgzip, tabix
+# Bundle bin and libexec (plugins). htslib was built static into bcftools.
+# Include bcftools and helper scripts in bin.
 if [ ! -x bin/bcftools ]; then
   echo "bcftools build failed: missing bin/bcftools"
   exit 1
 fi
 
-tar -czf "$OUT_TARBALL" bin lib
+tar -czf "$OUT_TARBALL" bin libexec
 
 # Smoke test
 ./bin/bcftools --version | head -n 2

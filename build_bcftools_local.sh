@@ -2,18 +2,17 @@
 set -e
 
 # Build bcftools locally in workspace and package a self-contained tarball
-# Usage: ./build_bcftools_local.sh [version]
+# Usage: ./build_bcftools_local.sh
 
-VERSION=${1:-1.23}
-TARBALL="bcftools-${VERSION}.tar.bz2"
-SRC_DIR="bcftools-${VERSION}"
+VERSION=1.23
+TARBALL_URL="https://github.com/samtools/bcftools/releases/download/1.23/bcftools-1.23.tar.bz2"
+TARBALL="bcftools-1.23.tar.bz2"
+SRC_DIR="bcftools-1.23"
 PREFIX_DIR="$PWD/bcftools_build"
 OUT_TARBALL="bcftools-${VERSION}-linux-x86_64.tar.gz"
 
-if [ ! -f "$TARBALL" ]; then
-  echo "Missing $TARBALL in current directory. Download it first."
-  exit 1
-fi
+rm -f "$TARBALL"
+curl -L -o "$TARBALL" "$TARBALL_URL"
 
 rm -rf "$SRC_DIR" "$PREFIX_DIR" "$OUT_TARBALL"
 mkdir -p "$PREFIX_DIR"

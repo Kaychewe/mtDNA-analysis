@@ -23,6 +23,7 @@ PREFIX_DIR="$PWD/bcftools_build"
 ZLIB_PREFIX="$PWD/zlib_build"
 BZIP2_PREFIX="$PWD/bzip2_build"
 OUT_TARBALL="bcftools-${VERSION}-linux-x86_64.tar.gz"
+MAKE_JOBS="${MAKE_JOBS:-2}"
 
 rm -f "$TARBALL" "$HTSLIB_TARBALL" "$ZLIB_TARBALL" "$BZIP2_TARBALL"
 curl -L -o "$TARBALL" "$TARBALL_URL"
@@ -44,13 +45,13 @@ cd "$SRC_DIR"
 # Build zlib locally to avoid system zlib-dev dependency
 cd "$ROOT_DIR/$ZLIB_SRC"
 CFLAGS="-fPIC -O3" ./configure --prefix="$ZLIB_PREFIX" --static
-make -j "$(nproc)"
+make -j "$MAKE_JOBS"
 make install
 cd "$ROOT_DIR/$SRC_DIR"
 
 # Build bzip2 locally to avoid system libbz2-dev dependency
 cd "$ROOT_DIR/$BZIP2_SRC"
-make -j "$(nproc)" CFLAGS="-fPIC -O2 -g -D_FILE_OFFSET_BITS=64"
+make -j "$MAKE_JOBS" CFLAGS="-fPIC -O2 -g -D_FILE_OFFSET_BITS=64"
 make install PREFIX="$BZIP2_PREFIX"
 cd "$ROOT_DIR/$SRC_DIR"
 
@@ -66,11 +67,11 @@ MAKE_LIBS="$LIBS"
 # Build htslib without libcurl and libdeflate to avoid runtime deps in Batch
 cd htslib
 ./configure --disable-libcurl --without-libdeflate
-make -j "$(nproc)" CPPFLAGS="$MAKE_CPPFLAGS" LDFLAGS="$MAKE_LDFLAGS" LIBS="$MAKE_LIBS"
+make -j "$MAKE_JOBS" CPPFLAGS="$MAKE_CPPFLAGS" LDFLAGS="$MAKE_LDFLAGS" LIBS="$MAKE_LIBS"
 cd ..
 
 # Build bcftools against bundled htslib
-make -j "$(nproc)" HTSDIR=htslib CPPFLAGS="$MAKE_CPPFLAGS" LDFLAGS="$MAKE_LDFLAGS" LIBS="$MAKE_LIBS"
+make -j "$MAKE_JOBS" HTSDIR=htslib CPPFLAGS="$MAKE_CPPFLAGS" LDFLAGS="$MAKE_LDFLAGS" LIBS="$MAKE_LIBS"
 make install prefix="$PREFIX_DIR" CPPFLAGS="$MAKE_CPPFLAGS" LDFLAGS="$MAKE_LDFLAGS" LIBS="$MAKE_LIBS"
 
 cd "$PREFIX_DIR"

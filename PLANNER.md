@@ -226,7 +226,8 @@ Key finding:
 - Cromwell 91 restarted successfully; batch backend online.
 - Local bcftools bundle rebuilt with `bin/bcftools`, `bin/bgzip`, `bin/tabix` packaged (`bcftools_build/bcftools-1.23-linux-x86_64.tar.gz`).
 - Bundle uploaded to `gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/tools/bcftools/bcftools-1.23-linux-x86_64.tar.gz`.
-- Submitted bcftools binary test workflow: `f5a7fa42-fab8-4abd-9031-dfd9685013de` (awaiting report/validation).
+- Submitted bcftools binary test workflows: `f5a7fa42-fab8-4abd-9031-dfd9685013de`, `84b12760-ccac-4b31-90df-02e75ad5b904`.
+- Latest report (`84b12760-ccac-4b31-90df-02e75ad5b904`) succeeded: `bcftools`, `bgzip`, `tabix` run correctly using bundled `lib/` via `LD_LIBRARY_PATH`.
 
 ## Progress Log
 

@@ -37,9 +37,9 @@ make -j "$(nproc)" HTSDIR=htslib
 make install prefix="$PREFIX_DIR"
 
 cd "$PREFIX_DIR"
-# Also include bgzip/tabix from htslib build
-cp htslib/bgzip "$PREFIX_DIR/bin/"
-cp htslib/tabix "$PREFIX_DIR/bin/"
+# Also include bgzip/tabix from htslib build (source tree)
+cp "$SRC_DIR/htslib/bgzip" "$PREFIX_DIR/bin/"
+cp "$SRC_DIR/htslib/tabix" "$PREFIX_DIR/bin/"
 
 # Bundle bin and libexec (plugins). htslib built without libcurl.
 # Include bcftools and helper scripts in bin.

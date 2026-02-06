@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -e
-# version 1.0
+# version 1.0 gsutil ls gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/tools/bcftools/
 # Build bcftools locally in workspace and package a self-contained tarball
 # Usage: ./build_bcftools_local.sh
 

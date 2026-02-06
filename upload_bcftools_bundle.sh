@@ -25,6 +25,9 @@ for tool in bcftools bgzip tabix; do
     exit 1
   fi
 done
+if [ ! -d "$tmp_dir/lib" ]; then
+  echo "Warning: bundle has no lib/ directory (ok for fully static builds)."
+fi
 rm -rf "$tmp_dir"
 
 DEST="${BUCKET%/}/${DEST_SUBDIR}/"

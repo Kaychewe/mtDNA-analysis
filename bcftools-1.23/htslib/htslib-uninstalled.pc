@@ -1,0 +1,15 @@
+includedir=/mnt/f/research_drive/mtdna/leelab/mtDNA-analysis/bcftools-1.23/htslib
+libdir=/mnt/f/research_drive/mtdna/leelab/mtDNA-analysis/bcftools-1.23/htslib
+
+# Flags and libraries needed when linking against a static libhts.a
+# (used by manual and semi-manual pkg-config(1)-style enquiries).
+static_ldflags=-L/mnt/f/research_drive/mtdna/leelab/mtDNA-analysis/zlib_build/lib -L/mnt/f/research_drive/mtdna/leelab/mtDNA-analysis/bzip2_build/lib
+static_libs=-lpthread -lz -lm -lbz2 -llzma
+
+Name: htslib
+Description: C library for high-throughput sequencing data formats
+Version: @-PACKAGE_VERSION@
+Cflags: -I${includedir}
+Libs: -L${libdir} -lhts
+Libs.private: -L${libdir} -L/mnt/f/research_drive/mtdna/leelab/mtDNA-analysis/zlib_build/lib -L/mnt/f/research_drive/mtdna/leelab/mtDNA-analysis/bzip2_build/lib -lbz2 -lm -lpthread
+Requires.private: zlib  liblzma

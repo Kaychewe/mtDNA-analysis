@@ -1,0 +1,5 @@
+#define HTS_CC "gcc"
+#define HTS_CPPFLAGS "-I/mnt/f/research_drive/mtdna/leelab/mtDNA-analysis/zlib_build/include -I/mnt/f/research_drive/mtdna/leelab/mtDNA-analysis/bzip2_build/include"
+#define HTS_CFLAGS "-g -Wall -O2 -fvisibility=hidden"
+#define HTS_LDFLAGS "-L/mnt/f/research_drive/mtdna/leelab/mtDNA-analysis/zlib_build/lib -L/mnt/f/research_drive/mtdna/leelab/mtDNA-analysis/bzip2_build/lib"
+#define HTS_LIBS "/mnt/f/research_drive/mtdna/leelab/mtDNA-analysis/zlib_build/lib/libz.a /mnt/f/research_drive/mtdna/leelab/mtDNA-analysis/bzip2_build/lib/libbz2.a -llzma -lm"

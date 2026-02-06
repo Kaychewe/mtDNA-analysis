@@ -37,6 +37,12 @@ load_env() {
   fi
   STAGE01_WDL="${STAGE01_WDL:-${PROJECT_ROOT}/stage01_subset_bam.wdl}"
   STAGE01_JSON="${STAGE01_JSON:-${PROJECT_ROOT}/stage01_subset_bam.json}"
+  if [ ! -f "${STAGE01_WDL}" ]; then
+    STAGE01_WDL="${PROJECT_ROOT}/stage01_subset_bam.wdl"
+  fi
+  if [ ! -f "${STAGE01_JSON}" ]; then
+    STAGE01_JSON="${PROJECT_ROOT}/stage01_subset_bam.json"
+  fi
   WDL_DEPS_ZIP="${WDL_DEPS_ZIP:-${PROJECT_ROOT}/wdl_deps.zip}"
   WDL_DEPS_SRC="${WDL_DEPS_SRC:-${PROJECT_ROOT}/mtSwirl/WDL/v2.5_MongoSwirl_Single}"
   if [ ! -d "${WDL_DEPS_SRC}" ]; then

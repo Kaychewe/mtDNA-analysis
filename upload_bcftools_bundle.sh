@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-BUNDLE="bcftools-1.23-linux-x86_64.tar.gz"
+BUNDLE="./bcftools_build/bcftools-1.23-linux-x86_64.tar.gz"
 BUCKET="${WORKSPACE_BUCKET:-}"
 DEST_SUBDIR="tools/bcftools"
 

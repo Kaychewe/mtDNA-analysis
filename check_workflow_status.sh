@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 output_fold="mtDNA_v25_pilot_5"
-success_file_pref="mtDNA_v25_pilot_5_prog_21.39.15"
+success_file_pref="mtDNA_v25_pilot_5_prog_21.31.47"
 if [ ! -s "ordered_batch_ids.txt" ]; then
   echo "ERROR: ordered_batch_ids.txt is missing or empty. Run cromwell_submission_script_batch.sh first."
   exit 1

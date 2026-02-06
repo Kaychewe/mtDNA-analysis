@@ -6,18 +6,24 @@ set -e
 
 VERSION=1.23
 TARBALL_URL="https://github.com/samtools/bcftools/releases/download/1.23/bcftools-1.23.tar.bz2"
+HTSLIB_URL="https://github.com/samtools/htslib/releases/download/1.23/htslib-1.23.tar.bz2"
 TARBALL="bcftools-1.23.tar.bz2"
+HTSLIB_TARBALL="htslib-1.23.tar.bz2"
 SRC_DIR="bcftools-1.23"
 PREFIX_DIR="$PWD/bcftools_build"
 OUT_TARBALL="bcftools-${VERSION}-linux-x86_64.tar.gz"
 
-rm -f "$TARBALL"
+rm -f "$TARBALL" "$HTSLIB_TARBALL"
 curl -L -o "$TARBALL" "$TARBALL_URL"
+curl -L -o "$HTSLIB_TARBALL" "$HTSLIB_URL"
 
 rm -rf "$SRC_DIR" "$PREFIX_DIR" "$OUT_TARBALL"
 mkdir -p "$PREFIX_DIR"
 
 tar -xjf "$TARBALL"
+tar -xjf "$HTSLIB_TARBALL"
+rm -rf "$SRC_DIR/htslib"
+mv htslib-1.23 "$SRC_DIR/htslib"
 cd "$SRC_DIR"
 
 # Build with bundled htslib to avoid external dependency mismatch

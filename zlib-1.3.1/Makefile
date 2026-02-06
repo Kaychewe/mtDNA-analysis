@@ -41,7 +41,7 @@ TAR=tar
 SHELL=/bin/sh
 EXE=
 
-prefix =/mnt/f/research_drive/mtdna/leelab/mtDNA-analysis/zlib_build
+prefix =/home/jupyter/workspaces/mtdnaheteroplasmyandaginganalysis/mtDNA-analysis/zlib_build
 exec_prefix =${prefix}
 libdir =${exec_prefix}/lib
 sharedlibdir =${libdir}

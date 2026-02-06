@@ -6255,3 +6255,60 @@ exit 0`
   "DiagnosticBcftoolsBinaryTest.report": "gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/workflows/cromwell-executions/DiagnosticBcftoolsBinaryTest/f5a7fa42-fab8-4abd-9031-dfd9685013de/call-TestBcftoolsBundle/report.txt"
 }
 2026-02-06 21:35:02 cromwell-system-akka.dispatchers.engine-dispatcher-26 INFO  - WorkflowManagerActor: Workflow actor for f5a7fa42-fab8-4abd-9031-dfd9685013de completed with status 'Succeeded'. The workflow will be removed from the workflow store.
+2026-02-06 22:32:34 cromwell-system-akka.dispatchers.api-dispatcher-58 INFO  - Unspecified type (Unspecified version) workflow 84b12760-ccac-4b31-90df-02e75ad5b904 submitted
+2026-02-06 22:32:34 cromwell-system-akka.dispatchers.engine-dispatcher-30 INFO  - 1 new workflows fetched by cromid-189f51b: 84b12760-ccac-4b31-90df-02e75ad5b904
+2026-02-06 22:32:34 cromwell-system-akka.dispatchers.engine-dispatcher-30 INFO  - WorkflowManagerActor: Starting workflow UUID(84b12760-ccac-4b31-90df-02e75ad5b904)
+2026-02-06 22:32:34 cromwell-system-akka.dispatchers.engine-dispatcher-30 INFO  - WorkflowManagerActor: Successfully started WorkflowActor-84b12760-ccac-4b31-90df-02e75ad5b904
+2026-02-06 22:32:34 cromwell-system-akka.dispatchers.engine-dispatcher-30 INFO  - Retrieved 1 workflows from the WorkflowStoreActor
+2026-02-06 22:32:34 cromwell-system-akka.dispatchers.engine-dispatcher-27 INFO  - MaterializeWorkflowDescriptorActor [UUID(84b12760)]: Parsing workflow as WDL 1.0
+2026-02-06 22:32:34 cromwell-system-akka.dispatchers.engine-dispatcher-27 INFO  - MaterializeWorkflowDescriptorActor [UUID(84b12760)]: Call-to-Backend assignments: DiagnosticBcftoolsBinaryTest.TestBcftoolsBundle -> GCPBATCH
+2026-02-06 22:32:36 cromwell-system-akka.dispatchers.engine-dispatcher-6 INFO  - WorkflowExecutionActor-84b12760-ccac-4b31-90df-02e75ad5b904 [UUID(84b12760)]: Starting DiagnosticBcftoolsBinaryTest.TestBcftoolsBundle
+2026-02-06 22:32:38 cromwell-system-akka.dispatchers.engine-dispatcher-25 INFO  - Assigned new job execution tokens to the following groups: 84b12760: 1
+2026-02-06 22:32:38 cromwell-system-akka.dispatchers.backend-dispatcher-65 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(84b12760)DiagnosticBcftoolsBinaryTest.TestBcftoolsBundle:NA:1]: `set +e
+
+echo "bundle=/mnt/disks/cromwell_root/fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/tools/bcftools/bcftools-1.23-linux-x86_64.tar.gz" > report.txt
+echo "date_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ 2>/dev/null)" >> report.txt
+
+mkdir -p bcftools_bundle
+tar -xzf "/mnt/disks/cromwell_root/fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/tools/bcftools/bcftools-1.23-linux-x86_64.tar.gz" -C bcftools_bundle >> report.txt 2>&1
+
+echo "bundle_contents:" >> report.txt
+ls -la bcftools_bundle >> report.txt 2>&1
+ls -la bcftools_bundle/bin >> report.txt 2>&1
+ls -la bcftools_bundle/libexec >> report.txt 2>&1
+
+export PATH="$PWD/bcftools_bundle/bin:$PATH"
+export LD_LIBRARY_PATH="$PWD/bcftools_bundle/lib:${LD_LIBRARY_PATH:-}"
+
+echo "which_bcftools:" >> report.txt
+which bcftools >> report.txt 2>&1
+echo "bcftools_version:" >> report.txt
+bcftools --version >> report.txt 2>&1
+
+echo "ldd_bcftools:" >> report.txt
+ldd "$PWD/bcftools_bundle/bin/bcftools" >> report.txt 2>&1
+
+echo "which_bgzip:" >> report.txt
+which bgzip >> report.txt 2>&1
+echo "bgzip_version:" >> report.txt
+bgzip --version >> report.txt 2>&1
+
+echo "which_tabix:" >> report.txt
+which tabix >> report.txt 2>&1
+echo "tabix_version:" >> report.txt
+tabix --version >> report.txt 2>&1
+
+echo "test_status=done" >> report.txt
+exit 0`
+2026-02-06 22:32:39 cromwell-system-akka.dispatchers.backend-dispatcher-65 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(84b12760)DiagnosticBcftoolsBinaryTest.TestBcftoolsBundle:NA:1]: Asking singleton actor to submit a job: job-84b12760-diagnosticbcftoolsbinarytesttestbcftool-1-cb18cc93
+2026-02-06 22:32:41 cromwell-system-akka.dispatchers.backend-dispatcher-67 INFO  - Run operation succeeded projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-84b12760-diagnosticbcftoolsbinarytesttestbcftool-1-cb18cc93
+2026-02-06 22:32:41 cromwell-system-akka.dispatchers.backend-dispatcher-67 INFO  - A job was submitted successfully: projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-84b12760-diagnosticbcftoolsbinarytesttestbcftool-1-cb18cc93
+2026-02-06 22:32:42 cromwell-system-akka.dispatchers.backend-dispatcher-39 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(84b12760)DiagnosticBcftoolsBinaryTest.TestBcftoolsBundle:NA:1]: job id: projects/terra-vpc-sc-17dda7e1/locations/us-central1/jobs/job-84b12760-diagnosticbcftoolsbinarytesttestbcftool-1-cb18cc93
+2026-02-06 22:32:44 cromwell-system-akka.dispatchers.backend-dispatcher-54 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(84b12760)DiagnosticBcftoolsBinaryTest.TestBcftoolsBundle:NA:1]: Status change from - to Initializing
+2026-02-06 22:34:50 cromwell-system-akka.dispatchers.backend-dispatcher-61 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(84b12760)DiagnosticBcftoolsBinaryTest.TestBcftoolsBundle:NA:1]: Status change from Initializing to Running
+2026-02-06 22:35:23 cromwell-system-akka.dispatchers.backend-dispatcher-39 INFO  - GcpBatchAsyncBackendJobExecutionActor [UUID(84b12760)DiagnosticBcftoolsBinaryTest.TestBcftoolsBundle:NA:1]: Status change from Running to Success
+2026-02-06 22:35:30 cromwell-system-akka.dispatchers.engine-dispatcher-30 INFO  - WorkflowExecutionActor-84b12760-ccac-4b31-90df-02e75ad5b904 [UUID(84b12760)]: Workflow DiagnosticBcftoolsBinaryTest complete. Final Outputs:
+{
+  "DiagnosticBcftoolsBinaryTest.report": "gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/workflows/cromwell-executions/DiagnosticBcftoolsBinaryTest/84b12760-ccac-4b31-90df-02e75ad5b904/call-TestBcftoolsBundle/report.txt"
+}
+2026-02-06 22:35:32 cromwell-system-akka.dispatchers.engine-dispatcher-23 INFO  - WorkflowManagerActor: Workflow actor for 84b12760-ccac-4b31-90df-02e75ad5b904 completed with status 'Succeeded'. The workflow will be removed from the workflow store.

@@ -1,61 +1,61 @@
 --------------------
-./configure --prefix=/mnt/f/research_drive/mtdna/leelab/mtDNA-analysis/zlib_build --static
-Fri Feb  6 17:07:25 EST 2026
+./configure --prefix=/home/jupyter/workspaces/mtdnaheteroplasmyandaginganalysis/mtDNA-analysis/zlib_build --static
+Fri Feb  6 10:25:33 PM UTC 2026
 Checking for gcc...
-=== ztest1873838.c ===
+=== ztest15780.c ===
 extern int getchar();
 int hello() {return getchar();}
 ===
-gcc -c ztest1873838.c
+gcc -c ztest15780.c
 ... using gcc
 
 Checking for obsessive-compulsive compiler options...
-=== ztest1873838.c ===
+=== ztest15780.c ===
 int foo() { return 0; }
 ===
-gcc -c -fPIC -O3 ztest1873838.c
+gcc -c -fPIC -O3 ztest15780.c
 
 Building static library libz.a version 1.3.1 with gcc.
 
-=== ztest1873838.c ===
+=== ztest15780.c ===
 #include <stdio.h>
 #include <stdlib.h>
 size_t dummy = 0;
 ===
-gcc -c -fPIC -O3 ztest1873838.c
+gcc -c -fPIC -O3 ztest15780.c
 Checking for size_t... Yes.
 
-=== ztest1873838.c ===
+=== ztest15780.c ===
 #include <sys/types.h>
 off64_t dummy = 0;
 ===
-gcc -c -fPIC -O3 -D_LARGEFILE64_SOURCE=1 ztest1873838.c
+gcc -c -fPIC -O3 -D_LARGEFILE64_SOURCE=1 ztest15780.c
 Checking for off64_t... Yes.
 Checking for fseeko... Yes.
 
-=== ztest1873838.c ===
+=== ztest15780.c ===
 #include <string.h>
 #include <errno.h>
 int main() { return strlen(strerror(errno)); }
 ===
-gcc -fPIC -O3 -D_LARGEFILE64_SOURCE=1 -o ztest1873838 ztest1873838.c
+gcc -fPIC -O3 -D_LARGEFILE64_SOURCE=1 -o ztest15780 ztest15780.c
 Checking for strerror... Yes.
 
-=== ztest1873838.c ===
+=== ztest15780.c ===
 #include <unistd.h>
 int main() { return 0; }
 ===
-gcc -c -fPIC -O3 -D_LARGEFILE64_SOURCE=1 ztest1873838.c
+gcc -c -fPIC -O3 -D_LARGEFILE64_SOURCE=1 ztest15780.c
 Checking for unistd.h... Yes.
 
-=== ztest1873838.c ===
+=== ztest15780.c ===
 #include <stdarg.h>
 int main() { return 0; }
 ===
-gcc -c -fPIC -O3 -D_LARGEFILE64_SOURCE=1 ztest1873838.c
+gcc -c -fPIC -O3 -D_LARGEFILE64_SOURCE=1 ztest15780.c
 Checking for stdarg.h... Yes.
 
-=== ztest1873838.c ===
+=== ztest15780.c ===
 #include <stdio.h>
 #include <stdarg.h>
 #include "zconf.h"
@@ -67,10 +67,10 @@ int main()
   return 0;
 }
 ===
-gcc -c -fPIC -O3 -D_LARGEFILE64_SOURCE=1 ztest1873838.c
+gcc -c -fPIC -O3 -D_LARGEFILE64_SOURCE=1 ztest15780.c
 Checking whether to use vs[n]printf() or s[n]printf()... using vs[n]printf().
 
-=== ztest1873838.c ===
+=== ztest15780.c ===
 #include <stdio.h>
 #include <stdarg.h>
 int mytest(const char *fmt, ...)
@@ -87,10 +87,10 @@ int main()
   return (mytest("Hello%d\n", 1));
 }
 ===
-gcc -fPIC -O3 -D_LARGEFILE64_SOURCE=1 -o ztest1873838 ztest1873838.c
+gcc -fPIC -O3 -D_LARGEFILE64_SOURCE=1 -o ztest15780 ztest15780.c
 Checking for vsnprintf() in stdio.h... Yes.
 
-=== ztest1873838.c ===
+=== ztest15780.c ===
 #include <stdio.h>
 #include <stdarg.h>
 int mytest(const char *fmt, ...)
@@ -108,10 +108,10 @@ int main()
   return (mytest("Hello%d\n", 1));
 }
 ===
-gcc -c -fPIC -O3 -D_LARGEFILE64_SOURCE=1 ztest1873838.c
+gcc -c -fPIC -O3 -D_LARGEFILE64_SOURCE=1 ztest15780.c
 Checking for return value of vsnprintf()... Yes.
 
-=== ztest1873838.c ===
+=== ztest15780.c ===
 #define ZLIB_INTERNAL __attribute__((visibility ("hidden")))
 int ZLIB_INTERNAL foo;
 int main()
@@ -119,7 +119,7 @@ int main()
   return 0;
 }
 ===
-gcc -c -fPIC -O3 -D_LARGEFILE64_SOURCE=1 ztest1873838.c
+gcc -c -fPIC -O3 -D_LARGEFILE64_SOURCE=1 ztest15780.c
 Checking for attribute(visibility) support... Yes.
 
 ALL = static all64
@@ -148,7 +148,7 @@ exec_prefix = ${prefix}
 includedir = ${prefix}/include
 libdir = ${exec_prefix}/lib
 mandir = ${prefix}/share/man
-prefix = /mnt/f/research_drive/mtdna/leelab/mtDNA-analysis/zlib_build
+prefix = /home/jupyter/workspaces/mtdnaheteroplasmyandaginganalysis/mtDNA-analysis/zlib_build
 sharedlibdir = ${libdir}
 uname = Linux
 --------------------

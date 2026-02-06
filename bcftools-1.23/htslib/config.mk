@@ -40,11 +40,11 @@ mandir       = ${datarootdir}/man
 CC     = gcc
 RANLIB = ranlib
 
-CPPFLAGS = -I/mnt/f/research_drive/mtdna/leelab/mtDNA-analysis/zlib_build/include -I/mnt/f/research_drive/mtdna/leelab/mtDNA-analysis/bzip2_build/include
-CFLAGS   =  -Wall  -I/mnt/f/research_drive/mtdna/leelab/mtDNA-analysis/zlib_build/include -I/mnt/f/research_drive/mtdna/leelab/mtDNA-analysis/bzip2_build/include -fvisibility=hidden
-LDFLAGS  = -L/mnt/f/research_drive/mtdna/leelab/mtDNA-analysis/zlib_build/lib -L/mnt/f/research_drive/mtdna/leelab/mtDNA-analysis/bzip2_build/lib -fvisibility=hidden
+CPPFLAGS = -I/home/jupyter/workspaces/mtdnaheteroplasmyandaginganalysis/mtDNA-analysis/zlib_build/include -I/home/jupyter/workspaces/mtdnaheteroplasmyandaginganalysis/mtDNA-analysis/bzip2_build/include
+CFLAGS   =  -Wall  -I/home/jupyter/workspaces/mtdnaheteroplasmyandaginganalysis/mtDNA-analysis/zlib_build/include -I/home/jupyter/workspaces/mtdnaheteroplasmyandaginganalysis/mtDNA-analysis/bzip2_build/include -fvisibility=hidden
+LDFLAGS  = -L/home/jupyter/workspaces/mtdnaheteroplasmyandaginganalysis/mtDNA-analysis/zlib_build/lib -L/home/jupyter/workspaces/mtdnaheteroplasmyandaginganalysis/mtDNA-analysis/bzip2_build/lib -fvisibility=hidden
 VERSION_SCRIPT_LDFLAGS = -Wl,-version-script,$(srcprefix)htslib.map
-LIBS     = -llzma -lbz2 -lz /mnt/f/research_drive/mtdna/leelab/mtDNA-analysis/zlib_build/lib/libz.a /mnt/f/research_drive/mtdna/leelab/mtDNA-analysis/bzip2_build/lib/libbz2.a -llzma -lm
+LIBS     = -llzma -lbz2 -lz /home/jupyter/workspaces/mtdnaheteroplasmyandaginganalysis/mtDNA-analysis/zlib_build/lib/libz.a /home/jupyter/workspaces/mtdnaheteroplasmyandaginganalysis/mtDNA-analysis/bzip2_build/lib/libbz2.a -llzma -lm
 
 PLATFORM   = default
 PLUGIN_EXT = .so

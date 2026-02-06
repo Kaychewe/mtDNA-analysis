@@ -120,7 +120,7 @@
 /* #undef HAVE_LINUX_SENDFILE */
 
 /* Define to 1 if you have the <lzma.h> header file. */
-/* #undef HAVE_LZMA_H */
+#define HAVE_LZMA_H 1
 
 /* Define if you have macOS-type sendfile */
 /* #undef HAVE_MACOS_SENDFILE */

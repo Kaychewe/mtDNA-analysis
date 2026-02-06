@@ -176,7 +176,7 @@ The goal is not to replace algorithms, but to consolidate and stabilize image so
 
 Candidates for alignment:
 - `bcftools`:
-  - mtDNA: `quay.io/biocontainers/bcftools:1.17--h3cc50cf_1`
+  - mtDNA: do not use `bcftools_docker`. Use the verified bcftools bundle from GCS and localize in task commands.
   - long-read: not a single canonical image, but utilities rely on `bcftools` in WDL tasks; consider a dedicated `broad-dsp-lrma` style image or an internal Artifact Registry image.
 - `gatk` / `samtools`:
   - mtDNA: `docker.io/broadinstitute/gatk:4.2.6.0`
@@ -219,6 +219,7 @@ Skipped images (policy):
 
 Key finding:
 - None of the probed “safe” images include `bcftools`. A dedicated bcftools image (or adding bcftools into an approved internal image) is required for robust mtDNA operation.
+  - Decision: prefer the validated bcftools bundle in GCS over `bcftools_docker`.
 
 ## Progress Log
 

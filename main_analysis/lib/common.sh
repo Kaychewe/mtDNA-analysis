@@ -39,6 +39,12 @@ load_env() {
   STAGE01_JSON="${STAGE01_JSON:-${PROJECT_ROOT}/stage01_subset_bam.json}"
   WDL_DEPS_ZIP="${WDL_DEPS_ZIP:-${PROJECT_ROOT}/wdl_deps.zip}"
   WDL_DEPS_SRC="${WDL_DEPS_SRC:-${PROJECT_ROOT}/mtSwirl/WDL/v2.5_MongoSwirl_Single}"
+  if [ ! -d "${WDL_DEPS_SRC}" ]; then
+    WDL_DEPS_SRC="${PROJECT_ROOT}/mtSwirl/WDL/v2.5_MongoSwirl_Single"
+  fi
+  if [ ! -d "$(dirname "${WDL_DEPS_ZIP}")" ]; then
+    WDL_DEPS_ZIP="${PROJECT_ROOT}/wdl_deps.zip"
+  fi
   if [ -z "${CROMWELL_RESTART_SCRIPT:-}" ] || [ ! -f "${CROMWELL_RESTART_SCRIPT}" ]; then
     CROMWELL_RESTART_SCRIPT="${PROJECT_ROOT}/cromwell_restart.sh"
   fi

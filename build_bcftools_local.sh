@@ -26,12 +26,22 @@ rm -rf "$SRC_DIR/htslib"
 mv htslib-1.23 "$SRC_DIR/htslib"
 cd "$SRC_DIR"
 
-# Build with bundled htslib to avoid external dependency mismatch
+# Build htslib without libcurl to avoid runtime libcurl dependency in Batch
+cd htslib
+./configure --disable-libcurl
+make -j "$(nproc)"
+cd ..
+
+# Build bcftools against bundled htslib
 make -j "$(nproc)" HTSDIR=htslib
 make install prefix="$PREFIX_DIR"
 
 cd "$PREFIX_DIR"
-# Bundle bin and libexec (plugins). htslib was built static into bcftools.
+# Also include bgzip/tabix from htslib build
+cp htslib/bgzip "$PREFIX_DIR/bin/"
+cp htslib/tabix "$PREFIX_DIR/bin/"
+
+# Bundle bin and libexec (plugins). htslib built without libcurl.
 # Include bcftools and helper scripts in bin.
 if [ ! -x bin/bcftools ]; then
   echo "bcftools build failed: missing bin/bcftools"

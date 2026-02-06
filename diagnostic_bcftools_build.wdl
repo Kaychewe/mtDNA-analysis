@@ -25,7 +25,8 @@ task BuildBcftoolsFromSource {
   }
 
   command <<<
-    set -euo pipefail
+    # avoid set -euo pipefail 
+    set -e
 
     echo "bcftools_url=~{bcftools_url}" > report.txt
     echo "date_utc=$(date -u +%Y-%m-%dT%H:%M:%SZ 2>/dev/null)" >> report.txt

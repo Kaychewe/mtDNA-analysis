@@ -24,16 +24,27 @@ load_env() {
   if [ -z "${PROJECT_ROOT:-}" ] || [ ! -d "${PROJECT_ROOT}" ]; then
     PROJECT_ROOT="$(cd "${MAIN_DIR}/.." && pwd)"
   fi
-  ANALYSIS_ROOT="${ANALYSIS_ROOT:-${MAIN_DIR}}"
-  if [ ! -d "${ANALYSIS_ROOT}" ]; then
+  if [ -z "${ANALYSIS_ROOT:-}" ] || [ ! -d "${ANALYSIS_ROOT}" ]; then
     ANALYSIS_ROOT="${MAIN_DIR}"
   fi
-  RUNS_DIR="${RUNS_DIR:-${ANALYSIS_ROOT}/runs}"
+  if [ -z "${RUNS_DIR:-}" ]; then
+    RUNS_DIR="${ANALYSIS_ROOT}/runs"
+  else
+    parent_dir="$(dirname "${RUNS_DIR}")"
+    if [ ! -d "${parent_dir}" ] || [ ! -w "${parent_dir}" ]; then
+      RUNS_DIR="${ANALYSIS_ROOT}/runs"
+    fi
+  fi
   STAGE01_WDL="${STAGE01_WDL:-${PROJECT_ROOT}/stage01_subset_bam.wdl}"
   STAGE01_JSON="${STAGE01_JSON:-${PROJECT_ROOT}/stage01_subset_bam.json}"
   WDL_DEPS_ZIP="${WDL_DEPS_ZIP:-${PROJECT_ROOT}/wdl_deps.zip}"
   WDL_DEPS_SRC="${WDL_DEPS_SRC:-${PROJECT_ROOT}/mtSwirl/WDL/v2.5_MongoSwirl_Single}"
-  LIST_DIR="${LIST_DIR:-${PROJECT_ROOT}/mtDNA_v25_pilot_5}"
+  if [ -z "${CROMWELL_RESTART_SCRIPT:-}" ] || [ ! -f "${CROMWELL_RESTART_SCRIPT}" ]; then
+    CROMWELL_RESTART_SCRIPT="${PROJECT_ROOT}/cromwell_restart.sh"
+  fi
+  if [ -z "${LIST_DIR:-}" ] || [ ! -d "${LIST_DIR}" ]; then
+    LIST_DIR="${PROJECT_ROOT}/mtDNA_v25_pilot_5"
+  fi
 
   export PROJECT_ROOT ANALYSIS_ROOT RUNS_DIR STAGE01_WDL STAGE01_JSON WDL_DEPS_ZIP WDL_DEPS_SRC LIST_DIR
 

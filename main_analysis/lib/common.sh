@@ -1,0 +1,148 @@
+#!/bin/bash
+set -euo pipefail
+
+MAIN_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+CONFIG_FILE="${MAIN_DIR}/config/run.env"
+
+log() {
+  echo "[$(date +"%Y-%m-%d %H:%M:%S")] $*"
+}
+
+die() {
+  log "ERROR: $*"
+  exit 1
+}
+
+load_env() {
+  if [ ! -f "$CONFIG_FILE" ]; then
+    die "Missing config file: $CONFIG_FILE"
+  fi
+  # shellcheck disable=SC1090
+  source "$CONFIG_FILE"
+
+  : "${PROJECT_ROOT:?Missing PROJECT_ROOT}"
+  : "${ANALYSIS_ROOT:?Missing ANALYSIS_ROOT}"
+  : "${RUNS_DIR:?Missing RUNS_DIR}"
+  : "${STAGE01_WDL:?Missing STAGE01_WDL}"
+  : "${STAGE01_JSON:?Missing STAGE01_JSON}"
+  : "${CROMWELL_RESTART_SCRIPT:?Missing CROMWELL_RESTART_SCRIPT}"
+  : "${CROMWELL_STATUS_URL:?Missing CROMWELL_STATUS_URL}"
+  : "${WDL_DEPS_SRC:?Missing WDL_DEPS_SRC}"
+  : "${WDL_DEPS_ZIP:?Missing WDL_DEPS_ZIP}"
+}
+
+ensure_dirs() {
+  mkdir -p "${RUNS_DIR}"
+}
+
+make_run_dir() {
+  local stamp
+  stamp="$(date +"%Y%m%d_%H%M%S")"
+  RUN_DIR="${RUNS_DIR}/${stamp}"
+  mkdir -p "${RUN_DIR}/logs" "${RUN_DIR}/inputs" "${RUN_DIR}/outputs" "${RUN_DIR}/state"
+  cp "$CONFIG_FILE" "${RUN_DIR}/state/run.env"
+  export RUN_DIR
+  log "Run directory: ${RUN_DIR}"
+}
+
+check_cromwell() {
+  if curl -sf "${CROMWELL_STATUS_URL}" >/dev/null 2>&1; then
+    log "Cromwell is reachable."
+    return 0
+  fi
+  log "Cromwell not reachable; restarting..."
+  bash "${CROMWELL_RESTART_SCRIPT}"
+  for _ in {1..30}; do
+    if curl -sf "${CROMWELL_STATUS_URL}" >/dev/null 2>&1; then
+      log "Cromwell is up."
+      return 0
+    fi
+    sleep 2
+  done
+  die "Cromwell did not become ready within 60s."
+}
+
+ensure_wdl_deps() {
+  if [ -f "${WDL_DEPS_ZIP}" ]; then
+    return 0
+  fi
+  if [ ! -d "${WDL_DEPS_SRC}" ]; then
+    die "WDL deps directory not found: ${WDL_DEPS_SRC}"
+  fi
+  python3 - <<PY
+import os, zipfile
+wdl_src = os.environ["WDL_DEPS_SRC"]
+out_zip = os.environ["WDL_DEPS_ZIP"]
+with zipfile.ZipFile(out_zip, "w", compression=zipfile.ZIP_DEFLATED) as zf:
+    for root, _, files in os.walk(wdl_src):
+        for name in files:
+            if name.endswith(".wdl"):
+                full_path = os.path.join(root, name)
+                rel_path = os.path.relpath(full_path, os.path.abspath("."))
+                zf.write(full_path, rel_path)
+print("Wrote", out_zip)
+PY
+}
+
+pick_first_list() {
+  local pattern="$1"
+  local dir="$2"
+  ls -1 "${dir}"/${pattern} 2>/dev/null | sort | head -n 1
+}
+
+populate_stage01_json() {
+  local list_dir="$1"
+  local sample_list cram_list crai_list
+
+  sample_list="$(pick_first_list sample_list*.txt "$list_dir")"
+  cram_list="$(pick_first_list cram_file_list*.txt "$list_dir")"
+  crai_list="$(pick_first_list crai_file_list*.txt "$list_dir")"
+
+  if [ -z "$sample_list" ] || [ -z "$cram_list" ] || [ -z "$crai_list" ]; then
+    die "Missing list files in ${list_dir}. Expected sample_list*.txt, cram_file_list*.txt, crai_file_list*.txt"
+  fi
+
+  bash "${PROJECT_ROOT}/populate_stage01_from_lists.sh" "$cram_list" "$crai_list" "$sample_list" "$STAGE01_JSON"
+}
+
+submit_stage01() {
+  local resp wf_id
+  resp="$(bash "${PROJECT_ROOT}/submit_stage01.sh")"
+  wf_id="$(echo "$resp" | python3 - <<PY
+import json, sys
+try:
+    data = json.load(sys.stdin)
+    print(data.get("id", ""))
+except Exception:
+    print("")
+PY
+)"
+  if [ -z "$wf_id" ]; then
+    log "Submission response:"
+    echo "$resp"
+    die "Failed to parse workflow ID."
+  fi
+  echo "$wf_id"
+}
+
+watch_status() {
+  local wf_id="$1"
+  while true; do
+    local status_json status
+    status_json="$(curl -s "http://localhost:8094/api/workflows/v1/${wf_id}/status")"
+    status="$(echo "$status_json" | python3 - <<PY
+import json, sys
+try:
+    data = json.load(sys.stdin)
+    print(data.get("status", ""))
+except Exception:
+    print("")
+PY
+)"
+    log "Status: ${status}"
+    if [ "$status" = "Succeeded" ] || [ "$status" = "Failed" ] || [ "$status" = "Aborted" ]; then
+      break
+    fi
+    sleep 30
+  done
+}

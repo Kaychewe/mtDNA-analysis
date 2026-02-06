@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -e
-
+# version 1.0
 # Build bcftools locally in workspace and package a self-contained tarball
 # Usage: ./build_bcftools_local.sh
 

@@ -10,6 +10,7 @@ HTSLIB_URL="https://github.com/samtools/htslib/releases/download/1.23/htslib-1.2
 TARBALL="bcftools-1.23.tar.bz2"
 HTSLIB_TARBALL="htslib-1.23.tar.bz2"
 SRC_DIR="bcftools-1.23"
+ROOT_DIR="$PWD"
 PREFIX_DIR="$PWD/bcftools_build"
 OUT_TARBALL="bcftools-${VERSION}-linux-x86_64.tar.gz"
 
@@ -38,8 +39,8 @@ make install prefix="$PREFIX_DIR"
 
 cd "$PREFIX_DIR"
 # Also include bgzip/tabix from htslib build (source tree)
-cp "$SRC_DIR/htslib/bgzip" "$PREFIX_DIR/bin/"
-cp "$SRC_DIR/htslib/tabix" "$PREFIX_DIR/bin/"
+cp "$ROOT_DIR/$SRC_DIR/htslib/bgzip" "$PREFIX_DIR/bin/"
+cp "$ROOT_DIR/$SRC_DIR/htslib/tabix" "$PREFIX_DIR/bin/"
 
 # Bundle bin and libexec (plugins). htslib built without libcurl.
 # Include bcftools and helper scripts in bin.

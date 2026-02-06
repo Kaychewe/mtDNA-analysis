@@ -63,9 +63,9 @@ MAKE_CPPFLAGS="$CPPFLAGS"
 MAKE_LDFLAGS="$LDFLAGS"
 MAKE_LIBS="$LIBS"
 
-# Build htslib without libcurl to avoid runtime libcurl dependency in Batch
+# Build htslib without libcurl and libdeflate to avoid runtime deps in Batch
 cd htslib
-./configure --disable-libcurl
+./configure --disable-libcurl --without-libdeflate
 make -j "$(nproc)" CPPFLAGS="$MAKE_CPPFLAGS" LDFLAGS="$MAKE_LDFLAGS" LIBS="$MAKE_LIBS"
 cd ..
 

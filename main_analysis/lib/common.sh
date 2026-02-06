@@ -20,6 +20,23 @@ load_env() {
   # shellcheck disable=SC1090
   source "$CONFIG_FILE"
 
+  # Auto-correct paths if run.env was generated on a different filesystem.
+  if [ -z "${PROJECT_ROOT:-}" ] || [ ! -d "${PROJECT_ROOT}" ]; then
+    PROJECT_ROOT="$(cd "${MAIN_DIR}/.." && pwd)"
+  fi
+  ANALYSIS_ROOT="${ANALYSIS_ROOT:-${MAIN_DIR}}"
+  if [ ! -d "${ANALYSIS_ROOT}" ]; then
+    ANALYSIS_ROOT="${MAIN_DIR}"
+  fi
+  RUNS_DIR="${RUNS_DIR:-${ANALYSIS_ROOT}/runs}"
+  STAGE01_WDL="${STAGE01_WDL:-${PROJECT_ROOT}/stage01_subset_bam.wdl}"
+  STAGE01_JSON="${STAGE01_JSON:-${PROJECT_ROOT}/stage01_subset_bam.json}"
+  WDL_DEPS_ZIP="${WDL_DEPS_ZIP:-${PROJECT_ROOT}/wdl_deps.zip}"
+  WDL_DEPS_SRC="${WDL_DEPS_SRC:-${PROJECT_ROOT}/mtSwirl/WDL/v2.5_MongoSwirl_Single}"
+  LIST_DIR="${LIST_DIR:-${PROJECT_ROOT}/mtDNA_v25_pilot_5}"
+
+  export PROJECT_ROOT ANALYSIS_ROOT RUNS_DIR STAGE01_WDL STAGE01_JSON WDL_DEPS_ZIP WDL_DEPS_SRC LIST_DIR
+
   : "${PROJECT_ROOT:?Missing PROJECT_ROOT}"
   : "${ANALYSIS_ROOT:?Missing ANALYSIS_ROOT}"
   : "${RUNS_DIR:?Missing RUNS_DIR}"

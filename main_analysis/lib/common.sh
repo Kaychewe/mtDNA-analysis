@@ -3,6 +3,7 @@ set -euo pipefail
 
 MAIN_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 CONFIG_FILE="${MAIN_DIR}/config/run.env"
+COMMON_SH_VERSION="2026-02-07.v1"
 
 log() {
   echo "[$(date +"%Y-%m-%d %H:%M:%S")] $*"

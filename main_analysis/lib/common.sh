@@ -147,7 +147,7 @@ populate_stage01_json() {
 
 submit_stage01() {
   local resp wf_id
-  resp="$(bash "${PROJECT_ROOT}/submit_stage01.sh")"
+  resp="$(bash "${PROJECT_ROOT}/submit_stage01.sh" 2>&1 || true)"
   wf_id="$(echo "$resp" | python3 - <<PY
 import json, sys
 try:

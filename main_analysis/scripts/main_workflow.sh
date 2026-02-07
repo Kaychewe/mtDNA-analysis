@@ -1,6 +1,5 @@
 #!/bin/bash
 
-set -x
 
 DEBUG=0
 for arg in "$@"; do

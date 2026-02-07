@@ -30,6 +30,16 @@ fi
 
 log "Checking Stage 02 inputs for REPLACE_ME placeholders."
 if grep -q "REPLACE_ME" "${STAGE02_JSON}"; then
+  log "Stage 02 JSON contains REPLACE_ME placeholders. Showing keys:"
+  python3 - <<'PY' "${STAGE02_JSON}"
+import json, sys
+path = sys.argv[1]
+with open(path) as fh:
+    data = json.load(fh)
+for k, v in data.items():
+    if "REPLACE_ME" in str(v):
+        print(f"  - {k}: {v}")
+PY
   die "Stage 02 JSON contains REPLACE_ME placeholders. Run populate_stage02_from_stage01.sh first."
 fi
 

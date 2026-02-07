@@ -64,6 +64,14 @@ if [ ! -f "$stage01_json" ]; then
   exit 1
 fi
 
+fallback_sample_name=""
+if [ -n "${LIST_DIR:-}" ] && [ -d "${LIST_DIR}" ]; then
+  sample_list_file="$(ls -1 "${LIST_DIR}"/sample_list*.txt 2>/dev/null | sort | head -n 1 || true)"
+  if [ -n "${sample_list_file}" ] && [ -f "${sample_list_file}" ]; then
+    fallback_sample_name="$(head -n 1 "${sample_list_file}" | tr -d '\r' || true)"
+  fi
+fi
+
 outputs_json="$(curl -s "http://localhost:8094/api/workflows/v1/${WF_ID}/outputs")"
 
 python3 - <<PY
@@ -87,6 +95,8 @@ with open("${stage01_json}", "r", encoding="utf-8") as fh:
 sample_name = s1.get("StageSubsetBamToChrMAndRevert.sample_name", "")
 if not sample_name or "REPLACE_ME" in str(sample_name):
     sample_name = outputs.get("outputs", {}).get("StageSubsetBamToChrMAndRevert.sample_name", "") or sample_name
+if not sample_name or "REPLACE_ME" in str(sample_name):
+    sample_name = "${fallback_sample_name}" or sample_name
 
 def replace_if_missing(key, value):
     current = data.get(key, "")

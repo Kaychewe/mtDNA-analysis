@@ -33,6 +33,17 @@ cram=$(head -n 1 "$cram_list" | tr -d '\r')
 crai=$(head -n 1 "$crai_list" | tr -d '\r')
 sample=$(head -n 1 "$sample_list" | tr -d '\r')
 
+ref_fasta_default="${REF_FASTA_DEFAULT:-gs://gcp-public-data--broad-references/hg38/v0/Homo_sapiens_assembly38.fasta}"
+ref_fasta_index_default="${REF_FASTA_INDEX_DEFAULT:-gs://gcp-public-data--broad-references/hg38/v0/Homo_sapiens_assembly38.fasta.fai}"
+ref_dict_default="${REF_DICT_DEFAULT:-gs://gcp-public-data--broad-references/hg38/v0/Homo_sapiens_assembly38.dict}"
+mt_interval_list_default="${MT_INTERVAL_LIST_DEFAULT:-gs://gcp-public-data--broad-references/hg38/v0/chrM/chrM.hg38.interval_list}"
+
+if [ -n "${WORKSPACE_BUCKET:-}" ]; then
+  nuc_interval_list_default="${NUC_INTERVAL_LIST_DEFAULT:-${WORKSPACE_BUCKET}/intervals/NUMTv3_all385.hg38.interval_list}"
+else
+  nuc_interval_list_default="${NUC_INTERVAL_LIST_DEFAULT:-gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/intervals/NUMTv3_all385.hg38.interval_list}"
+fi
+
 if [ -z "$cram" ] || [ -z "$crai" ] || [ -z "$sample" ]; then
   echo "One or more list files are empty."
   exit 1
@@ -49,6 +60,17 @@ with open(path, "r", encoding="utf-8") as fh:
 data["StageSubsetBamToChrMAndRevert.wgs_aligned_input_bam_or_cram"] = "$cram"
 data["StageSubsetBamToChrMAndRevert.wgs_aligned_input_bam_or_cram_index"] = "$crai"
 data["StageSubsetBamToChrMAndRevert.sample_name"] = "$sample"
+
+def replace_if_missing(key, value):
+    current = data.get(key, "")
+    if not current or "REPLACE_ME" in str(current):
+        data[key] = value
+
+replace_if_missing("StageSubsetBamToChrMAndRevert.ref_fasta", "$ref_fasta_default")
+replace_if_missing("StageSubsetBamToChrMAndRevert.ref_fasta_index", "$ref_fasta_index_default")
+replace_if_missing("StageSubsetBamToChrMAndRevert.ref_dict", "$ref_dict_default")
+replace_if_missing("StageSubsetBamToChrMAndRevert.mt_interval_list", "$mt_interval_list_default")
+replace_if_missing("StageSubsetBamToChrMAndRevert.nuc_interval_list", "$nuc_interval_list_default")
 
 with open(path, "w", encoding="utf-8") as fh:
     json.dump(data, fh, indent=2)

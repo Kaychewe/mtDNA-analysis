@@ -174,6 +174,8 @@ except Exception:
 
 watch_status() {
   local wf_id="$1"
+  local failure_seen=0
+  local unrecognized_seen=0
   while true; do
     local status_json status
     status_json="$(curl -s "http://localhost:8094/api/workflows/v1/${wf_id}/status")"
@@ -185,7 +187,25 @@ except Exception:
     print("")
 ' <<<"$status_json")"
     log "Status: ${status}"
-    if [ "$status" = "Succeeded" ] || [ "$status" = "Failed" ] || [ "$status" = "Aborted" ]; then
+    if [ "$status" = "fail" ]; then
+      # Often returned right after submit: "Unrecognized workflow ID".
+      if [ "${unrecognized_seen}" -eq 0 ]; then
+        if echo "$status_json" | grep -q "Unrecognized workflow ID"; then
+          unrecognized_seen=1
+          sleep 5
+          continue
+        fi
+      fi
+    fi
+    if [ "$status" = "Failed" ] || [ "$status" = "Aborted" ]; then
+      if [ "${failure_seen}" -eq 0 ]; then
+        failure_seen=1
+        log "Fetching failure details..."
+        curl -s "http://localhost:8094/api/workflows/v1/${wf_id}/metadata?includeKey=failures&includeKey=callRoot" || true
+      fi
+      break
+    fi
+    if [ "$status" = "Succeeded" ]; then
       break
     fi
     sleep 30

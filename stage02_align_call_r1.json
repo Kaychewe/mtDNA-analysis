@@ -10,8 +10,8 @@
   "StageAlignAndCallR1.mt_fasta": "gs://REPLACE_ME/Homo_sapiens_assembly38.chrM.fasta",
   "StageAlignAndCallR1.mt_fasta_index": "gs://REPLACE_ME/Homo_sapiens_assembly38.chrM.fasta.fai",
   "StageAlignAndCallR1.mt_dict": "gs://REPLACE_ME/Homo_sapiens_assembly38.chrM.dict",
-  "StageAlignAndCallR1.blacklisted_sites": "gs://REPLACE_ME/blacklist_sites.hg38.chrM.bed",
-  "StageAlignAndCallR1.blacklisted_sites_index": "gs://REPLACE_ME/blacklist_sites.hg38.chrM.bed.idx",
+  "StageAlignAndCallR1.blacklisted_sites": "gs://gcp-public-data--broad-references/hg38/v0/chrM/blacklist_sites.hg38.chrM.bed",
+  "StageAlignAndCallR1.blacklisted_sites_index": "gs://gcp-public-data--broad-references/hg38/v0/chrM/blacklist_sites.hg38.chrM.bed.idx",
 
   "StageAlignAndCallR1.nuc_interval_list": "gs://REPLACE_ME/NUMTv3_all385.hg38.interval_list",
   "StageAlignAndCallR1.mt_interval_list": "gs://REPLACE_ME/chrM.hg38.interval_list",

@@ -34,10 +34,39 @@ fi
 echo "${metadata}" | python3 - "$CALL_NAME" <<'PY'
 import json, sys
 
+raw = sys.stdin.read()
 try:
-    data = json.load(sys.stdin)
+    data = json.loads(raw)
 except Exception as exc:
     print("ERROR: failed to parse metadata JSON:", exc)
+    print("Response prefix:", raw[:200].replace("\n", "\\n"))
+    print("Response length:", len(raw))
+    sys.exit(1)
+
+call_name = sys.argv[1] if len(sys.argv) > 1 else ""
+
+def print_call(call_key, call):
+    call_root = call.get("callRoot", "")
+    if call_root:
+        print(call_key, call_root)
+
+calls = data.get("calls", {}) or {}
+if call_name:
+    # direct match
+    if call_name in calls and calls[call_name]:
+        print_call(call_name, calls[call_name][0])
+        sys.exit(0)
+    # try suffix match for subworkflow calls
+    for k, v in calls.items():
+        if k.endswith(call_name) and v:
+            print_call(k, v[0])
+            sys.exit(0)
+    print("No matching call found for:", call_name)
+else:
+    for k, v in calls.items():
+        if v:
+            print_call(k, v[0])
+PY
     sys.exit(1)
 
 call_name = sys.argv[1] if len(sys.argv) > 1 else ""

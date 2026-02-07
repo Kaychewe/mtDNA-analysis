@@ -16,9 +16,18 @@ fi
 WF_ID="$1"
 CALL_NAME="${2:-}"
 
-metadata="$(curl -sS "http://localhost:8094/api/workflows/v1/${WF_ID}/metadata" || true)"
+tmp_body="$(mktemp)"
+http_code="$(curl -sS -w "%{http_code}" -o "${tmp_body}" "http://localhost:8094/api/workflows/v1/${WF_ID}/metadata" || true)"
+metadata="$(cat "${tmp_body}")"
+rm -f "${tmp_body}"
 if [ -z "${metadata}" ]; then
-  echo "ERROR: empty metadata response for ${WF_ID}"
+  echo "ERROR: empty metadata response for ${WF_ID} (http ${http_code})"
+  exit 1
+fi
+if [ "${http_code}" != "200" ]; then
+  echo "ERROR: metadata request failed (http ${http_code})"
+  echo "Response body:"
+  echo "${metadata}"
   exit 1
 fi
 

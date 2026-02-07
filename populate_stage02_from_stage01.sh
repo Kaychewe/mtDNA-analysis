@@ -64,9 +64,11 @@ if [ ! -f "$stage01_json" ]; then
   exit 1
 fi
 
+# Try to derive sample name from list files if stage01 JSON is still REPLACE_ME.
 fallback_sample_name=""
-if [ -n "${LIST_DIR:-}" ] && [ -d "${LIST_DIR}" ]; then
-  sample_list_file="$(ls -1 "${LIST_DIR}"/sample_list*.txt 2>/dev/null | sort | head -n 1 || true)"
+list_dir="${LIST_DIR:-${PROJECT_ROOT:-.}/mtDNA_v25_pilot_5}"
+if [ -d "${list_dir}" ]; then
+  sample_list_file="$(ls -1 "${list_dir}"/sample_list*.txt 2>/dev/null | sort | head -n 1 || true)"
   if [ -n "${sample_list_file}" ] && [ -f "${sample_list_file}" ]; then
     fallback_sample_name="$(head -n 1 "${sample_list_file}" | tr -d '\r' || true)"
   fi
@@ -105,7 +107,7 @@ def replace_if_missing(key, value):
 
 data["StageAlignAndCallR1.input_bam"] = output_bam or data.get("StageAlignAndCallR1.input_bam", "")
 data["StageAlignAndCallR1.input_bai"] = output_bai or data.get("StageAlignAndCallR1.input_bai", "")
-if sample_name and "REPLACE_ME" not in str(sample_name):
+if sample_name:
     data["StageAlignAndCallR1.sample_name"] = sample_name
 if isinstance(mean_cov, (int, float)):
     data["StageAlignAndCallR1.mt_mean_coverage"] = int(mean_cov)

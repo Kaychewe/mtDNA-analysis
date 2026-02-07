@@ -3,10 +3,16 @@ set -euo pipefail
 
 MAIN_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 CONFIG_FILE="${MAIN_DIR}/config/run.env"
-COMMON_SH_VERSION="2026-02-07.v2"
+COMMON_SH_VERSION="2026-02-07.v3"
 
 log() {
   echo "[$(date +"%Y-%m-%d %H:%M:%S")] $*"
+}
+
+log_debug() {
+  if [ "${DEBUG:-0}" = "1" ]; then
+    echo "[$(date +"%Y-%m-%d %H:%M:%S")] $*" >&2
+  fi
 }
 
 die() {
@@ -156,10 +162,8 @@ try:
 except Exception:
     print("")
 ' <<<"$resp")"
-  if [ "${DEBUG:-0}" = "1" ]; then
-    log "Submit response JSON: ${resp}"
-    log "Parsed workflow ID: ${wf_id:-<empty>}"
-  fi
+  log_debug "Submit response JSON: ${resp}"
+  log_debug "Parsed workflow ID: ${wf_id:-<empty>}"
   if [ -z "$wf_id" ]; then
     log "Submission response:"
     echo "$resp"

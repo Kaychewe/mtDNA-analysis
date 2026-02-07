@@ -148,7 +148,7 @@ populate_stage01_json() {
 submit_stage01() {
   local resp wf_id
   resp="$(bash "${PROJECT_ROOT}/submit_stage01.sh" 2>&1 || true)"
-  wf_id="$(echo "$resp" | python3 - <<PY
+  wf_id="$(python3 - <<'PY' <<<"$resp"
 import json, sys
 try:
     data = json.load(sys.stdin)
@@ -157,6 +157,10 @@ except Exception:
     print("")
 PY
 )"
+  if [ "${DEBUG:-0}" = "1" ]; then
+    log "Submit response JSON: ${resp}"
+    log "Parsed workflow ID: ${wf_id:-<empty>}"
+  fi
   if [ -z "$wf_id" ]; then
     log "Submission response:"
     echo "$resp"
@@ -170,7 +174,7 @@ watch_status() {
   while true; do
     local status_json status
     status_json="$(curl -s "http://localhost:8094/api/workflows/v1/${wf_id}/status")"
-    status="$(echo "$status_json" | python3 - <<PY
+    status="$(python3 - <<'PY' <<<"$status_json"
 import json, sys
 try:
     data = json.load(sys.stdin)

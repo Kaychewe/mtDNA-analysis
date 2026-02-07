@@ -93,6 +93,19 @@ if failed:
     print("ERROR: gsutil stat failed for:")
     for k, v in failed:
         print(f"  - {k}: {v}")
+
+    # Suggest public references for blacklist if those failed
+    bl_bed = "gs://gcp-public-data--broad-references/hg38/v0/chrM/blacklist_sites.hg38.chrM.bed"
+    bl_idx = "gs://gcp-public-data--broad-references/hg38/v0/chrM/blacklist_sites.hg38.chrM.bed.idx"
+    try:
+        subprocess.check_output(["gsutil", "-q", "stat", bl_bed])
+        subprocess.check_output(["gsutil", "-q", "stat", bl_idx])
+        print("Public blacklist references are reachable:")
+        print(f"  - {bl_bed}")
+        print(f"  - {bl_idx}")
+        print("If VPC-SC blocks copying, you can point Stage02 JSON directly to these URLs.")
+    except subprocess.CalledProcessError:
+        pass
     sys.exit(1)
 
 print("GCS input checks: OK")

@@ -16,7 +16,7 @@ fi
 WF_ID="$1"
 CALL_NAME="${2:-}"
 
-metadata="$(curl -sS "http://localhost:8094/api/workflows/v1/${WF_ID}/metadata?includeKey=callRoot" || true)"
+metadata="$(curl -sS "http://localhost:8094/api/workflows/v1/${WF_ID}/metadata" || true)"
 if [ -z "${metadata}" ]; then
   echo "ERROR: empty metadata response for ${WF_ID}"
   exit 1

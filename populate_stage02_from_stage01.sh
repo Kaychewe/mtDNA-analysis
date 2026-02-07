@@ -66,7 +66,12 @@ fi
 
 # Try to derive sample name from list files if stage01 JSON is still REPLACE_ME.
 fallback_sample_name=""
-list_dir="${LIST_DIR:-${PROJECT_ROOT:-.}/mtDNA_v25_pilot_5}"
+list_dir=""
+if [ -n "${LIST_DIR:-}" ] && [ -d "${LIST_DIR}" ]; then
+  list_dir="${LIST_DIR}"
+else
+  list_dir="${PROJECT_ROOT:-.}/mtDNA_v25_pilot_5"
+fi
 if [ -d "${list_dir}" ]; then
   sample_list_file="$(ls -1 "${list_dir}"/sample_list*.txt 2>/dev/null | sort | head -n 1 || true)"
   if [ -n "${sample_list_file}" ] && [ -f "${sample_list_file}" ]; then
@@ -99,6 +104,11 @@ if not sample_name or "REPLACE_ME" in str(sample_name):
     sample_name = outputs.get("outputs", {}).get("StageSubsetBamToChrMAndRevert.sample_name", "") or sample_name
 if not sample_name or "REPLACE_ME" in str(sample_name):
     sample_name = "${fallback_sample_name}" or sample_name
+if output_bam and isinstance(output_bam, str):
+    # Derive from output_bam filename if possible (e.g., 1000000.proc.bam)
+    base = output_bam.rsplit("/", 1)[-1]
+    if base.endswith(".proc.bam"):
+        sample_name = base.replace(".proc.bam", "")
 
 def replace_if_missing(key, value):
     current = data.get(key, "")

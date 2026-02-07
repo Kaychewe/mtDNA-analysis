@@ -6,13 +6,18 @@ set -e
 # - workflowInputs: stage01_subset_bam.json
 # - workflowDependencies: wdl_deps.zip (if present)
 
+ROOT_DIR="${PROJECT_ROOT:-$(cd "$(dirname "$0")" && pwd)}"
+WDL_PATH="${ROOT_DIR}/stage01_subset_bam.wdl"
+JSON_PATH="${ROOT_DIR}/stage01_subset_bam.json"
+DEPS_PATH="${ROOT_DIR}/wdl_deps.zip"
+
 DEPS_ARG=()
-if [ -f "wdl_deps.zip" ]; then
-  DEPS_ARG=(-F workflowDependencies=@/home/jupyter/workspaces/mtdnaheteroplasmyandaginganalysis/mtDNA-analysis/wdl_deps.zip)
+if [ -f "$DEPS_PATH" ]; then
+  DEPS_ARG=(-F workflowDependencies=@"$DEPS_PATH")
 fi
 
-curl -X POST "http://localhost:8094/api/workflows/v1" \
+curl -sS -X POST "http://localhost:8094/api/workflows/v1" \
   -H "accept: application/json" \
-  -F workflowSource=@/home/jupyter/workspaces/mtdnaheteroplasmyandaginganalysis/mtDNA-analysis/stage01_subset_bam.wdl \
-  -F workflowInputs=@/home/jupyter/workspaces/mtdnaheteroplasmyandaginganalysis/mtDNA-analysis/stage01_subset_bam.json \
+  -F workflowSource=@"$WDL_PATH" \
+  -F workflowInputs=@"$JSON_PATH" \
   "${DEPS_ARG[@]}"

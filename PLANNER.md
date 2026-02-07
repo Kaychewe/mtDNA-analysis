@@ -136,6 +136,36 @@ Merged batch outputs (from `MergeMitoMultiSampleOutputsInternal`):
 
 This planner will be updated as we refactor.
 
+## Stage Roadmap (Stage03+)
+
+**Stage03 ProduceSelfReferenceFiles**
+- WDL: `stage03_self_reference.wdl` (new)
+- Inputs: Stage02 outputs (`out_vcf`, `split_vcf`, `nuc_vcf`, `input_vcf_for_haplochecker`), references (`ref_fasta`, `ref_dict`, `mt_fasta`, `mt_dict`), intervals, blacklist, `haplocheck.zip`.
+- Outputs: `self_reference_fasta`, `reference_to_self_ref_chain`, `self_control_region_shifted`, `self_non_control_region`, `self_ref_vcf` + index, `self_ref_split_vcf` + index, `liftover_fix_pipeline_log`.
+- Diagnostics: confirm Stage02 outputs exist on GCS, validate required reference inputs, verify haplocheck zip exists in workspace bucket.
+
+**Stage04 AlignAndCallR2**
+- WDL: `stage04_align_call_r2.wdl` (new)
+- Inputs: Stage03 self-reference outputs, Stage01 subset bam/bai, intervals (self control/non-control), references, blacklist.
+- Outputs: `self_mt_aligned_bam` + bai, `self_ref_vcf` + index, `self_ref_split_vcf` + index, R2 stats/metrics.
+- Diagnostics: confirm self-reference files exist, confirm GATK docker available.
+
+**Stage05 Liftover**
+- WDL: `stage05_liftover.wdl` (new)
+- Inputs: Stage04 VCFs, `reference_to_self_ref_chain`, reference/mt dicts, `HailLiftover`, `CheckVariantBoundsScript`, `CheckHomOverlapScript`.
+- Outputs: `final_vcf`, `final_rejected_vcf`, liftover stats counters, `nuc_variants_pass`.
+- Diagnostics: confirm HailLiftover jar and scripts exist, confirm bcftools bundle availability if required by liftover steps.
+
+**Stage06 Merge**
+- WDL: `stage06_merge.wdl` (new)
+- Inputs: per-sample final outputs, `MergePerBatch`, `coverage_paths.tsv`, `vcf_paths.tsv`.
+- Outputs: `batch_merged_mt_coverage.tsv.bgz`, `batch_merged_mt_calls.vcf.bgz`, `batch_analysis_statistics.tsv`.
+- Diagnostics: confirm bgzip/tabix availability (bcftools bundle), confirm paths files are populated.
+
+**Stage Scripts and Reuse**
+- For each stage: add `populate_stageXX_from_stageYY.sh`, `submit_stageXX.sh`, and `diagnose_stageXX.sh`.
+- Add `--reuse-stageXX <workflow_id>` flags to `main_workflow.sh` so later stages can run without re-submitting earlier stages.
+
 ## Tooling/Docker Comparison (mtDNA vs long-read-pipelines 4.0.9)
 
 Goal: identify stable, current container sources and align the mtDNA workflow to a maintained image set without changing outputs.

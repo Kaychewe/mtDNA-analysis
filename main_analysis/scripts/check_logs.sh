@@ -16,13 +16,11 @@ fi
 WF_ID="$1"
 CALL_NAME="${2:-}"
 
-metadata="$(curl -s "http://localhost:8094/api/workflows/v1/${WF_ID}/metadata")"
-
-python3 - <<PY
+curl -s "http://localhost:8094/api/workflows/v1/${WF_ID}/metadata?includeKey=callRoot" | python3 - "$CALL_NAME" <<'PY'
 import json, sys
 
-data = json.loads("""${metadata}""")
-call_name = "${CALL_NAME}"
+data = json.load(sys.stdin)
+call_name = sys.argv[1] if len(sys.argv) > 1 else ""
 
 def print_call(call_key, call):
     call_root = call.get("callRoot", "")

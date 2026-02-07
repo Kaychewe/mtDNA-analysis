@@ -72,6 +72,9 @@ fi
 log "Populating Stage 02 inputs from Stage 01 outputs."
 bash "${PROJECT_ROOT}/populate_stage02_from_stage01.sh" "$wf_id" "${PROJECT_ROOT}/stage02_align_call_r1.json"
 
+log "Running Stage 02 diagnostics."
+bash "${PROJECT_ROOT}/main_analysis/scripts/diagnose_stage02.sh"
+
 log "Submitting Stage 02 workflow."
 wf_id_stage02="$(bash "${PROJECT_ROOT}/submit_stage02.sh")"
 wf_id_stage02="$(echo "$wf_id_stage02" | python3 -c 'import json,sys

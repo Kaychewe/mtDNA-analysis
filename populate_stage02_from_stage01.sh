@@ -48,13 +48,13 @@ mt_interval_list_default="${MT_INTERVAL_LIST_DEFAULT:-gs://gcp-public-data--broa
 
 if [ -n "${WORKSPACE_BUCKET:-}" ]; then
   nuc_interval_list_default="${NUC_INTERVAL_LIST_DEFAULT:-${WORKSPACE_BUCKET}/intervals/NUMTv3_all385.hg38.interval_list}"
-  blacklist_sites_default="${BLACKLIST_SITES_DEFAULT:-${WORKSPACE_BUCKET}/intervals/blacklist_sites.hg38.chrM.bed}"
-  blacklist_sites_index_default="${BLACKLIST_SITES_INDEX_DEFAULT:-${WORKSPACE_BUCKET}/intervals/blacklist_sites.hg38.chrM.bed.idx}"
+  blacklist_sites_default="${BLACKLIST_SITES_DEFAULT:-gs://gcp-public-data--broad-references/hg38/v0/chrM/blacklist_sites.hg38.chrM.bed}"
+  blacklist_sites_index_default="${BLACKLIST_SITES_INDEX_DEFAULT:-gs://gcp-public-data--broad-references/hg38/v0/chrM/blacklist_sites.hg38.chrM.bed.idx}"
   haplocheck_zip_default="${HAPLOCHECK_ZIP_DEFAULT:-${WORKSPACE_BUCKET}/haplocheck.zip}"
 else
   nuc_interval_list_default="${NUC_INTERVAL_LIST_DEFAULT:-gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/intervals/NUMTv3_all385.hg38.interval_list}"
-  blacklist_sites_default="${BLACKLIST_SITES_DEFAULT:-gs://REPLACE_ME/blacklist_sites.hg38.chrM.bed}"
-  blacklist_sites_index_default="${BLACKLIST_SITES_INDEX_DEFAULT:-gs://REPLACE_ME/blacklist_sites.hg38.chrM.bed.idx}"
+  blacklist_sites_default="${BLACKLIST_SITES_DEFAULT:-gs://gcp-public-data--broad-references/hg38/v0/chrM/blacklist_sites.hg38.chrM.bed}"
+  blacklist_sites_index_default="${BLACKLIST_SITES_INDEX_DEFAULT:-gs://gcp-public-data--broad-references/hg38/v0/chrM/blacklist_sites.hg38.chrM.bed.idx}"
   haplocheck_zip_default="${HAPLOCHECK_ZIP_DEFAULT:-gs://REPLACE_ME/haplocheck.zip}"
 fi
 

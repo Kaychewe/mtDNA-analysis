@@ -3,7 +3,7 @@ set -euo pipefail
 
 MAIN_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 CONFIG_FILE="${MAIN_DIR}/config/run.env"
-COMMON_SH_VERSION="2026-02-07.v1"
+COMMON_SH_VERSION="2026-02-07.v2"
 
 log() {
   echo "[$(date +"%Y-%m-%d %H:%M:%S")] $*"
@@ -149,15 +149,13 @@ populate_stage01_json() {
 submit_stage01() {
   local resp wf_id
   resp="$(bash "${PROJECT_ROOT}/submit_stage01.sh" 2>&1 || true)"
-  wf_id="$(python3 - <<'PY' <<<"$resp"
-import json, sys
+  wf_id="$(python3 -c 'import json,sys
 try:
     data = json.load(sys.stdin)
-    print(data.get("id", ""))
+    print(data.get("id",""))
 except Exception:
     print("")
-PY
-)"
+' <<<"$resp")"
   if [ "${DEBUG:-0}" = "1" ]; then
     log "Submit response JSON: ${resp}"
     log "Parsed workflow ID: ${wf_id:-<empty>}"
@@ -175,15 +173,13 @@ watch_status() {
   while true; do
     local status_json status
     status_json="$(curl -s "http://localhost:8094/api/workflows/v1/${wf_id}/status")"
-    status="$(python3 - <<'PY' <<<"$status_json"
-import json, sys
+    status="$(python3 -c 'import json,sys
 try:
     data = json.load(sys.stdin)
-    print(data.get("status", ""))
+    print(data.get("status",""))
 except Exception:
     print("")
-PY
-)"
+' <<<"$status_json")"
     log "Status: ${status}"
     if [ "$status" = "Succeeded" ] || [ "$status" = "Failed" ] || [ "$status" = "Aborted" ]; then
       break

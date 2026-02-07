@@ -85,6 +85,8 @@ mean_cov = get_out("StageSubsetBamToChrMAndRevert.mean_coverage")
 with open("${stage01_json}", "r", encoding="utf-8") as fh:
     s1 = json.load(fh)
 sample_name = s1.get("StageSubsetBamToChrMAndRevert.sample_name", "")
+if not sample_name or "REPLACE_ME" in str(sample_name):
+    sample_name = outputs.get("outputs", {}).get("StageSubsetBamToChrMAndRevert.sample_name", "") or sample_name
 
 def replace_if_missing(key, value):
     current = data.get(key, "")
@@ -93,7 +95,7 @@ def replace_if_missing(key, value):
 
 data["StageAlignAndCallR1.input_bam"] = output_bam or data.get("StageAlignAndCallR1.input_bam", "")
 data["StageAlignAndCallR1.input_bai"] = output_bai or data.get("StageAlignAndCallR1.input_bai", "")
-if sample_name:
+if sample_name and "REPLACE_ME" not in str(sample_name):
     data["StageAlignAndCallR1.sample_name"] = sample_name
 if isinstance(mean_cov, (int, float)):
     data["StageAlignAndCallR1.mt_mean_coverage"] = int(mean_cov)

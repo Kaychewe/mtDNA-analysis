@@ -30,7 +30,7 @@ fi
 
 log "Checking Stage 02 inputs for REPLACE_ME placeholders."
 if grep -q "REPLACE_ME" "${STAGE02_JSON}"; then
-  die "Stage 02 JSON contains REPLACE_ME placeholders."
+  die "Stage 02 JSON contains REPLACE_ME placeholders. Run populate_stage02_from_stage01.sh first."
 fi
 
 log "Checking required GCS inputs in Stage 02 JSON (gsutil stat)."

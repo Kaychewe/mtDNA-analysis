@@ -2,13 +2,18 @@
 
 
 DEBUG=0
+REUSE_STAGE01=""
 for arg in "$@"; do
   case "$arg" in
     --debug)
       DEBUG=1
       ;;
+    --reuse-stage01)
+      shift
+      REUSE_STAGE01="${1:-}"
+      ;;
     --help|-h)
-      echo "Usage: $(basename "$0") [--debug]"
+      echo "Usage: $(basename "$0") [--debug] [--reuse-stage01 <workflow_id>]"
       exit 0
       ;;
   esac
@@ -29,23 +34,28 @@ make_run_dir
 check_cromwell
 ensure_wdl_deps
 
-list_dir="${LIST_DIR}"
-if [ ! -d "$list_dir" ]; then
-  log "List directory not found: ${list_dir}. Falling back to PROJECT_ROOT."
-  list_dir="${PROJECT_ROOT}"
+if [ -n "$REUSE_STAGE01" ]; then
+  wf_id="$REUSE_STAGE01"
+  log "Reusing Stage 01 workflow ID: ${wf_id}"
+else
+  list_dir="${LIST_DIR}"
+  if [ ! -d "$list_dir" ]; then
+    log "List directory not found: ${list_dir}. Falling back to PROJECT_ROOT."
+    list_dir="${PROJECT_ROOT}"
+  fi
+
+  log "Populating Stage 01 inputs from list files in ${list_dir}."
+  populate_stage01_json "$list_dir"
+
+  log "Submitting Stage 01 workflow."
+  wf_id="$(submit_stage01)"
+  log "Stage 01 submitted: ${wf_id}"
+  log "Workflow status URL: http://localhost:8094/api/workflows/v1/${wf_id}/status"
+  log "Workflow metadata URL: http://localhost:8094/api/workflows/v1/${wf_id}/metadata"
+
+  watch_status "$wf_id"
+  log "Stage 01 complete."
 fi
-
-log "Populating Stage 01 inputs from list files in ${list_dir}."
-populate_stage01_json "$list_dir"
-
-log "Submitting Stage 01 workflow."
-wf_id="$(submit_stage01)"
-log "Stage 01 submitted: ${wf_id}"
-log "Workflow status URL: http://localhost:8094/api/workflows/v1/${wf_id}/status"
-log "Workflow metadata URL: http://localhost:8094/api/workflows/v1/${wf_id}/metadata"
-
-watch_status "$wf_id"
-log "Stage 01 complete."
 
 stage01_status="$(curl -s "http://localhost:8094/api/workflows/v1/${wf_id}/status" | python3 -c 'import json,sys
 try:

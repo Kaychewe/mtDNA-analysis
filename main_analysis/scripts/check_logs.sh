@@ -16,10 +16,21 @@ fi
 WF_ID="$1"
 CALL_NAME="${2:-}"
 
-curl -s "http://localhost:8094/api/workflows/v1/${WF_ID}/metadata?includeKey=callRoot" | python3 - "$CALL_NAME" <<'PY'
+metadata="$(curl -sS "http://localhost:8094/api/workflows/v1/${WF_ID}/metadata?includeKey=callRoot" || true)"
+if [ -z "${metadata}" ]; then
+  echo "ERROR: empty metadata response for ${WF_ID}"
+  exit 1
+fi
+
+echo "${metadata}" | python3 - "$CALL_NAME" <<'PY'
 import json, sys
 
-data = json.load(sys.stdin)
+try:
+    data = json.load(sys.stdin)
+except Exception as exc:
+    print("ERROR: failed to parse metadata JSON:", exc)
+    sys.exit(1)
+
 call_name = sys.argv[1] if len(sys.argv) > 1 else ""
 
 def print_call(call_key, call):

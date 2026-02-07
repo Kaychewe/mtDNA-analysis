@@ -31,9 +31,7 @@ if [ "${http_code}" != "200" ]; then
   exit 1
 fi
 
-printf '%s' "${metadata}" | python3 - "$CALL_NAME" <<'PY'
-import json, sys
-
+CALL_NAME="${CALL_NAME}" python3 -c 'import json, os, sys
 raw = sys.stdin.read()
 try:
     data = json.loads(raw)
@@ -43,7 +41,7 @@ except Exception as exc:
     print("Response length:", len(raw))
     sys.exit(1)
 
-call_name = sys.argv[1] if len(sys.argv) > 1 else ""
+call_name = os.environ.get("CALL_NAME", "")
 
 def print_call(call_key, call):
     call_root = call.get("callRoot", "")
@@ -52,11 +50,9 @@ def print_call(call_key, call):
 
 calls = data.get("calls", {}) or {}
 if call_name:
-    # direct match
     if call_name in calls and calls[call_name]:
         print_call(call_name, calls[call_name][0])
         sys.exit(0)
-    # try suffix match for subworkflow calls
     for k, v in calls.items():
         if k.endswith(call_name) and v:
             print_call(k, v[0])
@@ -66,4 +62,4 @@ else:
     for k, v in calls.items():
         if v:
             print_call(k, v[0])
-PY
+' <<<"${metadata}"

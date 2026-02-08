@@ -47,6 +47,7 @@ if [ ! -f "$stage02_json" ]; then
   echo "Missing Stage 02 JSON for defaults: $stage02_json"
   exit 1
 fi
+echo "Using Stage 02 JSON: ${stage02_json}"
 
 suffix_default="${SELF_REF_SUFFIX_DEFAULT:-.self.ref}"
 reference_name_default="${REFERENCE_NAME_DEFAULT:-reference}"
@@ -72,8 +73,11 @@ bcftools_docker_default="${BCFTOOLS_DOCKER_DEFAULT:-${genomes_cloud_default}}"
 
 outputs_tmp="$(mktemp)"
 curl -sS "http://localhost:8094/api/workflows/v1/${WF_ID}/outputs" -o "${outputs_tmp}" || true
+if [ ! -s "${outputs_tmp}" ] || ! grep -q '"outputs"' "${outputs_tmp}"; then
+  curl -sS "http://localhost:8094/api/workflows/v1/${WF_ID}/metadata?includeKey=outputs" -o "${outputs_tmp}" || true
+fi
 if [ ! -s "${outputs_tmp}" ]; then
-  echo "ERROR: empty outputs response for workflow ${WF_ID}"
+  echo "ERROR: empty outputs/metadata response for workflow ${WF_ID}"
   rm -f "${outputs_tmp}"
   exit 1
 fi

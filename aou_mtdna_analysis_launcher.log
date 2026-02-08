@@ -1,0 +1,36 @@
+[2026-02-08 18:34:21] Defining parameters.
+[2026-02-08 18:34:21] Cleaning prior run artifacts.
+[2026-02-08 18:34:21] Checking for running Cromwell.
+[2026-02-08 18:34:22] Cleaning Cromwell DB lock/tmp if no Cromwell is running.
+[2026-02-08 18:34:22] Batch location resolved to: us-central1
+[2026-02-08 18:34:22] VPC subnetwork resolved to: projects/terra-vpc-sc-17dda7e1/regions/us-central1/subnetworks/subnetwork
+[2026-02-08 18:34:22] Writing Cromwell Batch config template.
+[2026-02-08 18:34:22] Rendering Cromwell Batch config at cromwell.batch.conf.
+[2026-02-08 18:34:22] Dependency already installed: pyhocon.
+[2026-02-08 18:34:22] mtSwirl repo already present, skipping clone.
+[2026-02-08 18:34:22] File already present, skipping download: scatterWrapper_MitoPipeline_v2_5.wdl
+[2026-02-08 18:34:22] File already present, skipping download: check_variant_bounds.R
+[2026-02-08 18:34:22] File already present, skipping download: compatibilify_fa_intervals_consensus.R
+[2026-02-08 18:34:22] File already present, skipping download: jsontools.py
+[2026-02-08 18:34:22] File already present, skipping download: merge_per_batch.py
+[2026-02-08 18:34:22] File already present, skipping download: check_overlapping_homoplasmies.R
+[2026-02-08 18:34:22] File already present, skipping download: fix_liftover.py
+[2026-02-08 18:34:22] Downloading NUMTv3_all385.hg38.interval_list
+[2026-02-08 18:34:23] Downloading input_allofus.json
+[2026-02-08 18:34:23] Downloading haplocheck.zip
+[2026-02-08 18:34:24] Downloading cromwell-91.jar
+[2026-02-08 18:34:27] Downloading womtool-91.jar
+[2026-02-08 18:34:36] sdkman already installed.
+[2026-02-08 18:35:06] Preparing filesystem at mtDNA_v25_pilot_5.
+[2026-02-08 18:35:06] Munging inputs and preparing Cromwell submission scripts.
+[2026-02-08 18:35:06] WDL in use: /home/jupyter/workspaces/mtdnaheteroplasmyandaginganalysis/mtDNA-analysis/scatterWrapper_MitoPipeline_v2_5.wdl
+[2026-02-08 18:35:06] WDL sha256: bd0182a77c2bcc740c503935ceb559b03d1f779154f0241b1b3aa0bb5afeae46
+[2026-02-08 18:35:17] Munge/prepare step complete.
+[2026-02-08 18:35:17] Launching Cromwell server (Batch config) in background.
+[2026-02-08 18:37:47] Server started.
+[2026-02-08 18:37:47] Here is the tail of the current stdout.log. Examine this to make sure the server is running:
+[2026-02-08 18:37:47] Run cromwell_submission_script_batch.sh to submit the desired jobs.
+[2026-02-08 18:37:47] Run the following command to track the progress of the various runs:
+[2026-02-08 18:37:47] We have outputted this command in check_workflow_status.sh.
+[2026-02-08 18:37:47] Preparing compile_paths.sh for post-run uploads.
+[2026-02-08 18:37:47] compile_paths.sh written.

@@ -3,7 +3,10 @@ set -euo pipefail
 
 usage() {
   cat <<'USAGE'
-Usage: populate_stage03_from_stage02.sh <stage02_workflow_id> [output_json]
+Usage:
+  populate_stage03_from_stage02.sh <stage02_workflow_id> [output_json]
+  populate_stage03_from_stage02.sh --mtdna-vcf <gs://...split.vcf> \
+    --nuc-vcf <gs://...split_nuc.vcf> [--sample-name <id>] [output_json]
 
 Populates stage03_produce_self_reference.json using Stage 02 outputs:
   - split_vcf (mtDNA variants)
@@ -29,13 +32,51 @@ if [ "${1:-}" = "--help" ] || [ "${1:-}" = "-h" ]; then
   exit 0
 fi
 
-if [ -z "${1:-}" ]; then
+WF_ID=""
+mtdna_vcf_override=""
+nuc_vcf_override=""
+sample_name_override=""
+out_json="stage03_produce_self_reference.json"
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --mtdna-vcf)
+      mtdna_vcf_override="${2:-}"
+      shift 2
+      ;;
+    --nuc-vcf)
+      nuc_vcf_override="${2:-}"
+      shift 2
+      ;;
+    --sample-name)
+      sample_name_override="${2:-}"
+      shift 2
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    -*)
+      echo "Unknown option: $1"
+      usage
+      exit 1
+      ;;
+    *)
+      if [ -z "${WF_ID}" ] && [ -z "${mtdna_vcf_override}" ] && [ -z "${nuc_vcf_override}" ]; then
+        WF_ID="$1"
+      else
+        out_json="$1"
+      fi
+      shift
+      ;;
+  esac
+done
+
+if [ -z "${WF_ID}" ] && { [ -z "${mtdna_vcf_override}" ] || [ -z "${nuc_vcf_override}" ]; }; then
+  echo "ERROR: provide a workflow ID or both --mtdna-vcf and --nuc-vcf."
   usage
   exit 1
 fi
-
-WF_ID="$1"
-out_json="${2:-stage03_produce_self_reference.json}"
 
 if [ ! -f "$out_json" ]; then
   echo "Missing output JSON template: $out_json"
@@ -72,14 +113,18 @@ ucsc_docker_default="${UCSC_DOCKER_DEFAULT:-quay.io/biocontainers/ucsc-bedgrapht
 bcftools_docker_default="${BCFTOOLS_DOCKER_DEFAULT:-${genomes_cloud_default}}"
 
 outputs_tmp="$(mktemp)"
-curl -sS "http://localhost:8094/api/workflows/v1/${WF_ID}/outputs" -o "${outputs_tmp}" || true
-if [ ! -s "${outputs_tmp}" ] || ! grep -q '"outputs"' "${outputs_tmp}"; then
-  curl -sS "http://localhost:8094/api/workflows/v1/${WF_ID}/metadata?includeKey=outputs" -o "${outputs_tmp}" || true
-fi
-if [ ! -s "${outputs_tmp}" ]; then
-  echo "ERROR: empty outputs/metadata response for workflow ${WF_ID}"
-  rm -f "${outputs_tmp}"
-  exit 1
+if [ -n "${WF_ID}" ]; then
+  curl -sS "http://localhost:8094/api/workflows/v1/${WF_ID}/outputs" -o "${outputs_tmp}" || true
+  if [ ! -s "${outputs_tmp}" ] || ! grep -q '"outputs"' "${outputs_tmp}"; then
+    curl -sS "http://localhost:8094/api/workflows/v1/${WF_ID}/metadata?includeKey=outputs" -o "${outputs_tmp}" || true
+  fi
+  if [ ! -s "${outputs_tmp}" ]; then
+    echo "ERROR: empty outputs/metadata response for workflow ${WF_ID}"
+    rm -f "${outputs_tmp}"
+    exit 1
+  fi
+else
+  echo '{"outputs": {}}' > "${outputs_tmp}"
 fi
 
 python3 - <<PY
@@ -106,13 +151,20 @@ def replace_if_missing(key, value):
 mtdna_variants = get_out("StageAlignAndCallR1.split_vcf")
 nuc_variants = get_out("StageAlignAndCallR1.split_nuc_vcf")
 
+override_mtdna = "${mtdna_vcf_override}"
+override_nuc = "${nuc_vcf_override}"
+if override_mtdna:
+    mtdna_variants = override_mtdna
+if override_nuc:
+    nuc_variants = override_nuc
+
 if mtdna_variants:
     data["StageProduceSelfReferenceFiles.mtdna_variants"] = mtdna_variants
 if nuc_variants:
     data["StageProduceSelfReferenceFiles.nuc_variants"] = nuc_variants
 
 # Sample name
-sample_name = s2.get("StageAlignAndCallR1.sample_name", "")
+sample_name = "${sample_name_override}" or s2.get("StageAlignAndCallR1.sample_name", "")
 if (not sample_name) or ("REPLACE_ME" in str(sample_name)):
     if mtdna_variants:
         base = mtdna_variants.rsplit("/", 1)[-1]

@@ -70,13 +70,20 @@ gotc_docker_default="${GOTC_DOCKER_DEFAULT:-${genomes_cloud_default}}"
 ucsc_docker_default="${UCSC_DOCKER_DEFAULT:-quay.io/biocontainers/ucsc-bedgraphtobigwig:377--h73cb82a_3}"
 bcftools_docker_default="${BCFTOOLS_DOCKER_DEFAULT:-${genomes_cloud_default}}"
 
-outputs_json="$(curl -s "http://localhost:8094/api/workflows/v1/${WF_ID}/outputs")"
+outputs_tmp="$(mktemp)"
+curl -sS "http://localhost:8094/api/workflows/v1/${WF_ID}/outputs" -o "${outputs_tmp}" || true
+if [ ! -s "${outputs_tmp}" ]; then
+  echo "ERROR: empty outputs response for workflow ${WF_ID}"
+  rm -f "${outputs_tmp}"
+  exit 1
+fi
 
 python3 - <<PY
 import json
 import sys
 
-outputs = json.loads("""${outputs_json}""")
+with open("${outputs_tmp}", "r", encoding="utf-8") as fh:
+    outputs = json.load(fh)
 with open("${out_json}", "r", encoding="utf-8") as fh:
     data = json.load(fh)
 with open("${stage02_json}", "r", encoding="utf-8") as fh:
@@ -148,3 +155,5 @@ print("  mtdna_variants:", mtdna_variants)
 print("  nuc_variants:", nuc_variants)
 print("  sample_name:", sample_name)
 PY
+
+rm -f "${outputs_tmp}"

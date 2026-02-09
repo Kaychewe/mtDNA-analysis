@@ -81,11 +81,41 @@ fi
 
 outputs_json="$(curl -s "http://localhost:8094/api/workflows/v1/${WF_ID}/outputs")"
 
+need_gcs_fallback=0
+if [ -z "${outputs_json}" ]; then
+  need_gcs_fallback=1
+fi
+if echo "${outputs_json}" | grep -q "Unrecognized workflow ID"; then
+  need_gcs_fallback=1
+fi
+
+output_bam_override=""
+output_bai_override=""
+mean_cov_override=""
+if [ "${need_gcs_fallback}" -eq 1 ]; then
+  if [ -z "${WORKSPACE_BUCKET:-}" ]; then
+    echo "ERROR: Cromwell outputs unavailable and WORKSPACE_BUCKET is not set."
+    exit 1
+  fi
+  gcs_out="${WORKSPACE_BUCKET}/workflows/cromwell-executions/StageSubsetBamToChrMAndRevert/${WF_ID}/call-SubsetBamToChrMAndRevert/out"
+  output_bam_override="$(gsutil ls "${gcs_out}"/*.proc.bam 2>/dev/null | head -n 1 || true)"
+  output_bai_override="$(gsutil ls "${gcs_out}"/*.proc.bai 2>/dev/null | head -n 1 || true)"
+  mean_cov_override="$(gsutil cat "${gcs_out}"/*.mean_coverage.txt 2>/dev/null | head -n 1 || true)"
+fi
+
+OUTPUT_BAM_OVERRIDE="${output_bam_override}" \
+OUTPUT_BAI_OVERRIDE="${output_bai_override}" \
+MEAN_COV_OVERRIDE="${mean_cov_override}" \
 python3 - <<PY
 import json
 import sys
+import os
 
-outputs = json.loads("""${outputs_json}""")
+outputs = {}
+try:
+    outputs = json.loads("""${outputs_json}""")
+except Exception:
+    outputs = {}
 data = {}
 with open("${out_json}", "r", encoding="utf-8") as fh:
     data = json.load(fh)
@@ -96,6 +126,19 @@ def get_out(key):
 output_bam = get_out("StageSubsetBamToChrMAndRevert.output_bam")
 output_bai = get_out("StageSubsetBamToChrMAndRevert.output_bai")
 mean_cov = get_out("StageSubsetBamToChrMAndRevert.mean_coverage")
+
+output_bam_override = os.environ.get("OUTPUT_BAM_OVERRIDE", "")
+output_bai_override = os.environ.get("OUTPUT_BAI_OVERRIDE", "")
+mean_cov_override = os.environ.get("MEAN_COV_OVERRIDE", "")
+if output_bam_override:
+    output_bam = output_bam_override
+if output_bai_override:
+    output_bai = output_bai_override
+if mean_cov_override:
+    try:
+        mean_cov = float(mean_cov_override)
+    except Exception:
+        mean_cov = mean_cov_override
 
 with open("${stage01_json}", "r", encoding="utf-8") as fh:
     s1 = json.load(fh)

@@ -104,6 +104,20 @@ else
   check_overlap_default="${CHECK_HOM_OVERLAP_DEFAULT:-gs://REPLACE_ME/check_overlapping_homoplasmies.R}"
 fi
 
+# Reference defaults (fallback if Stage 02 JSON is missing or still REPLACE_ME)
+ref_fasta_default="${REF_FASTA_DEFAULT:-gs://gcp-public-data--broad-references/hg38/v0/Homo_sapiens_assembly38.fasta}"
+ref_fasta_index_default="${REF_FASTA_INDEX_DEFAULT:-gs://gcp-public-data--broad-references/hg38/v0/Homo_sapiens_assembly38.fasta.fai}"
+ref_dict_default="${REF_DICT_DEFAULT:-gs://gcp-public-data--broad-references/hg38/v0/Homo_sapiens_assembly38.dict}"
+mt_fasta_default="${MT_FASTA_DEFAULT:-gs://gcp-public-data--broad-references/hg38/v0/chrM/Homo_sapiens_assembly38.chrM.fasta}"
+mt_fasta_index_default="${MT_FASTA_INDEX_DEFAULT:-gs://gcp-public-data--broad-references/hg38/v0/chrM/Homo_sapiens_assembly38.chrM.fasta.fai}"
+mt_dict_default="${MT_DICT_DEFAULT:-gs://gcp-public-data--broad-references/hg38/v0/chrM/Homo_sapiens_assembly38.chrM.dict}"
+mt_interval_default="${MT_INTERVAL_DEFAULT:-gs://gcp-public-data--broad-references/hg38/v0/chrM/chrM.hg38.interval_list}"
+if [ -n "${WORKSPACE_BUCKET:-}" ]; then
+  nuc_interval_default="${NUC_INTERVAL_DEFAULT:-${WORKSPACE_BUCKET}/intervals/NUMTv3_all385.hg38.interval_list}"
+else
+  nuc_interval_default="${NUC_INTERVAL_DEFAULT:-gs://REPLACE_ME/NUMTv3_all385.hg38.interval_list}"
+fi
+
 # Docker defaults
 # Note: bcftools_docker is optional in the workflow; leave empty unless overridden.
 
@@ -201,6 +215,16 @@ if "StageProduceSelfReferenceFiles.bcftools_docker" in data and "REPLACE_ME" in 
 # compute_numt_coverage default
 if data.get("StageProduceSelfReferenceFiles.compute_numt_coverage") is None:
     data["StageProduceSelfReferenceFiles.compute_numt_coverage"] = False
+
+# Final fallback: if any reference/interval values still have REPLACE_ME, use defaults
+replace_if_missing("StageProduceSelfReferenceFiles.ref_fasta", "${ref_fasta_default}")
+replace_if_missing("StageProduceSelfReferenceFiles.ref_fasta_index", "${ref_fasta_index_default}")
+replace_if_missing("StageProduceSelfReferenceFiles.ref_dict", "${ref_dict_default}")
+replace_if_missing("StageProduceSelfReferenceFiles.mt_fasta", "${mt_fasta_default}")
+replace_if_missing("StageProduceSelfReferenceFiles.mt_fasta_index", "${mt_fasta_index_default}")
+replace_if_missing("StageProduceSelfReferenceFiles.mt_dict", "${mt_dict_default}")
+replace_if_missing("StageProduceSelfReferenceFiles.mt_interval_list", "${mt_interval_default}")
+replace_if_missing("StageProduceSelfReferenceFiles.nuc_interval_list", "${nuc_interval_default}")
 
 with open("${out_json}", "w", encoding="utf-8") as fh:
     json.dump(data, fh, indent=2)

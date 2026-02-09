@@ -98,10 +98,12 @@ if [ -n "${WORKSPACE_BUCKET:-}" ]; then
   fa_renaming_default="${FA_RENAMING_SCRIPT_DEFAULT:-${WORKSPACE_BUCKET}/code/compatibilify_fa_intervals_consensus.R}"
   check_bounds_default="${CHECK_VARIANT_BOUNDS_DEFAULT:-${WORKSPACE_BUCKET}/code/check_variant_bounds.R}"
   check_overlap_default="${CHECK_HOM_OVERLAP_DEFAULT:-${WORKSPACE_BUCKET}/code/check_overlapping_homoplasmies.R}"
+  bcftools_bundle_default="${BCFTOOLS_BUNDLE_DEFAULT:-${WORKSPACE_BUCKET}/tools/bcftools/bcftools-1.23-linux-x86_64.tar.gz}"
 else
   fa_renaming_default="${FA_RENAMING_SCRIPT_DEFAULT:-gs://REPLACE_ME/compatibilify_fa_intervals_consensus.R}"
   check_bounds_default="${CHECK_VARIANT_BOUNDS_DEFAULT:-gs://REPLACE_ME/check_variant_bounds.R}"
   check_overlap_default="${CHECK_HOM_OVERLAP_DEFAULT:-gs://REPLACE_ME/check_overlapping_homoplasmies.R}"
+  bcftools_bundle_default="${BCFTOOLS_BUNDLE_DEFAULT:-gs://REPLACE_ME/bcftools-1.23-linux-x86_64.tar.gz}"
 fi
 
 # Reference defaults (fallback if Stage 02 JSON is missing or still REPLACE_ME)
@@ -205,6 +207,7 @@ replace_if_missing("StageProduceSelfReferenceFiles.non_control_region_interval_l
 replace_if_missing("StageProduceSelfReferenceFiles.FaRenamingScript", "${fa_renaming_default}")
 replace_if_missing("StageProduceSelfReferenceFiles.CheckVariantBoundsScript", "${check_bounds_default}")
 replace_if_missing("StageProduceSelfReferenceFiles.CheckHomOverlapScript", "${check_overlap_default}")
+replace_if_missing("StageProduceSelfReferenceFiles.bcftools_bundle", "${bcftools_bundle_default}")
 replace_if_missing("StageProduceSelfReferenceFiles.genomes_cloud_docker", "${genomes_cloud_default}")
 replace_if_missing("StageProduceSelfReferenceFiles.gotc_docker", "${gotc_docker_default}")
 replace_if_missing("StageProduceSelfReferenceFiles.ucsc_docker", "${ucsc_docker_default}")

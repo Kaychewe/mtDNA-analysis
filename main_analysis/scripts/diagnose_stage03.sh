@@ -68,6 +68,7 @@ keys = [
     "StageProduceSelfReferenceFiles.FaRenamingScript",
     "StageProduceSelfReferenceFiles.CheckVariantBoundsScript",
     "StageProduceSelfReferenceFiles.CheckHomOverlapScript",
+    "StageProduceSelfReferenceFiles.bcftools_bundle",
 ]
 
 missing = []

@@ -63,6 +63,8 @@ workflow ProduceSelfReferenceFiles {
     File CheckVariantBoundsScript
     File CheckHomOverlapScript
 
+    File bcftools_bundle
+
     #Optional runtime arguments
     Int? preemptible_tries
     String genomes_cloud_docker
@@ -86,7 +88,8 @@ workflow ProduceSelfReferenceFiles {
     input:
       input_mt_vcf = mtdna_variants,
       sample_name = sample_name,
-      bcftools_docker = bcftools_docker
+      bcftools_docker = bcftools_docker,
+      bcftools_bundle = bcftools_bundle
   }
 
   call DetectMtOverlaps {
@@ -105,7 +108,8 @@ workflow ProduceSelfReferenceFiles {
       mt_vcf_gz = FilterMtVcf.filtered_mt_vcf_gz,
       mt_vcf_gz_tbi = FilterMtVcf.filtered_mt_vcf_gz_tbi,
       overlaps_vcf = DetectMtOverlaps.overlaps_vcf,
-      bcftools_docker = bcftools_docker
+      bcftools_docker = bcftools_docker,
+      bcftools_bundle = bcftools_bundle
   }
 
   call ValidateMtOverlaps {
@@ -131,7 +135,8 @@ workflow ProduceSelfReferenceFiles {
       sample_name = sample_name,
       nuc_vcf = nuc_variants,
       rejected_nuc_vcf = NucVariantBounds.rejected_nuc_vcf,
-      bcftools_docker = bcftools_docker
+      bcftools_docker = bcftools_docker,
+      bcftools_bundle = bcftools_bundle
   }
 
   call MtConsensus {
@@ -140,7 +145,8 @@ workflow ProduceSelfReferenceFiles {
       suffix = suffix,
       mt_fasta_renamed = PrepIntervalsAndRenamedFastas.mt_fasta_renamed,
       mt_vcf_gz = RemoveMtOverlaps.cleaned_mt_vcf_gz,
-      bcftools_docker = bcftools_docker
+      bcftools_docker = bcftools_docker,
+      bcftools_bundle = bcftools_bundle
   }
 
   call FinalizeMtFasta {
@@ -160,7 +166,8 @@ workflow ProduceSelfReferenceFiles {
       suffix = suffix,
       nuc_fasta_renamed = PrepIntervalsAndRenamedFastas.nuc_fasta_renamed,
       nuc_vcf_gz = FilterNucVcf.filtered_nuc_vcf_gz,
-      bcftools_docker = bcftools_docker
+      bcftools_docker = bcftools_docker,
+      bcftools_bundle = bcftools_bundle
   }
 
   call FinalizeNucFastas {
@@ -360,9 +367,14 @@ task FilterMtVcf {
     File input_mt_vcf
     String sample_name
     String bcftools_docker
+    File bcftools_bundle
   }
 
   command <<<
+    mkdir -p bcftools_bundle
+    tar -xzf "~{bcftools_bundle}" -C bcftools_bundle
+    export PATH="$PWD/bcftools_bundle/bin:$PATH"
+    export LD_LIBRARY_PATH="$PWD/bcftools_bundle/lib:${LD_LIBRARY_PATH}"
     bgzip -c "~{input_mt_vcf}" > filtered_mt.vcf.gz
     tabix filtered_mt.vcf.gz
     bcftools view -Oz -i 'FORMAT/AF>0.95' filtered_mt.vcf.gz > filtered_mt.homoplasmies.vcf.gz
@@ -418,9 +430,14 @@ task RemoveMtOverlaps {
     File mt_vcf_gz_tbi
     File overlaps_vcf
     String bcftools_docker
+    File bcftools_bundle
   }
 
   command <<<
+    mkdir -p bcftools_bundle
+    tar -xzf "~{bcftools_bundle}" -C bcftools_bundle
+    export PATH="$PWD/bcftools_bundle/bin:$PATH"
+    export LD_LIBRARY_PATH="$PWD/bcftools_bundle/lib:${LD_LIBRARY_PATH}"
     bgzip -c "~{overlaps_vcf}" > mt_overlaps_rm.vcf.gz
     tabix mt_overlaps_rm.vcf.gz
     bcftools isec "~{mt_vcf_gz}" mt_overlaps_rm.vcf.gz -p output_isec
@@ -510,9 +527,14 @@ task FilterNucVcf {
     File nuc_vcf
     File rejected_nuc_vcf
     String bcftools_docker
+    File bcftools_bundle
   }
 
   command <<<
+    mkdir -p bcftools_bundle
+    tar -xzf "~{bcftools_bundle}" -C bcftools_bundle
+    export PATH="$PWD/bcftools_bundle/bin:$PATH"
+    export LD_LIBRARY_PATH="$PWD/bcftools_bundle/lib:${LD_LIBRARY_PATH}"
     bgzip -c "~{nuc_vcf}" > input_nuc_vcf.gz && tabix input_nuc_vcf.gz
     bgzip -c "~{rejected_nuc_vcf}" > rejected_nuc.vcf.gz && tabix rejected_nuc.vcf.gz
     bcftools isec -p intersected_vcfs -Ov input_nuc_vcf.gz rejected_nuc.vcf.gz
@@ -542,11 +564,16 @@ task MtConsensus {
     File mt_fasta_renamed
     File mt_vcf_gz
     String bcftools_docker
+    File bcftools_bundle
   }
 
   String mt_chain = "reference_to_" + sample_name + ".chain"
 
   command <<<
+    mkdir -p bcftools_bundle
+    tar -xzf "~{bcftools_bundle}" -C bcftools_bundle
+    export PATH="$PWD/bcftools_bundle/bin:$PATH"
+    export LD_LIBRARY_PATH="$PWD/bcftools_bundle/lib:${LD_LIBRARY_PATH}"
     mkdir -p out
     bcftools consensus -f "~{mt_fasta_renamed}" -o mt_fasta_lifted.fasta -c "~{mt_chain}" "~{mt_vcf_gz}"
     mv "~{mt_chain}" "out/~{mt_chain}"
@@ -606,11 +633,16 @@ task NucConsensus {
     File nuc_fasta_renamed
     File nuc_vcf_gz
     String bcftools_docker
+    File bcftools_bundle
   }
 
   String nuc_chain = "reference_to_" + sample_name + "NucOnly.chain"
 
   command <<<
+    mkdir -p bcftools_bundle
+    tar -xzf "~{bcftools_bundle}" -C bcftools_bundle
+    export PATH="$PWD/bcftools_bundle/bin:$PATH"
+    export LD_LIBRARY_PATH="$PWD/bcftools_bundle/lib:${LD_LIBRARY_PATH}"
     mkdir -p out
     bcftools consensus -f "~{nuc_fasta_renamed}" -o nuc_fasta_lifted.fasta -c "~{nuc_chain}" "~{nuc_vcf_gz}"
     mv "~{nuc_chain}" "out/~{nuc_chain}"

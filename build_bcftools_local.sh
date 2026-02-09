@@ -82,15 +82,23 @@ cp "$ROOT_DIR/$SRC_DIR/htslib/tabix" "$PREFIX_DIR/bin/"
 
 # Collect shared libraries needed by bcftools/bgzip/tabix into bundle lib/
 mkdir -p "$PREFIX_DIR/lib"
+# Replace collect_libs() in build_bcftools_local.sh with this version
 collect_libs() {
   local bin="$1"
   ldd "$bin" | awk '/=> \// {print $3} /^\// {print $1}' | \
     grep -vE '/ld-linux|linux-vdso' | sort -u | while read -r lib; do
       if [ -f "$lib" ]; then
+        base="$(basename "$lib")"
+        case "$base" in
+          ld-linux*|libc.so*|libpthread.so*|libm.so*|librt.so*|libdl.so*|libgcc_s.so*|libstdc++.so*)
+            continue
+            ;;
+        esac
         cp -L "$lib" "$PREFIX_DIR/lib/"
       fi
     done
 }
+
 
 collect_libs "$PREFIX_DIR/bin/bcftools"
 collect_libs "$PREFIX_DIR/bin/bgzip"

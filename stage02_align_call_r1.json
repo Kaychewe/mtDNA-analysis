@@ -1,23 +1,18 @@
 {
-  "StageAlignAndCallR1.input_bam": "gs://REPLACE_ME/stage01.output.bam",
-  "StageAlignAndCallR1.input_bai": "gs://REPLACE_ME/stage01.output.bam.bai",
-  "StageAlignAndCallR1.sample_name": "REPLACE_ME_SAMPLE_ID",
-
-  "StageAlignAndCallR1.ref_fasta": "gs://REPLACE_ME/Homo_sapiens_assembly38.fasta",
-  "StageAlignAndCallR1.ref_fasta_index": "gs://REPLACE_ME/Homo_sapiens_assembly38.fasta.fai",
-  "StageAlignAndCallR1.ref_dict": "gs://REPLACE_ME/Homo_sapiens_assembly38.dict",
-
-  "StageAlignAndCallR1.mt_fasta": "gs://REPLACE_ME/Homo_sapiens_assembly38.chrM.fasta",
-  "StageAlignAndCallR1.mt_fasta_index": "gs://REPLACE_ME/Homo_sapiens_assembly38.chrM.fasta.fai",
-  "StageAlignAndCallR1.mt_dict": "gs://REPLACE_ME/Homo_sapiens_assembly38.chrM.dict",
+  "StageAlignAndCallR1.input_bam": "gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/workflows/cromwell-executions/StageSubsetBamToChrMAndRevert/458f1e9f-f886-47a5-9ac1-8dacb1ba21f3/call-SubsetBamToChrMAndRevert/out/1000000.proc.bam",
+  "StageAlignAndCallR1.input_bai": "gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/workflows/cromwell-executions/StageSubsetBamToChrMAndRevert/458f1e9f-f886-47a5-9ac1-8dacb1ba21f3/call-SubsetBamToChrMAndRevert/out/1000000.proc.bai",
+  "StageAlignAndCallR1.sample_name": "1000000",
+  "StageAlignAndCallR1.ref_fasta": "gs://gcp-public-data--broad-references/hg38/v0/Homo_sapiens_assembly38.fasta",
+  "StageAlignAndCallR1.ref_fasta_index": "gs://gcp-public-data--broad-references/hg38/v0/Homo_sapiens_assembly38.fasta.fai",
+  "StageAlignAndCallR1.ref_dict": "gs://gcp-public-data--broad-references/hg38/v0/Homo_sapiens_assembly38.dict",
+  "StageAlignAndCallR1.mt_fasta": "gs://gcp-public-data--broad-references/hg38/v0/chrM/Homo_sapiens_assembly38.chrM.fasta",
+  "StageAlignAndCallR1.mt_fasta_index": "gs://gcp-public-data--broad-references/hg38/v0/chrM/Homo_sapiens_assembly38.chrM.fasta.fai",
+  "StageAlignAndCallR1.mt_dict": "gs://gcp-public-data--broad-references/hg38/v0/chrM/Homo_sapiens_assembly38.chrM.dict",
   "StageAlignAndCallR1.blacklisted_sites": "gs://gcp-public-data--broad-references/hg38/v0/chrM/blacklist_sites.hg38.chrM.bed",
   "StageAlignAndCallR1.blacklisted_sites_index": "gs://gcp-public-data--broad-references/hg38/v0/chrM/blacklist_sites.hg38.chrM.bed.idx",
-
-  "StageAlignAndCallR1.nuc_interval_list": "gs://REPLACE_ME/NUMTv3_all385.hg38.interval_list",
-  "StageAlignAndCallR1.mt_interval_list": "gs://REPLACE_ME/chrM.hg38.interval_list",
-
-  "StageAlignAndCallR1.mt_mean_coverage": 0,
-
+  "StageAlignAndCallR1.nuc_interval_list": "gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/intervals/NUMTv3_all385.hg38.interval_list",
+  "StageAlignAndCallR1.mt_interval_list": "gs://gcp-public-data--broad-references/hg38/v0/chrM/chrM.hg38.interval_list",
+  "StageAlignAndCallR1.mt_mean_coverage": 1620,
   "StageAlignAndCallR1.use_haplotype_caller_nucdna": true,
   "StageAlignAndCallR1.hc_dp_lower_bound": 10,
   "StageAlignAndCallR1.gatk_override": null,
@@ -29,11 +24,9 @@
   "StageAlignAndCallR1.f_score_beta": null,
   "StageAlignAndCallR1.compress_output_vcf": false,
   "StageAlignAndCallR1.verifyBamID": null,
-
   "StageAlignAndCallR1.max_read_length": 151,
   "StageAlignAndCallR1.haplochecker_docker": "eclipse-temurin:17-jdk",
-  "StageAlignAndCallR1.haplocheck_zip": "gs://REPLACE_ME/haplocheck.zip",
-
+  "StageAlignAndCallR1.haplocheck_zip": "gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/haplocheck.zip",
   "StageAlignAndCallR1.preemptible_tries": null,
   "StageAlignAndCallR1.n_cpu": null
 }

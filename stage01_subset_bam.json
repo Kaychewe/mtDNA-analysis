@@ -1,24 +1,20 @@
 {
-  "StageSubsetBamToChrMAndRevert.wgs_aligned_input_bam_or_cram": "gs://REPLACE_ME/sample.cram",
-  "StageSubsetBamToChrMAndRevert.wgs_aligned_input_bam_or_cram_index": "gs://REPLACE_ME/sample.cram.crai",
-  "StageSubsetBamToChrMAndRevert.sample_name": "REPLACE_ME_SAMPLE_ID",
-
-  "StageSubsetBamToChrMAndRevert.mt_interval_list": "gs://REPLACE_ME/chrM.hg38.interval_list",
-  "StageSubsetBamToChrMAndRevert.nuc_interval_list": "gs://REPLACE_ME/NUMTv3_all385.hg38.interval_list",
-  "StageSubsetBamToChrMAndRevert.ref_fasta": "gs://REPLACE_ME/Homo_sapiens_assembly38.fasta",
-  "StageSubsetBamToChrMAndRevert.ref_fasta_index": "gs://REPLACE_ME/Homo_sapiens_assembly38.fasta.fai",
-  "StageSubsetBamToChrMAndRevert.ref_dict": "gs://REPLACE_ME/Homo_sapiens_assembly38.dict",
-
+  "StageSubsetBamToChrMAndRevert.wgs_aligned_input_bam_or_cram": "gs://fc-aou-datasets-controlled/pooled/wgs/cram/v8_delta/wgs_1000000.cram",
+  "StageSubsetBamToChrMAndRevert.wgs_aligned_input_bam_or_cram_index": "gs://fc-aou-datasets-controlled/pooled/wgs/cram/v8_delta/wgs_1000000.cram.crai",
+  "StageSubsetBamToChrMAndRevert.sample_name": "1000000",
+  "StageSubsetBamToChrMAndRevert.mt_interval_list": "gs://gcp-public-data--broad-references/hg38/v0/chrM/chrM.hg38.interval_list",
+  "StageSubsetBamToChrMAndRevert.nuc_interval_list": "gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/intervals/NUMTv3_all385.hg38.interval_list",
+  "StageSubsetBamToChrMAndRevert.ref_fasta": "gs://gcp-public-data--broad-references/hg38/v0/Homo_sapiens_assembly38.fasta",
+  "StageSubsetBamToChrMAndRevert.ref_fasta_index": "gs://gcp-public-data--broad-references/hg38/v0/Homo_sapiens_assembly38.fasta.fai",
+  "StageSubsetBamToChrMAndRevert.ref_dict": "gs://gcp-public-data--broad-references/hg38/v0/Homo_sapiens_assembly38.dict",
   "StageSubsetBamToChrMAndRevert.force_manual_download": false,
   "StageSubsetBamToChrMAndRevert.requester_pays_project": "terra-vpc-sc-17dda7e1",
   "StageSubsetBamToChrMAndRevert.max_read_length": 151,
   "StageSubsetBamToChrMAndRevert.skip_restore_hardclips": false,
   "StageSubsetBamToChrMAndRevert.printreads_extra_args": "",
-
   "StageSubsetBamToChrMAndRevert.gatk_version": "4.2.6.0",
   "StageSubsetBamToChrMAndRevert.gatk_override": null,
   "StageSubsetBamToChrMAndRevert.gatk_samtools_docker": "docker.io/broadinstitute/gatk:4.2.6.0",
-
   "StageSubsetBamToChrMAndRevert.printreads_mem": null,
   "StageSubsetBamToChrMAndRevert.n_cpu_subsetbam": null,
   "StageSubsetBamToChrMAndRevert.preemptible_tries": null

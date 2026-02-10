@@ -20,7 +20,7 @@
   "StageProduceSelfReferenceFiles.FaRenamingScript": "gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/code/compatibilify_fa_intervals_consensus.R",
   "StageProduceSelfReferenceFiles.CheckVariantBoundsScript": "gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/code/check_variant_bounds.R",
   "StageProduceSelfReferenceFiles.CheckHomOverlapScript": "gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/code/check_overlapping_homoplasmies.R",
-  "StageProduceSelfReferenceFiles.bcftools_bundle": "gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/tools/bcftools/bcftools-1.23-linux-x86_64.tar.gz",
+  "StageProduceSelfReferenceFiles.bcftools_bundle": "gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/tools/bcftools/bcftools-1.23-linux-x86_64.nolib.tar.gz",
   "StageProduceSelfReferenceFiles.genomes_cloud_docker": "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.2-1552931386",
   "StageProduceSelfReferenceFiles.bcftools_docker": "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.2-1552931386",
   "StageProduceSelfReferenceFiles.gotc_docker": "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.2-1552931386",

@@ -1,0 +1,3 @@
+{
+  "BcftoolsDockerSmokeTest.bcftools_docker": "quay.io/biocontainers/bcftools:1.17--h3cc50cf_1"
+}

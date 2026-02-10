@@ -91,8 +91,8 @@ if calls and isinstance(calls, list):
     call_root = calls[0].get("callRoot", "") or ""
 sample = data.get("DiagnosticChainSwapLiftover.input_target_name", "")
 if not data.get("DiagnosticChainSwapLiftover.source_chain") and call_root and sample:
-    candidate = f\"{call_root}/call-MtConsensus/out/reference_to_{sample}.chain\"
-    data[\"DiagnosticChainSwapLiftover.source_chain\"] = candidate
+    candidate = f"{call_root}/call-MtConsensus/out/reference_to_{sample}.chain"
+    data["DiagnosticChainSwapLiftover.source_chain"] = candidate
 
 with open("${out_json}", "w", encoding="utf-8") as fh:
     json.dump(data, fh, indent=2, sort_keys=True)

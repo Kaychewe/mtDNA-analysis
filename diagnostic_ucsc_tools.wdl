@@ -7,7 +7,7 @@ task CheckUCSCTools {
   }
 
   command <<<
-    set -euo pipefail
+
     echo "image=${ucsc_docker}" > report.txt
     for tool in chainSwap liftOver igvtools; do
       if command -v "$tool" >/dev/null 2>&1; then

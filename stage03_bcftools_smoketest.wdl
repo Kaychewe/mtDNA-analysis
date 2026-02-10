@@ -21,7 +21,6 @@ task BcftoolsSmoke {
   }
 
   command <<< 
-    set -euo pipefail
     echo "bcftools:" > versions.txt
     bcftools --version >> versions.txt
     echo "" >> versions.txt

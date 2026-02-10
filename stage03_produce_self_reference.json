@@ -21,7 +21,7 @@
   "StageProduceSelfReferenceFiles.CheckVariantBoundsScript": "gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/code/check_variant_bounds.R",
   "StageProduceSelfReferenceFiles.CheckHomOverlapScript": "gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/code/check_overlapping_homoplasmies.R",
   "StageProduceSelfReferenceFiles.genomes_cloud_docker": "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.2-1552931386",
-  "StageProduceSelfReferenceFiles.bcftools_docker": "quay.io/biocontainers/bcftools:1.17--h3cc50cf_1",
+  "StageProduceSelfReferenceFiles.bcftools_docker": "us.gcr.io/broad-dsp-lrma/lr-basic:latest",
   "StageProduceSelfReferenceFiles.gotc_docker": "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.2-1552931386",
   "StageProduceSelfReferenceFiles.ucsc_docker": "quay.io/biocontainers/ucsc-bedgraphtobigwig:377--h73cb82a_3",
   "StageProduceSelfReferenceFiles.preemptible_tries": null

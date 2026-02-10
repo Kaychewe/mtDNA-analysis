@@ -21,6 +21,19 @@ Scope: `scatterWrapper_MitoPipeline_v2_5.wdl` (workflow `MitochondriaPipelineWra
   - Fixes in progress:
     - Rebuild bcftools bundle without *any* shared libs in the tarball.
     - Patch `ProduceSelfReferenceFiles_v2_5_Single.wdl` to copy `ref_fasta_index` and `mt_fasta_index` next to localized FASTA before ExtractSequences.
+  - Additional findings (Feb 10):
+    - `bcftools_docker` from `genomes-in-the-cloud` image does NOT include bcftools (smoketest stderr: `bcftools: command not found`).
+    - `quay.io/biocontainers/bcftools:1.17--h3cc50cf_1` failed in Batch (likely blocked/registry pull in VPC-SC); no logs in GCS until delocalization succeeds.
+    - GCS logs sometimes missing for failed tasks; need Batch job logs via `gcloud batch jobs describe` and Cloud Logging (`resource.type="batch_task"`).
+    - Smoketest WDL + JSON + submit script added to quickly validate candidate docker images before re-running Stage03.
+
+## Current Status (AoU Jupyter)
+
+- Stage02 success: `d3e371d2-05ab-4412-919b-27f942a6a0f1`
+- Stage03 failed: `acc1dcf2-4afd-4a2e-8391-492954762a97` (FilterMtVcf stopped before completion)
+- bcftools docker smoketests:
+  - `f2c39184-6acd-43e4-922f-02cdb9a0933f` (quay bcftools image; no GCS logs, likely blocked pull)
+  - `fcc1c004-da4a-4855-9920-d530702fb0e8` (genomes-in-the-cloud image; stderr: `bcftools: command not found`)
 
 ## Entry Points
 
@@ -161,6 +174,7 @@ This planner will be updated as we refactor.
 - Inputs: Stage02 outputs (`out_vcf`, `split_vcf`, `nuc_vcf`, `input_vcf_for_haplochecker`), references (`ref_fasta`, `ref_dict`, `mt_fasta`, `mt_dict`), intervals, blacklist, `haplocheck.zip`.
 - Outputs: `self_reference_fasta`, `reference_to_self_ref_chain`, `self_control_region_shifted`, `self_non_control_region`, `self_ref_vcf` + index, `self_ref_split_vcf` + index, `liftover_fix_pipeline_log`.
 - Diagnostics: confirm Stage02 outputs exist on GCS, validate required reference inputs, verify haplocheck zip exists in workspace bucket.
+- Docker/tooling validation: run `stage03_bcftools_smoketest.wdl` against candidate image; require `bcftools/bgzip/tabix --version` to succeed before Stage03 submit.
 
 **Stage04 AlignAndCallR2**
 - WDL: `stage04_align_call_r2.wdl` (new)

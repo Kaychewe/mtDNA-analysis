@@ -62,7 +62,7 @@ workflow MitochondriaPipelineWrapper {
     String ucsc_docker = "docker.io/rahulg603/ucsc_genome_toolkit"
     String gotc_docker = "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.2-1552931386"
     String genomes_cloud_docker = "docker.io/rahulg603/genomes_cloud_bcftools"
-    String bcftools_docker = "us.gcr.io/broad-dsp-lrma/lr-basic:0.1.1"
+    String bcftools_docker = "us.gcr.io/broad-dsp-lrma/lr-basic:latest"
     String haplochecker_docker = "eclipse-temurin:17-jdk"
     String gatk_samtools_docker = "docker.io/rahulg603/gatk46_samtools"
 

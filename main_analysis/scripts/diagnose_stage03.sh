@@ -119,4 +119,49 @@ if failed:
 print("GCS input checks: OK")
 PY
 
+log "Checking UCSC docker tools (chainSwap, liftOver, igvtools)."
+python3 - <<'PY' "${STAGE03_JSON}"
+import json, os, subprocess, sys, tempfile
+
+json_path = sys.argv[1]
+with open(json_path) as fh:
+    data = json.load(fh)
+
+ucsc = data.get("StageProduceSelfReferenceFiles.ucsc_docker", "")
+if not ucsc:
+    print("ERROR: StageProduceSelfReferenceFiles.ucsc_docker is missing.")
+    sys.exit(1)
+
+script = """#!/bin/bash
+set -euo pipefail
+missing=0
+for tool in chainSwap liftOver igvtools; do
+  if ! command -v "$tool" >/dev/null 2>&1; then
+    echo "MISSING:$tool"
+    missing=1
+  fi
+done
+exit $missing
+"""
+
+with tempfile.TemporaryDirectory() as td:
+    sh = os.path.join(td, "check.sh")
+    with open(sh, "w", encoding="utf-8") as f:
+        f.write(script)
+    os.chmod(sh, 0o755)
+    try:
+        out = subprocess.check_output(
+            ["docker", "run", "--rm", ucsc, "bash", sh],
+            stderr=subprocess.STDOUT,
+            text=True,
+        )
+        if out.strip():
+            print(out.strip())
+        print("UCSC tools check: OK")
+    except subprocess.CalledProcessError as e:
+        print(e.output.strip())
+        print(f"ERROR: ucsc_docker missing tools: {ucsc}")
+        sys.exit(1)
+PY
+
 log "Stage 03 diagnostics complete."

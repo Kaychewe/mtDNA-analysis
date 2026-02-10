@@ -4,6 +4,24 @@ Purpose: keep all existing outputs while making the workflow easier to reason ab
 
 Scope: `scatterWrapper_MitoPipeline_v2_5.wdl` (workflow `MitochondriaPipelineWrapper`) and the merge task `MergeMitoMultiSampleOutputsInternal`. The core per-sample workflow is imported from `mtSwirl/WDL/v2.5_MongoSwirl_Single/fullMitoPipeline_v2_5_Single.wdl`.
 
+## Progress Log (AoU Jupyter)
+
+- Stage 01 (SubsetBamToChrMAndRevert)
+  - Success on sample `1000000` using CRAM `gs://fc-aou-datasets-controlled/pooled/wgs/cram/v8_delta/wgs_1000000.cram`.
+  - Outputs verified on GCS (proc bam/bai, mean coverage, duplicate metrics).
+- Stage 02 (AlignAndCallR1)
+  - Success workflow: `d3e371d2-05ab-4412-919b-27f942a6a0f1`.
+  - Output roots used to populate Stage 03:
+    - FilterContamination: `.../call-FilterContamination/out/1000000.split.vcf`
+    - CallNucHCIntegrated: `.../call-CallNucHCIntegrated/out/1000000.nuc.pass.split.vcf`
+- Stage 03 (ProduceSelfReferenceFiles)
+  - First failure: bcftools bundle shipped glibc/loader -> relocation errors.
+  - Second failure: GLIBC version mismatch from bundled shared libs (liblzma/libcurl/etc.).
+  - Third failure: Picard ExtractSequences could not find `.fai` next to localized fasta.
+  - Fixes in progress:
+    - Rebuild bcftools bundle without *any* shared libs in the tarball.
+    - Patch `ProduceSelfReferenceFiles_v2_5_Single.wdl` to copy `ref_fasta_index` and `mt_fasta_index` next to localized FASTA before ExtractSequences.
+
 ## Entry Points
 
 - Batch submission: `cromwell_submission_script_batch.sh`

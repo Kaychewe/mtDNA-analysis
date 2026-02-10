@@ -80,29 +80,9 @@ cd "$PREFIX_DIR"
 cp "$ROOT_DIR/$SRC_DIR/htslib/bgzip" "$PREFIX_DIR/bin/"
 cp "$ROOT_DIR/$SRC_DIR/htslib/tabix" "$PREFIX_DIR/bin/"
 
-# Collect shared libraries needed by bcftools/bgzip/tabix into bundle lib/
-mkdir -p "$PREFIX_DIR/lib"
-# Replace collect_libs() in build_bcftools_local.sh with this version
-collect_libs() {
-  local bin="$1"
-  ldd "$bin" | awk '/=> \// {print $3} /^\// {print $1}' | \
-    grep -vE '/ld-linux|linux-vdso' | sort -u | while read -r lib; do
-      if [ -f "$lib" ]; then
-        base="$(basename "$lib")"
-        case "$base" in
-          ld-linux*|libc.so*|libpthread.so*|libm.so*|librt.so*|libdl.so*|libgcc_s.so*|libstdc++.so*)
-            continue
-            ;;
-        esac
-        cp -L "$lib" "$PREFIX_DIR/lib/"
-      fi
-    done
-}
-
-
-collect_libs "$PREFIX_DIR/bin/bcftools"
-collect_libs "$PREFIX_DIR/bin/bgzip"
-collect_libs "$PREFIX_DIR/bin/tabix"
+# Do not bundle shared libraries. Use the runtime libs provided by the Batch VM.
+# Bundling glibc or other system libs causes GLIBC version conflicts at runtime.
+rm -rf "$PREFIX_DIR/lib"
 
 # Bundle bin and libexec (plugins). htslib built without libcurl.
 # Include bcftools and helper scripts in bin.
@@ -111,7 +91,7 @@ if [ ! -x bin/bcftools ]; then
   exit 1
 fi
 
-tar -czf "$OUT_TARBALL" bin libexec lib
+tar -czf "$OUT_TARBALL" bin libexec
 
 # Smoke test
 ./bin/bcftools --version | head -n 2

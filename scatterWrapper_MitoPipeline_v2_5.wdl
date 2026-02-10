@@ -60,7 +60,7 @@ workflow MitochondriaPipelineWrapper {
     File? gatk_override
     String? gatk_docker_override
     # Public images to avoid auth failures pulling private repos.
-    String ucsc_docker = "quay.io/biocontainers/ucsc-bedgraphtobigwig:377--h73cb82a_3"
+    String ucsc_docker = "docker.io/rahulg603/ucsc_genome_toolkit"
     String gotc_docker = "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.2-1552931386"
     String genomes_cloud_docker = "us.gcr.io/broad-dsp-lrma/lr-basic:latest"
     String haplochecker_docker = "eclipse-temurin:17-jdk"

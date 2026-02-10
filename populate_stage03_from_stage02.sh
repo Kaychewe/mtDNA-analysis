@@ -123,7 +123,7 @@ fi
 
 genomes_cloud_default="${GENOMES_CLOUD_DOCKER_DEFAULT:-us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.2-1552931386}"
 gotc_docker_default="${GOTC_DOCKER_DEFAULT:-${genomes_cloud_default}}"
-ucsc_docker_default="${UCSC_DOCKER_DEFAULT:-quay.io/biocontainers/ucsc-bedgraphtobigwig:377--h73cb82a_3}"
+ucsc_docker_default="${UCSC_DOCKER_DEFAULT:-docker.io/rahulg603/ucsc_genome_toolkit}"
 bcftools_docker_default="${BCFTOOLS_DOCKER_DEFAULT:-${genomes_cloud_default}}"
 
 outputs_tmp="$(mktemp)"

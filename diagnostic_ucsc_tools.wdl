@@ -1,10 +1,6 @@
 version 1.0
 
-workflow DiagnosticUCSCTools {
-  meta {
-    description: "Check UCSC tools availability in the specified docker image."
-  }
-
+task CheckUCSCTools {
   input {
     String ucsc_docker
     Int? preemptible_tries
@@ -34,5 +30,26 @@ workflow DiagnosticUCSCTools {
     memory: "1 GB"
     disks: "local-disk 10 HDD"
     preemptible: select_first([preemptible_tries, 0])
+  }
+}
+
+workflow DiagnosticUCSCTools {
+  meta {
+    description: "Check UCSC tools availability in the specified docker image."
+  }
+
+  input {
+    String ucsc_docker
+    Int? preemptible_tries
+  }
+
+  call CheckUCSCTools {
+    input:
+      ucsc_docker = ucsc_docker,
+      preemptible_tries = preemptible_tries
+  }
+
+  output {
+    File report = CheckUCSCTools.report
   }
 }

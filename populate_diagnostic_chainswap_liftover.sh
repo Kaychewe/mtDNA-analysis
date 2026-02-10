@@ -5,6 +5,7 @@ usage() {
   cat <<'USAGE'
 Usage:
   populate_diagnostic_chainswap_liftover.sh <stage03_workflow_id> [output_json]
+  populate_diagnostic_chainswap_liftover.sh --source-chain <gs://.../reference_to_SAMPLE.chain> <stage03_workflow_id> [output_json]
 
 Populates diagnostic_chainswap_liftover.json using Stage03 outputs.
 USAGE
@@ -18,6 +19,12 @@ fi
 if [ $# -lt 1 ]; then
   usage
   exit 1
+fi
+
+source_chain_override=""
+if [ "${1:-}" = "--source-chain" ]; then
+  source_chain_override="${2:-}"
+  shift 2
 fi
 
 stage03_wf="$1"
@@ -84,6 +91,10 @@ if stage03_inputs:
     replace_if_missing("DiagnosticChainSwapLiftover.input_bed", stage03_inputs.get("StageProduceSelfReferenceFiles.blacklisted_sites", ""))
     replace_if_missing("DiagnosticChainSwapLiftover.input_bed_index", stage03_inputs.get("StageProduceSelfReferenceFiles.blacklisted_sites_index", ""))
 
+# Override source_chain if provided explicitly.
+if "${source_chain_override}":
+    data["DiagnosticChainSwapLiftover.source_chain"] = "${source_chain_override}"
+
 # If source_chain is still missing, try to infer from callRoot.
 call_root = ""
 calls = meta.get("calls", {}).get("StageProduceSelfReferenceFiles.ProduceSelfReferenceFiles", [])
@@ -93,6 +104,9 @@ sample = data.get("DiagnosticChainSwapLiftover.input_target_name", "")
 if not data.get("DiagnosticChainSwapLiftover.source_chain") and call_root and sample:
     candidate = f"{call_root}/call-MtConsensus/out/reference_to_{sample}.chain"
     data["DiagnosticChainSwapLiftover.source_chain"] = candidate
+
+if not data.get("DiagnosticChainSwapLiftover.source_chain") or "REPLACE_ME" in str(data.get("DiagnosticChainSwapLiftover.source_chain")):
+    print("WARNING: source_chain still missing; supply --source-chain to populate explicitly.", file=sys.stderr)
 
 with open("${out_json}", "w", encoding="utf-8") as fh:
     json.dump(data, fh, indent=2, sort_keys=True)

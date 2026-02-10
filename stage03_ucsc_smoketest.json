@@ -1,0 +1,4 @@
+{
+  "Stage03UcscSmokeTest.ucsc_tools_bundle": "REPLACE_ME",
+  "Stage03UcscSmokeTest.docker_image": "us.gcr.io/broad-dsp-lrma/lr-basic:latest"
+}

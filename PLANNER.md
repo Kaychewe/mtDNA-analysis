@@ -33,6 +33,14 @@ Scope: `scatterWrapper_MitoPipeline_v2_5.wdl` (workflow `MitochondriaPipelineWra
       - `bcftools 1.22` (htslib 1.22)
       - `bgzip 1.22.1`
       - `tabix 1.22.1`
+  - Feb 10 update (UCSC tooling diagnostics):
+    - Added `diagnostic_ucsc_tools.wdl/json` to validate `chainSwap`, `liftOver`, `igvtools` inside the selected UCSC image.
+    - Updated diagnostic to run via GAR image path when using AoU (`us-central1-docker.pkg.dev/all-of-us-rw-prod/aou-rw-gar-remote-repo-docker-prod/...`).
+    - Diagnostic run `0ae6bc28-8c07-44d5-9193-ffb181b2b354` failed; no `stdout/stderr` delocalized to GCS (call root contains scripts only).
+    - Next step: pull Batch job id from Cromwell metadata and read Batch logs to identify image/tool failure.
+  - Feb 10 update (UCSC bundle plan):
+    - Added optional `ucsc_tools_bundle` input to `MongoChainSwapLiftoverBed` to bypass docker tool availability.
+    - Added `stage03_ucsc_smoketest.wdl/json` to validate `chainSwap`, `liftOver`, `igvtools` from the bundle.
 
 ## Current Status (AoU Jupyter)
 

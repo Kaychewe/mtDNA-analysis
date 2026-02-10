@@ -702,6 +702,7 @@ task MongoChainSwapLiftoverBed {
     File input_bed_index
     Int? preemptible_tries
     String ucsc_docker
+    File? ucsc_tools_bundle
   }
 
   Int disk_size = ceil(size(source_chain, "GB") + size(input_bed, "GB") * 2.5) * 4
@@ -712,6 +713,12 @@ task MongoChainSwapLiftoverBed {
     set -e
 
     mkdir out
+
+    if [ -n "~{ucsc_tools_bundle}" ] && [ "~{ucsc_tools_bundle}" != "null" ]; then
+      mkdir -p ucsc_tools
+      tar -xzf "~{ucsc_tools_bundle}" -C ucsc_tools
+      export PATH="$PWD/ucsc_tools/bin:$PWD/ucsc_tools:$PATH"
+    fi
 
     this_chain="~{source_chain}"
     this_target_sample="~{input_target_name}"

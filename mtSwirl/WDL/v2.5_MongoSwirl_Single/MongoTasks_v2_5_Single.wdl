@@ -718,9 +718,10 @@ task MongoChainSwapLiftoverBed {
     this_target_path=out/"~{input_target_name}"
     this_base_path=out/"~{this_bed_basename}"
     IGVTOOLS="${igvtools:-igvtools}"
+    chain_file="~{source_chain}"
 
     chainSwap "~{d}{this_chain}" "~{d}{this_target_path}_to_~{input_source_name}.chain"
-    liftOver ~{input_bed} "~{d}{this_chain}" "~{d}{this_base_path}.~{d}{this_target_sample}.liftedOver.bed" "~{d}{this_base_path}.~{d}{this_target_sample}.liftedOverRejects.unmapped"
+    liftOver ~{input_bed} "$chain_file" "~{d}{this_base_path}.~{d}{this_target_sample}.liftedOver.bed" "~{d}{this_base_path}.~{d}{this_target_sample}.liftedOverRejects.unmapped"
     "${IGVTOOLS}" index "~{d}{this_base_path}.~{d}{this_target_sample}.liftedOver.bed"
   >>>
 

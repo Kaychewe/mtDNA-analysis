@@ -22,13 +22,35 @@ if [ $# -lt 1 ]; then
 fi
 
 source_chain_override=""
-if [ "${1:-}" = "--source-chain" ]; then
-  source_chain_override="${2:-}"
-  shift 2
-fi
+stage03_wf=""
+out_json="diagnostic_chainswap_liftover.json"
 
-stage03_wf="$1"
-out_json="${2:-diagnostic_chainswap_liftover.json}"
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --source-chain)
+      source_chain_override="${2:-}"
+      shift 2
+      ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
+    *)
+      if [ -z "${stage03_wf}" ]; then
+        stage03_wf="$1"
+      else
+        out_json="$1"
+      fi
+      shift
+      ;;
+  esac
+done
+
+if [ -z "${stage03_wf}" ]; then
+  echo "ERROR: stage03_workflow_id is required."
+  usage
+  exit 1
+fi
 
 if [ ! -f "$out_json" ]; then
   echo "Missing output JSON template: $out_json; creating a new one."

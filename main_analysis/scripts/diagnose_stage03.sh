@@ -132,6 +132,21 @@ if not ucsc:
     print("ERROR: StageProduceSelfReferenceFiles.ucsc_docker is missing.")
     sys.exit(1)
 
+def can_run_docker():
+    try:
+        subprocess.check_output(["docker", "info"], stderr=subprocess.STDOUT, text=True)
+        return True
+    except FileNotFoundError:
+        return False
+    except subprocess.CalledProcessError:
+        return False
+    except PermissionError:
+        return False
+
+if not can_run_docker():
+    print("WARNING: docker not available or not permitted. Skipping UCSC tools check.")
+    sys.exit(0)
+
 script = """#!/bin/bash
 set -euo pipefail
 missing=0

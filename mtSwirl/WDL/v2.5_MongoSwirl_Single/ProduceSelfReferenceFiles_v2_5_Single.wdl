@@ -327,6 +327,8 @@ task PrepIntervalsAndRenamedFastas {
   }
 
   command <<<
+    samtools faidx ~{mt_ref_fasta}
+    samtools faidx ~{ref_fasta}
     java -jar /usr/gitc/picard.jar IntervalListTools SORT=true I=~{mt_interval_list} O=internal_mt.interval_list
     java -jar /usr/gitc/picard.jar IntervalListTools SORT=true I=~{nuc_interval_list} O=internal_nuc.interval_list
 

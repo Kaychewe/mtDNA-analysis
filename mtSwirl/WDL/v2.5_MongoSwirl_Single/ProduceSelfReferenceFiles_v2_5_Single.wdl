@@ -142,6 +142,7 @@ workflow ProduceSelfReferenceFiles {
       suffix = suffix,
       mt_fasta_renamed = PrepIntervalsAndRenamedFastas.mt_fasta_renamed,
       mt_vcf_gz = RemoveMtOverlaps.cleaned_mt_vcf_gz,
+      mt_vcf_gz_tbi = RemoveMtOverlaps.cleaned_mt_vcf_gz_tbi,
       bcftools_docker = bcftools_docker
   }
 
@@ -549,6 +550,7 @@ task MtConsensus {
     String suffix
     File mt_fasta_renamed
     File mt_vcf_gz
+    File mt_vcf_gz_tbi
     String bcftools_docker
   }
 
@@ -556,6 +558,9 @@ task MtConsensus {
 
   command <<<
     mkdir -p out
+    if [ ! -f "$(basename ~{mt_vcf_gz}).tbi" ]; then
+      ln -s "~{mt_vcf_gz_tbi}" "$(basename ~{mt_vcf_gz}).tbi"
+    fi
     bcftools consensus -f "~{mt_fasta_renamed}" -o mt_fasta_lifted.fasta -c "~{mt_chain}" "~{mt_vcf_gz}"
     mv "~{mt_chain}" "out/~{mt_chain}"
   >>>

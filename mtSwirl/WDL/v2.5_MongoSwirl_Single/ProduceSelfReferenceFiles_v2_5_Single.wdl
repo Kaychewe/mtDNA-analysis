@@ -163,6 +163,7 @@ workflow ProduceSelfReferenceFiles {
       suffix = suffix,
       nuc_fasta_renamed = PrepIntervalsAndRenamedFastas.nuc_fasta_renamed,
       nuc_vcf_gz = FilterNucVcf.filtered_nuc_vcf_gz,
+      nuc_vcf_gz_tbi = FilterNucVcf.filtered_nuc_vcf_gz_tbi,
       bcftools_docker = bcftools_docker
   }
 
@@ -618,6 +619,7 @@ task NucConsensus {
     String suffix
     File nuc_fasta_renamed
     File nuc_vcf_gz
+    File nuc_vcf_gz_tbi
     String bcftools_docker
   }
 
@@ -625,6 +627,9 @@ task NucConsensus {
 
   command <<<
     mkdir -p out
+    if [ ! -f "$(basename ~{nuc_vcf_gz}).tbi" ]; then
+      ln -s "~{nuc_vcf_gz_tbi}" "$(basename ~{nuc_vcf_gz}).tbi"
+    fi
     bcftools consensus -f "~{nuc_fasta_renamed}" -o nuc_fasta_lifted.fasta -c "~{nuc_chain}" "~{nuc_vcf_gz}"
     mv "~{nuc_chain}" "out/~{nuc_chain}"
   >>>

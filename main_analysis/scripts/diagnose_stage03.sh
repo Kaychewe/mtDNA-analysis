@@ -28,14 +28,14 @@ else
   log "womtool-91.jar not found; skipping WDL validation."
 fi
 
-log "Checking ProduceSelfReferenceFiles WDL for samtools faidx guard."
+log "Checking ProduceSelfReferenceFiles WDL for fasta index guard."
 SINGLE_WDL="${PROJECT_ROOT}/mtSwirl/WDL/v2.5_MongoSwirl_Single/ProduceSelfReferenceFiles_v2_5_Single.wdl"
 if [ -f "${SINGLE_WDL}" ]; then
-  if ! grep -q "samtools faidx .*mt_ref_fasta" "${SINGLE_WDL}" || ! grep -q "samtools faidx .*ref_fasta" "${SINGLE_WDL}"; then
-    die "Missing samtools faidx guard in ${SINGLE_WDL}. Update WDL and regenerate wdl_deps.zip."
+  if ! grep -q "cp .*mt_ref_fasta_index" "${SINGLE_WDL}" || ! grep -q "cp .*ref_fasta_index" "${SINGLE_WDL}"; then
+    die "Missing fasta index guard in ${SINGLE_WDL}. Update WDL and regenerate wdl_deps.zip."
   fi
 else
-  log "Single WDL not found at ${SINGLE_WDL}; skipping faidx guard check."
+  log "Single WDL not found at ${SINGLE_WDL}; skipping fasta index guard check."
 fi
 
 log "Checking Stage 03 inputs for REPLACE_ME placeholders."

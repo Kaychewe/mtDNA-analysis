@@ -1,0 +1,1 @@
+Failed to process workflow definition 'MitochondriaPipelineWrapper' (reason 1 of 1): Failed to process 'call MitochondriaPipeline_v2_5.MitochondriaPipeline as MitochondriaPipeline_v2_5' (reason 1 of 1): To be called as a sub-workflow it must declare and pass-through the following values via workflow inputs: ProduceSelfRefFiles.bcftools_bundle

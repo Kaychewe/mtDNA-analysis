@@ -35,7 +35,6 @@ workflow StageProduceSelfReferenceFiles {
     File FaRenamingScript
     File CheckVariantBoundsScript
     File CheckHomOverlapScript
-    File bcftools_bundle
 
     Int? preemptible_tries
     String genomes_cloud_docker
@@ -67,7 +66,6 @@ workflow StageProduceSelfReferenceFiles {
       FaRenamingScript = FaRenamingScript,
       CheckVariantBoundsScript = CheckVariantBoundsScript,
       CheckHomOverlapScript = CheckHomOverlapScript,
-      bcftools_bundle = bcftools_bundle,
       genomes_cloud_docker = genomes_cloud_docker,
       bcftools_docker = bcftools_docker,
       gotc_docker = gotc_docker,

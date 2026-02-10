@@ -78,7 +78,6 @@ keys = [
     "StageProduceSelfReferenceFiles.FaRenamingScript",
     "StageProduceSelfReferenceFiles.CheckVariantBoundsScript",
     "StageProduceSelfReferenceFiles.CheckHomOverlapScript",
-    "StageProduceSelfReferenceFiles.bcftools_bundle",
 ]
 
 missing = []
@@ -118,55 +117,6 @@ if failed:
     sys.exit(1)
 
 print("GCS input checks: OK")
-PY
-
-log "Checking bcftools bundle for GLIBC compatibility (best-effort)."
-python3 - <<'PY' "${STAGE03_JSON}"
-import json, os, re, shutil, subprocess, sys, tempfile, tarfile
-
-json_path = sys.argv[1]
-with open(json_path) as fh:
-    data = json.load(fh)
-
-bundle = data.get("StageProduceSelfReferenceFiles.bcftools_bundle")
-if not bundle:
-    print("ERROR: missing StageProduceSelfReferenceFiles.bcftools_bundle")
-    sys.exit(1)
-
-workdir = tempfile.mkdtemp(prefix="bcftools_bundle_check_")
-try:
-    tar_path = os.path.join(workdir, "bundle.tar.gz")
-    subprocess.check_call(["gsutil", "-q", "cp", bundle, tar_path])
-    with tarfile.open(tar_path, "r:gz") as tf:
-        tf.extractall(workdir)
-
-    lib_dir = os.path.join(workdir, "lib")
-    if os.path.isdir(lib_dir):
-        print("WARNING: bundle contains lib/. This often causes GLIBC conflicts on Batch VMs.")
-
-    bins = [os.path.join(workdir, "bin", x) for x in ("bcftools", "bgzip", "tabix")]
-    glibc_versions = set()
-    for bin_path in bins:
-        if not os.path.exists(bin_path):
-            print(f"WARNING: missing {bin_path} in bundle")
-            continue
-        out = subprocess.check_output(["strings", "-a", bin_path], text=True, errors="ignore")
-        for m in re.findall(r"GLIBC_(\\d+\\.\\d+)", out):
-            glibc_versions.add(m)
-
-    if glibc_versions:
-        def ver_tuple(v):
-            major, minor = v.split(".")
-            return int(major), int(minor)
-        max_ver = max(glibc_versions, key=ver_tuple)
-        if ver_tuple(max_ver) > (2, 27):
-            print(f"WARNING: bundle requires GLIBC_{max_ver} (Batch VMs often <= 2.27).")
-        else:
-            print(f"Bundle GLIBC requirement looks OK (max GLIBC_{max_ver}).")
-    else:
-        print("WARNING: could not detect GLIBC requirements from bundle binaries.")
-finally:
-    shutil.rmtree(workdir, ignore_errors=True)
 PY
 
 log "Stage 03 diagnostics complete."

@@ -64,8 +64,11 @@ load_env() {
   if [ -z "${LIST_DIR:-}" ] || [ ! -d "${LIST_DIR}" ]; then
     LIST_DIR="${PROJECT_ROOT}/mtDNA_v25_pilot_5"
   fi
+  if [ -z "${SAMPLES_STATUS_TSV:-}" ]; then
+    SAMPLES_STATUS_TSV="${ANALYSIS_ROOT}/runs/samples_status.tsv"
+  fi
 
-  export PROJECT_ROOT ANALYSIS_ROOT RUNS_DIR STAGE01_WDL STAGE01_JSON WDL_DEPS_ZIP WDL_DEPS_SRC LIST_DIR
+  export PROJECT_ROOT ANALYSIS_ROOT RUNS_DIR STAGE01_WDL STAGE01_JSON WDL_DEPS_ZIP WDL_DEPS_SRC LIST_DIR SAMPLES_STATUS_TSV
 
   : "${PROJECT_ROOT:?Missing PROJECT_ROOT}"
   : "${ANALYSIS_ROOT:?Missing ANALYSIS_ROOT}"
@@ -80,6 +83,49 @@ load_env() {
 
 ensure_dirs() {
   mkdir -p "${RUNS_DIR}"
+}
+
+init_samples_status() {
+  local tsv_dir
+  tsv_dir="$(dirname "${SAMPLES_STATUS_TSV}")"
+  mkdir -p "${tsv_dir}"
+  if [ ! -f "${SAMPLES_STATUS_TSV}" ]; then
+    echo -e "sample_id\tstage\tworkflow_id\tstatus\ttimestamp\tnotes" > "${SAMPLES_STATUS_TSV}"
+  fi
+}
+
+append_sample_status() {
+  local sample_id="$1"
+  local stage="$2"
+  local workflow_id="$3"
+  local status="$4"
+  local notes="${5:-}"
+  local stamp
+  stamp="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+  printf "%s\t%s\t%s\t%s\t%s\t%s\n" "${sample_id}" "${stage}" "${workflow_id}" "${status}" "${stamp}" "${notes}" >> "${SAMPLES_STATUS_TSV}"
+}
+
+sample_stage_succeeded() {
+  local sample_id="$1"
+  local stage="$2"
+  if [ ! -f "${SAMPLES_STATUS_TSV}" ]; then
+    return 1
+  fi
+  awk -F'\t' -v s="${sample_id}" -v st="${stage}" '
+    $1==s && $2==st { last=$4 }
+    END { if (last=="Succeeded") exit 0; exit 1 }
+  ' "${SAMPLES_STATUS_TSV}"
+}
+
+get_wf_status() {
+  local wf_id="$1"
+  curl -s "http://localhost:8094/api/workflows/v1/${wf_id}/status" | python3 -c 'import json,sys
+try:
+    data = json.load(sys.stdin)
+    print(data.get("status",""))
+except Exception:
+    print("")
+' || true
 }
 
 make_run_dir() {

@@ -1,0 +1,45 @@
+{
+  "StageLiftover.sample_name": "REPLACE_ME",
+
+  "StageLiftover.ref_homoplasmies_vcf": "REPLACE_ME",
+  "StageLiftover.force_call_vcf_filters": "REPLACE_ME",
+
+  "StageLiftover.mt_self": "REPLACE_ME",
+  "StageLiftover.mt_self_index": "REPLACE_ME",
+  "StageLiftover.mt_self_dict": "REPLACE_ME",
+  "StageLiftover.mt_self_shifted": "REPLACE_ME",
+  "StageLiftover.mt_self_shifted_index": "REPLACE_ME",
+  "StageLiftover.mt_self_shifted_dict": "REPLACE_ME",
+  "StageLiftover.chain_self_to_ref": "REPLACE_ME",
+  "StageLiftover.chain_ref_to_self": "REPLACE_ME",
+
+  "StageLiftover.self_control_region_shifted_reference_interval_list": "REPLACE_ME",
+  "StageLiftover.self_non_control_region_interval_list": "REPLACE_ME",
+
+  "StageLiftover.new_self_ref_vcf": "REPLACE_ME",
+
+  "StageLiftover.input_bam_regular_ref": "REPLACE_ME",
+  "StageLiftover.input_bam_regular_ref_index": "REPLACE_ME",
+  "StageLiftover.input_bam_shifted_ref": "REPLACE_ME",
+  "StageLiftover.input_bam_shifted_ref_index": "REPLACE_ME",
+
+  "StageLiftover.ref_fasta": "REPLACE_ME",
+  "StageLiftover.ref_fasta_index": "REPLACE_ME",
+  "StageLiftover.ref_dict": "REPLACE_ME",
+  "StageLiftover.HailLiftover": "REPLACE_ME",
+
+  "StageLiftover.major_haplogroup": "REPLACE_ME",
+  "StageLiftover.contamination": 0.0,
+  "StageLiftover.nuc_variants_pass": 0,
+  "StageLiftover.n_reads_unpaired_dropped": 0,
+
+  "StageLiftover.nuc_variants_dropped": 0,
+  "StageLiftover.mtdna_consensus_overlaps": 0,
+  "StageLiftover.nuc_consensus_overlaps": 0,
+
+  "StageLiftover.mean_coverage": 0,
+  "StageLiftover.median_coverage": 0.0,
+
+  "StageLiftover.genomes_cloud_docker": "REPLACE_ME",
+  "StageLiftover.ucsc_docker": "REPLACE_ME"
+}

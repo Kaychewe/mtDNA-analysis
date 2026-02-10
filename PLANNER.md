@@ -178,9 +178,9 @@ This planner will be updated as we refactor.
 ## Stage Roadmap (Stage03+)
 
 **Stage03 ProduceSelfReferenceFiles**
-- WDL: `stage03_self_reference.wdl` (new)
-- Inputs: Stage02 outputs (`out_vcf`, `split_vcf`, `nuc_vcf`, `input_vcf_for_haplochecker`), references (`ref_fasta`, `ref_dict`, `mt_fasta`, `mt_dict`), intervals, blacklist, `haplocheck.zip`.
-- Outputs: `self_reference_fasta`, `reference_to_self_ref_chain`, `self_control_region_shifted`, `self_non_control_region`, `self_ref_vcf` + index, `self_ref_split_vcf` + index, `liftover_fix_pipeline_log`.
+- WDL: `stage03_produce_self_reference.wdl` (new)
+- Inputs: Stage02 outputs (`split_vcf`, `split_nuc_vcf`), references (`ref_fasta`, `ref_dict`, `mt_fasta`, `mt_dict`), intervals, blacklist.
+- Outputs: self-reference FASTA/dict/index, self interval lists, chains, force-call VCFs.
 - Diagnostics: confirm Stage02 outputs exist on GCS, validate required reference inputs, verify haplocheck zip exists in workspace bucket.
 - Docker/tooling validation: run `stage03_bcftools_smoketest.wdl` against candidate image; require `bcftools/bgzip/tabix --version` to succeed before Stage03 submit.
 
@@ -192,18 +192,19 @@ This planner will be updated as we refactor.
 
 **Stage05 Liftover**
 - WDL: `stage05_liftover.wdl` (new)
-- Inputs: Stage04 VCFs, `reference_to_self_ref_chain`, reference/mt dicts, `HailLiftover`, `CheckVariantBoundsScript`, `CheckHomOverlapScript`.
-- Outputs: `final_vcf`, `final_rejected_vcf`, liftover stats counters, `nuc_variants_pass`.
-- Diagnostics: confirm HailLiftover jar and scripts exist, confirm bcftools bundle availability if required by liftover steps.
+- Inputs: Stage03 + Stage04 outputs (self-reference chains, self-ref VCFs, aligned bams), reference/mt dicts, `HailLiftover`.
+- Outputs: `final_vcf`, `final_rejected_vcf`, liftover stats counters, base-level coverage metrics.
+- Diagnostics: confirm HailLiftover jar exists, confirm reference resources.
 
 **Stage06 Merge**
 - WDL: `stage06_merge.wdl` (new)
-- Inputs: per-sample final outputs, `MergePerBatch`, `coverage_paths.tsv`, `vcf_paths.tsv`.
+- Inputs: per-sample final outputs, `MergePerBatch`.
 - Outputs: `batch_merged_mt_coverage.tsv.bgz`, `batch_merged_mt_calls.vcf.bgz`, `batch_analysis_statistics.tsv`.
 - Diagnostics: confirm bgzip/tabix availability (bcftools bundle), confirm paths files are populated.
 
 **Stage Scripts and Reuse**
 - For each stage: add `populate_stageXX_from_stageYY.sh`, `submit_stageXX.sh`, and `diagnose_stageXX.sh`.
+- Added: `populate_stage04_from_stage03.sh`, `submit_stage04.sh`, `populate_stage05_from_stage04.sh`, `submit_stage05.sh`, `populate_stage06_from_stage05.sh`, `submit_stage06.sh`.
 - Add `--reuse-stageXX <workflow_id>` flags to `main_workflow.sh` so later stages can run without re-submitting earlier stages.
 
 ## Tooling/Docker Comparison (mtDNA vs long-read-pipelines 4.0.9)

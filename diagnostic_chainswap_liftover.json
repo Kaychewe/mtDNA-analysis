@@ -5,5 +5,5 @@
   "DiagnosticChainSwapLiftover.input_bed": "REPLACE_ME",
   "DiagnosticChainSwapLiftover.input_bed_index": "REPLACE_ME",
   "DiagnosticChainSwapLiftover.preemptible_tries": 0,
-  "DiagnosticChainSwapLiftover.ucsc_docker": "docker.io/rahulg603/ucsc_genome_toolkit"
+  "DiagnosticChainSwapLiftover.ucsc_docker": "us-central1-docker.pkg.dev/all-of-us-rw-prod/aou-rw-gar-remote-repo-docker-prod/rahulg603/ucsc_genome_toolkit"
 }

@@ -79,8 +79,8 @@ if [ -z "${WF_ID}" ] && { [ -z "${mtdna_vcf_override}" ] || [ -z "${nuc_vcf_over
 fi
 
 if [ ! -f "$out_json" ]; then
-  echo "Missing output JSON template: $out_json"
-  exit 1
+  echo "Missing output JSON template: $out_json; creating a new one."
+  echo "{}" > "$out_json"
 fi
 
 stage02_json="${STAGE02_JSON:-stage02_align_call_r1.json}"
@@ -144,11 +144,16 @@ fi
 python3 - <<PY
 import json
 import sys
+import json as _json
 
 with open("${outputs_tmp}", "r", encoding="utf-8") as fh:
     outputs = json.load(fh)
-with open("${out_json}", "r", encoding="utf-8") as fh:
-    data = json.load(fh)
+try:
+    with open("${out_json}", "r", encoding="utf-8") as fh:
+        data = json.load(fh)
+except _json.JSONDecodeError:
+    print("WARNING: output JSON template is invalid; starting from empty template.", file=sys.stderr)
+    data = {}
 with open("${stage02_json}", "r", encoding="utf-8") as fh:
     s2 = json.load(fh)
 

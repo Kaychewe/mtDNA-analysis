@@ -28,6 +28,16 @@ else
   log "womtool-91.jar not found; skipping WDL validation."
 fi
 
+log "Checking ProduceSelfReferenceFiles WDL for samtools faidx guard."
+SINGLE_WDL="${PROJECT_ROOT}/mtSwirl/WDL/v2.5_MongoSwirl_Single/ProduceSelfReferenceFiles_v2_5_Single.wdl"
+if [ -f "${SINGLE_WDL}" ]; then
+  if ! grep -q "samtools faidx .*mt_ref_fasta" "${SINGLE_WDL}" || ! grep -q "samtools faidx .*ref_fasta" "${SINGLE_WDL}"; then
+    die "Missing samtools faidx guard in ${SINGLE_WDL}. Update WDL and regenerate wdl_deps.zip."
+  fi
+else
+  log "Single WDL not found at ${SINGLE_WDL}; skipping faidx guard check."
+fi
+
 log "Checking Stage 03 inputs for REPLACE_ME placeholders."
 if grep -q "REPLACE_ME" "${STAGE03_JSON}"; then
   log "Stage 03 JSON contains REPLACE_ME placeholders. Showing keys:"
@@ -108,6 +118,55 @@ if failed:
     sys.exit(1)
 
 print("GCS input checks: OK")
+PY
+
+log "Checking bcftools bundle for GLIBC compatibility (best-effort)."
+python3 - <<'PY' "${STAGE03_JSON}"
+import json, os, re, shutil, subprocess, sys, tempfile, tarfile
+
+json_path = sys.argv[1]
+with open(json_path) as fh:
+    data = json.load(fh)
+
+bundle = data.get("StageProduceSelfReferenceFiles.bcftools_bundle")
+if not bundle:
+    print("ERROR: missing StageProduceSelfReferenceFiles.bcftools_bundle")
+    sys.exit(1)
+
+workdir = tempfile.mkdtemp(prefix="bcftools_bundle_check_")
+try:
+    tar_path = os.path.join(workdir, "bundle.tar.gz")
+    subprocess.check_call(["gsutil", "-q", "cp", bundle, tar_path])
+    with tarfile.open(tar_path, "r:gz") as tf:
+        tf.extractall(workdir)
+
+    lib_dir = os.path.join(workdir, "lib")
+    if os.path.isdir(lib_dir):
+        print("WARNING: bundle contains lib/. This often causes GLIBC conflicts on Batch VMs.")
+
+    bins = [os.path.join(workdir, "bin", x) for x in ("bcftools", "bgzip", "tabix")]
+    glibc_versions = set()
+    for bin_path in bins:
+        if not os.path.exists(bin_path):
+            print(f"WARNING: missing {bin_path} in bundle")
+            continue
+        out = subprocess.check_output(["strings", "-a", bin_path], text=True, errors="ignore")
+        for m in re.findall(r"GLIBC_(\\d+\\.\\d+)", out):
+            glibc_versions.add(m)
+
+    if glibc_versions:
+        def ver_tuple(v):
+            major, minor = v.split(".")
+            return int(major), int(minor)
+        max_ver = max(glibc_versions, key=ver_tuple)
+        if ver_tuple(max_ver) > (2, 27):
+            print(f"WARNING: bundle requires GLIBC_{max_ver} (Batch VMs often <= 2.27).")
+        else:
+            print(f"Bundle GLIBC requirement looks OK (max GLIBC_{max_ver}).")
+    else:
+        print("WARNING: could not detect GLIBC requirements from bundle binaries.")
+finally:
+    shutil.rmtree(workdir, ignore_errors=True)
 PY
 
 log "Stage 03 diagnostics complete."

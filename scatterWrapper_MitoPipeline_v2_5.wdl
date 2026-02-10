@@ -62,7 +62,7 @@ workflow MitochondriaPipelineWrapper {
     # Public images to avoid auth failures pulling private repos.
     String ucsc_docker = "quay.io/biocontainers/ucsc-bedgraphtobigwig:377--h73cb82a_3"
     String gotc_docker = "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.2-1552931386"
-    String genomes_cloud_docker = "quay.io/biocontainers/bcftools:1.17--h3cc50cf_1"
+    String genomes_cloud_docker = "us.gcr.io/broad-dsp-lrma/lr-basic:latest"
     String haplochecker_docker = "eclipse-temurin:17-jdk"
     # Public image to avoid auth failures pulling private repos.
     String gatk_samtools_docker = "docker.io/broadinstitute/gatk:4.2.6.0"

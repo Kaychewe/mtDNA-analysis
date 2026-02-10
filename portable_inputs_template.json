@@ -31,7 +31,7 @@
 
   "MitochondriaPipelineWrapper.genomes_cloud_docker": "us-central1-docker.pkg.dev/PROJECT/REPO/genomics:TAG",
   "MitochondriaPipelineWrapper.gotc_docker": "us-central1-docker.pkg.dev/PROJECT/REPO/genomics:TAG",
-  "MitochondriaPipelineWrapper.bcftools_docker": "us-central1-docker.pkg.dev/PROJECT/REPO/genomics:TAG",
+  "MitochondriaPipelineWrapper.bcftools_docker": "us.gcr.io/broad-dsp-lrma/lr-basic:latest",
   "MitochondriaPipelineWrapper.gatk_samtools_docker": "us-central1-docker.pkg.dev/PROJECT/REPO/genomics:TAG",
   "MitochondriaPipelineWrapper.haplochecker_docker": "us-central1-docker.pkg.dev/PROJECT/REPO/genomics:TAG",
   "MitochondriaPipelineWrapper.ucsc_docker": "us-central1-docker.pkg.dev/PROJECT/REPO/genomics:TAG",

@@ -26,6 +26,13 @@ Scope: `scatterWrapper_MitoPipeline_v2_5.wdl` (workflow `MitochondriaPipelineWra
     - `quay.io/biocontainers/bcftools:1.17--h3cc50cf_1` failed in Batch (likely blocked/registry pull in VPC-SC); no logs in GCS until delocalization succeeds.
     - GCS logs sometimes missing for failed tasks; need Batch job logs via `gcloud batch jobs describe` and Cloud Logging (`resource.type="batch_task"`).
     - Smoketest WDL + JSON + submit script added to quickly validate candidate docker images before re-running Stage03.
+  - Feb 10 update:
+    - Switched bcftools smoketest input to `us.gcr.io/broad-dsp-lrma/lr-basic:latest`.
+    - Submitted new smoketest: `07626b6c-1cee-44fc-a217-715d5d939778` (status: Running when submitted).
+    - Smoketest succeeded. Versions:
+      - `bcftools 1.22` (htslib 1.22)
+      - `bgzip 1.22.1`
+      - `tabix 1.22.1`
 
 ## Current Status (AoU Jupyter)
 
@@ -34,6 +41,7 @@ Scope: `scatterWrapper_MitoPipeline_v2_5.wdl` (workflow `MitochondriaPipelineWra
 - bcftools docker smoketests:
   - `f2c39184-6acd-43e4-922f-02cdb9a0933f` (quay bcftools image; no GCS logs, likely blocked pull)
   - `fcc1c004-da4a-4855-9920-d530702fb0e8` (genomes-in-the-cloud image; stderr: `bcftools: command not found`)
+  - `07626b6c-1cee-44fc-a217-715d5d939778` (`lr-basic:latest` image; succeeded on Feb 10, 2026; bcftools 1.22 / bgzip 1.22.1 / tabix 1.22.1)
 
 ## Entry Points
 

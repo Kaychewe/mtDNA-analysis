@@ -38,7 +38,7 @@ workflow StageProduceSelfReferenceFiles {
 
     Int? preemptible_tries
     String genomes_cloud_docker
-    String bcftools_docker = genomes_cloud_docker
+    String bcftools_docker = "us.gcr.io/broad-dsp-lrma/lr-basic:latest"
     String gotc_docker
     String ucsc_docker
   }

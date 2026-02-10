@@ -4,5 +4,6 @@
   "DiagnosticChainSwapLiftover.input_source_name": "reference",
   "DiagnosticChainSwapLiftover.input_bed": "REPLACE_ME",
   "DiagnosticChainSwapLiftover.input_bed_index": "REPLACE_ME",
+  "DiagnosticChainSwapLiftover.preemptible_tries": 0,
   "DiagnosticChainSwapLiftover.ucsc_docker": "docker.io/rahulg603/ucsc_genome_toolkit"
 }

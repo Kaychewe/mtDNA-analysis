@@ -10,7 +10,7 @@ workflow DiagnosticUCSCTools {
     Int? preemptible_tries
   }
 
-  command <<<'
+  command <<<
     set -euo pipefail
     echo "image=${ucsc_docker}" > report.txt
     for tool in chainSwap liftOver igvtools; do

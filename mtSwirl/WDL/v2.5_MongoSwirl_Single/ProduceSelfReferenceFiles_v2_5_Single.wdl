@@ -864,6 +864,19 @@ task ForceCallVcfs {
   command <<<
     mkdir -p out
 
+    # Fail fast if any required inputs are missing on the filesystem.
+    for f in "~{mt_vcf}" \
+             "~{mt_fasta}" "~{mt_fasta_index}" \
+             "~{mt_ref_fasta}" "~{mt_ref_fasta_index}" \
+             "~{mt_chain}" "~{shift_forward_chain}" \
+             "~{shifted_mt_fasta}" "~{shifted_mt_fasta_index}"; do
+      if [ ! -s "$f" ]; then
+        echo "ERROR: missing or empty input: $f" >&2
+        ls -l "$f" 2>/dev/null || true
+        exit 1
+      fi
+    done
+
     python3 <<CODE
     import hail as hl
 

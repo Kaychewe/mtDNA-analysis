@@ -32,7 +32,7 @@ def set_if_placeholder(key, value):
 changed = False
 changed |= set_if_placeholder(
     "StageProduceSelfReferenceFiles.genomes_cloud_docker",
-    "kchewe/mtdna-stage03:0.1.0",
+    "kchewe/mtdna-stage03:0.1.1",
 )
 
 # UCSC bundle (optional but recommended). Only set if WORKSPACE_BUCKET is defined.
@@ -45,8 +45,8 @@ if ws:
 
 # If using a UCSC bundle, force ucsc_docker to a Java-capable image.
 if data.get("StageProduceSelfReferenceFiles.ucsc_tools_bundle"):
-    if data.get("StageProduceSelfReferenceFiles.ucsc_docker") != "kchewe/mtdna-stage03:0.1.0":
-        data["StageProduceSelfReferenceFiles.ucsc_docker"] = "kchewe/mtdna-stage03:0.1.0"
+    if data.get("StageProduceSelfReferenceFiles.ucsc_docker") != "kchewe/mtdna-stage03:0.1.1":
+        data["StageProduceSelfReferenceFiles.ucsc_docker"] = "kchewe/mtdna-stage03:0.1.1"
         changed = True
 
 if changed:
@@ -58,7 +58,105 @@ for k,v in data.items():
     if "REPLACE_ME" in str(v):
         print(f"ERROR: {k} is still REPLACE_ME: {v}")
         sys.exit(1)
+
+# Fail fast if required inputs are missing/empty.
+required = [
+    "StageProduceSelfReferenceFiles.sample_name",
+    "StageProduceSelfReferenceFiles.suffix",
+    "StageProduceSelfReferenceFiles.mt_dict",
+    "StageProduceSelfReferenceFiles.mt_fasta",
+    "StageProduceSelfReferenceFiles.mt_fasta_index",
+    "StageProduceSelfReferenceFiles.mt_interval_list",
+    "StageProduceSelfReferenceFiles.non_control_region_interval_list",
+    "StageProduceSelfReferenceFiles.ref_dict",
+    "StageProduceSelfReferenceFiles.ref_fasta",
+    "StageProduceSelfReferenceFiles.ref_fasta_index",
+    "StageProduceSelfReferenceFiles.nuc_interval_list",
+    "StageProduceSelfReferenceFiles.reference_name",
+    "StageProduceSelfReferenceFiles.blacklisted_sites",
+    "StageProduceSelfReferenceFiles.blacklisted_sites_index",
+    "StageProduceSelfReferenceFiles.nuc_variants",
+    "StageProduceSelfReferenceFiles.mtdna_variants",
+    "StageProduceSelfReferenceFiles.FaRenamingScript",
+    "StageProduceSelfReferenceFiles.CheckVariantBoundsScript",
+    "StageProduceSelfReferenceFiles.CheckHomOverlapScript",
+    "StageProduceSelfReferenceFiles.genomes_cloud_docker",
+    "StageProduceSelfReferenceFiles.gotc_docker",
+    "StageProduceSelfReferenceFiles.ucsc_docker",
+]
+missing = [k for k in required if not str(data.get(k, "")).strip()]
+if missing:
+    print("ERROR: Missing required inputs:")
+    for k in missing:
+        print(f"  - {k}")
+    sys.exit(1)
+
+# Emit GCS paths to verify existence downstream in bash
+gcs_keys = [
+    "StageProduceSelfReferenceFiles.mt_dict",
+    "StageProduceSelfReferenceFiles.mt_fasta",
+    "StageProduceSelfReferenceFiles.mt_fasta_index",
+    "StageProduceSelfReferenceFiles.mt_interval_list",
+    "StageProduceSelfReferenceFiles.non_control_region_interval_list",
+    "StageProduceSelfReferenceFiles.ref_dict",
+    "StageProduceSelfReferenceFiles.ref_fasta",
+    "StageProduceSelfReferenceFiles.ref_fasta_index",
+    "StageProduceSelfReferenceFiles.nuc_interval_list",
+    "StageProduceSelfReferenceFiles.blacklisted_sites",
+    "StageProduceSelfReferenceFiles.blacklisted_sites_index",
+    "StageProduceSelfReferenceFiles.nuc_variants",
+    "StageProduceSelfReferenceFiles.mtdna_variants",
+    "StageProduceSelfReferenceFiles.FaRenamingScript",
+    "StageProduceSelfReferenceFiles.CheckVariantBoundsScript",
+    "StageProduceSelfReferenceFiles.CheckHomOverlapScript",
+    "StageProduceSelfReferenceFiles.ucsc_tools_bundle",
+]
+gcs_paths = [data[k] for k in gcs_keys if str(data.get(k,"")).startswith("gs://")]
+print("=== GCS Inputs To Check ===")
+for pth in gcs_paths:
+    print(pth)
+print("=== End GCS Inputs ===")
 PY
+
+# Verify key GCS inputs exist before submission
+echo
+echo "=== Verifying GCS Inputs ==="
+while IFS= read -r line; do
+  [ -z "$line" ] && continue
+  if ! gsutil -q stat "$line"; then
+    echo "ERROR: Missing GCS input: $line"
+    exit 1
+  fi
+done < <(python3 - <<'PY'
+import json
+p="'"$JSON_PATH"'"
+data=json.load(open(p))
+gcs_keys = [
+    "StageProduceSelfReferenceFiles.mt_dict",
+    "StageProduceSelfReferenceFiles.mt_fasta",
+    "StageProduceSelfReferenceFiles.mt_fasta_index",
+    "StageProduceSelfReferenceFiles.mt_interval_list",
+    "StageProduceSelfReferenceFiles.non_control_region_interval_list",
+    "StageProduceSelfReferenceFiles.ref_dict",
+    "StageProduceSelfReferenceFiles.ref_fasta",
+    "StageProduceSelfReferenceFiles.ref_fasta_index",
+    "StageProduceSelfReferenceFiles.nuc_interval_list",
+    "StageProduceSelfReferenceFiles.blacklisted_sites",
+    "StageProduceSelfReferenceFiles.blacklisted_sites_index",
+    "StageProduceSelfReferenceFiles.nuc_variants",
+    "StageProduceSelfReferenceFiles.mtdna_variants",
+    "StageProduceSelfReferenceFiles.FaRenamingScript",
+    "StageProduceSelfReferenceFiles.CheckVariantBoundsScript",
+    "StageProduceSelfReferenceFiles.CheckHomOverlapScript",
+    "StageProduceSelfReferenceFiles.ucsc_tools_bundle",
+]
+for k in gcs_keys:
+    v=data.get(k)
+    if isinstance(v, str) and v.startswith("gs://"):
+        print(v)
+PY
+)
+echo "=== GCS Inputs OK ==="
 
 echo "=== Stage03 Submission Params ==="
 echo "WDL:  $WDL_PATH"

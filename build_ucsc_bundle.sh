@@ -51,14 +51,22 @@ curl -fsSL "${IGVTOOLS_URL}" -o "${workdir}/igvtools.zip"
 unzip -q "${workdir}/igvtools.zip" -d "${workdir}/igvtools_unpack"
 
 # Try to locate igvtools jar or wrapper script in the extracted archive
-igv_jar="$(find "${workdir}/igvtools_unpack" -type f -name 'igvtools*.jar' | head -n 1 || true)"
-
-if [ -n "${igv_jar}" ]; then
-  cp "${igv_jar}" "${workdir}/ucsc_tools/igvtools.jar"
-else
-  echo "ERROR: could not find igvtools jar in the downloaded zip."
+igv_root="$(find "${workdir}/igvtools_unpack" -maxdepth 2 -type d -name 'IGV_*' | head -n 1 || true)"
+if [ -z "${igv_root}" ]; then
+  echo "ERROR: could not find IGV_* directory in the downloaded zip."
   exit 1
 fi
+
+if [ ! -f "${igv_root}/igvtools" ] || [ ! -f "${igv_root}/igv.args" ] || [ ! -d "${igv_root}/lib" ]; then
+  echo "ERROR: missing igvtools script, igv.args, or lib directory in ${igv_root}."
+  exit 1
+fi
+
+mkdir -p "${workdir}/ucsc_tools/igv"
+cp "${igv_root}/igvtools" "${workdir}/ucsc_tools/igv/igvtools"
+cp "${igv_root}/igv.args" "${workdir}/ucsc_tools/igv/igv.args"
+cp -r "${igv_root}/lib" "${workdir}/ucsc_tools/igv/"
+chmod +x "${workdir}/ucsc_tools/igv/igvtools"
 
 cat > "${workdir}/ucsc_tools/README.txt" <<'TXT'
 UCSC tools bundle for AoU Batch usage.

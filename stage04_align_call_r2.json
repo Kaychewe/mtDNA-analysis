@@ -27,6 +27,6 @@
   "StageAlignAndCallR2.contamination_major": 0.0,
   "StageAlignAndCallR2.contamination_minor": 0.0,
   "StageAlignAndCallR2.compress_output_vcf": false,
-  "StageAlignAndCallR2.gatk_docker_override": "kchewe/mtdna-stage04:0.1.1",
-  "StageAlignAndCallR2.gotc_docker_override": "kchewe/mtdna-stage04:0.1.1"
+  "StageAlignAndCallR2.gatk_docker_override": "kchewe/mtdna-stage04:0.1.2",
+  "StageAlignAndCallR2.gotc_docker_override": "kchewe/mtdna-stage04:0.1.2"
 }

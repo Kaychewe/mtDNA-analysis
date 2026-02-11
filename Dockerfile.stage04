@@ -25,6 +25,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     bwa \
     && rm -rf /var/lib/apt/lists/*
 
+# Ensure /usr/bin/python exists for GATK wrapper
+RUN ln -sf /usr/bin/python3 /usr/bin/python
+
 # Provide /usr/gitc/bwa path expected by WDLs
 RUN mkdir -p /usr/gitc && ln -s /usr/bin/bwa /usr/gitc/bwa
 

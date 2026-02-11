@@ -58,7 +58,7 @@ task MongoSubsetBamToChrMAndRevert {
   }
   command <<<
     set -e
-    export GATK_LOCAL_JAR=~{default="/root/gatk.jar" gatk_override}
+    export GATK_LOCAL_JAR=~{default="/opt/gatk/gatk-4.2.6.0/gatk-package-4.2.6.0-local.jar" gatk_override}
 
     mkdir out
 
@@ -223,7 +223,7 @@ task MongoSubsetBamToChrMAndRevertFUSE {
   }
   command <<<
     set -e
-    export GATK_LOCAL_JAR=~{default="/root/gatk.jar" gatk_override}
+    export GATK_LOCAL_JAR=~{default="/opt/gatk/gatk-4.2.6.0/gatk-package-4.2.6.0-local.jar" gatk_override}
 
     ls -l /
     ls -l /mnt
@@ -799,7 +799,7 @@ task MongoHC {
   command <<<
     set -e
 
-    export GATK_LOCAL_JAR=~{default="/root/gatk.jar" gatk_override}
+    export GATK_LOCAL_JAR=~{default="/opt/gatk/gatk-4.2.6.0/gatk-package-4.2.6.0-local.jar" gatk_override}
 
     mkdir out
     this_sample=out/"~{sample_name}"
@@ -965,7 +965,7 @@ task MongoNucM2 {
   command <<<
     set -e
 
-    export GATK_LOCAL_JAR=~{default="/root/gatk.jar" gatk_override}
+    export GATK_LOCAL_JAR=~{default="/opt/gatk/gatk-4.2.6.0/gatk-package-4.2.6.0-local.jar" gatk_override}
     echo "Extra arguments for mutect2: ""~{m2_extra_args}""$cust_interval"
 
     mkdir out
@@ -1112,7 +1112,7 @@ task MongoRunM2InitialFilterSplit {
   command <<<
     set -e
 
-    export GATK_LOCAL_JAR=~{default="/root/gatk.jar" gatk_override}
+    export GATK_LOCAL_JAR=~{default="/opt/gatk/gatk-4.2.6.0/gatk-package-4.2.6.0-local.jar" gatk_override}
     echo "Extra arguments for mutect2: ""~{m2_extra_args}""$cust_interval"
 
     # We need to create these files regardless, even if they stay empty
@@ -1252,7 +1252,7 @@ task MongoM2FilterContaminationSplit {
   command <<<
     set -e
 
-    export GATK_LOCAL_JAR=~{default="/root/gatk.jar" gatk_override}
+    export GATK_LOCAL_JAR=~{default="/opt/gatk/gatk-4.2.6.0/gatk-package-4.2.6.0-local.jar" gatk_override}
 
     mkdir out
     
@@ -1647,7 +1647,7 @@ task MongoCallMtAndShifted {
   command <<<
     set -e
 
-    export GATK_LOCAL_JAR=~{default="/root/gatk.jar" gatk_override}
+    export GATK_LOCAL_JAR=~{default="/opt/gatk/gatk-4.2.6.0/gatk-package-4.2.6.0-local.jar" gatk_override}
     echo "Extra arguments for mutect2: ""~{m2_extra_args}""$cust_interval"
 
     mkdir out
@@ -1790,7 +1790,7 @@ task MongoLiftoverCombineMergeFilterContamSplit {
   command<<<
     set -e
 
-    export GATK_LOCAL_JAR=~{default="/root/gatk.jar" gatk_override}
+    export GATK_LOCAL_JAR=~{default="/opt/gatk/gatk-4.2.6.0/gatk-package-4.2.6.0-local.jar" gatk_override}
 
     mkdir out
 

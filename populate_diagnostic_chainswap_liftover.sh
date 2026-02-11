@@ -112,6 +112,7 @@ if stage03_inputs:
     replace_if_missing("DiagnosticChainSwapLiftover.input_target_name", stage03_inputs.get("StageProduceSelfReferenceFiles.sample_name", ""))
     replace_if_missing("DiagnosticChainSwapLiftover.input_bed", stage03_inputs.get("StageProduceSelfReferenceFiles.blacklisted_sites", ""))
     replace_if_missing("DiagnosticChainSwapLiftover.input_bed_index", stage03_inputs.get("StageProduceSelfReferenceFiles.blacklisted_sites_index", ""))
+    replace_if_missing("DiagnosticChainSwapLiftover.ucsc_tools_bundle", stage03_inputs.get("StageProduceSelfReferenceFiles.ucsc_tools_bundle", ""))
 
 # Override source_chain if provided explicitly.
 if "${source_chain_override}":

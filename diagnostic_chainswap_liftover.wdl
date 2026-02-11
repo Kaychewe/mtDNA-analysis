@@ -14,6 +14,7 @@ workflow DiagnosticChainSwapLiftover {
     File input_bed
     File input_bed_index
     String ucsc_docker
+    File? ucsc_tools_bundle
     Int? preemptible_tries
   }
 
@@ -25,6 +26,7 @@ workflow DiagnosticChainSwapLiftover {
       input_bed = input_bed,
       input_bed_index = input_bed_index,
       ucsc_docker = ucsc_docker,
+      ucsc_tools_bundle = ucsc_tools_bundle,
       preemptible_tries = preemptible_tries
   }
 

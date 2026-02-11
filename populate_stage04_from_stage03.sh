@@ -128,6 +128,13 @@ except FileNotFoundError:
 def get_out(outputs, key):
     return outputs.get("outputs", {}).get(key, "")
 
+def get_any_out(outputs, keys):
+    for k in keys:
+        v = get_out(outputs, k)
+        if v != "":
+            return v
+    return ""
+
 def replace_if_missing(key, value):
     current = data.get(key, "")
     if not current or "REPLACE_ME" in str(current):
@@ -161,10 +168,34 @@ replace_if_missing("StageAlignAndCallR2.self_shift_back_chain", get_out(s3, "Sta
 replace_if_missing("StageAlignAndCallR2.non_control_interval_self", get_out(s3, "StageProduceSelfReferenceFiles.non_control_interval_self"))
 replace_if_missing("StageAlignAndCallR2.control_shifted_self", get_out(s3, "StageProduceSelfReferenceFiles.control_shifted_self"))
 
-# Stage02 contamination outputs
-replace_if_missing("StageAlignAndCallR2.hasContamination", get_out(s2o, "StageAlignAndCallR1.hasContamination"))
-replace_if_missing("StageAlignAndCallR2.contamination_major", get_out(s2o, "StageAlignAndCallR1.contamination_major"))
-replace_if_missing("StageAlignAndCallR2.contamination_minor", get_out(s2o, "StageAlignAndCallR1.contamination_minor"))
+# Stage02 contamination outputs (try multiple possible keys)
+has_contam = get_any_out(s2o, [
+    "StageAlignAndCallR1.hasContamination",
+    "AlignAndCallR1.hasContamination",
+    "MitochondriaPipelineWrapper.hasContamination",
+])
+contam_major = get_any_out(s2o, [
+    "StageAlignAndCallR1.contamination_major",
+    "AlignAndCallR1.contamination_major",
+    "MitochondriaPipelineWrapper.contamination_major",
+])
+contam_minor = get_any_out(s2o, [
+    "StageAlignAndCallR1.contamination_minor",
+    "AlignAndCallR1.contamination_minor",
+    "MitochondriaPipelineWrapper.contamination_minor",
+])
+
+replace_if_missing("StageAlignAndCallR2.hasContamination", has_contam)
+replace_if_missing("StageAlignAndCallR2.contamination_major", contam_major)
+replace_if_missing("StageAlignAndCallR2.contamination_minor", contam_minor)
+
+# If still missing, set safe defaults (and warn in output JSON)
+if not data.get("StageAlignAndCallR2.hasContamination") or "REPLACE_ME" in str(data.get("StageAlignAndCallR2.hasContamination")):
+    data["StageAlignAndCallR2.hasContamination"] = "false"
+if not str(data.get("StageAlignAndCallR2.contamination_major", "")).strip() or "REPLACE_ME" in str(data.get("StageAlignAndCallR2.contamination_major")):
+    data["StageAlignAndCallR2.contamination_major"] = 0.0
+if not str(data.get("StageAlignAndCallR2.contamination_minor", "")).strip() or "REPLACE_ME" in str(data.get("StageAlignAndCallR2.contamination_minor")):
+    data["StageAlignAndCallR2.contamination_minor"] = 0.0
 
 # Sample name
 sample_name = "${sample_name_override}"

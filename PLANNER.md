@@ -19,6 +19,9 @@ Scope: `scatterWrapper_MitoPipeline_v2_5.wdl` (workflow `MitochondriaPipelineWra
 - Stage 01 (SubsetBamToChrMAndRevert)
   - Success on sample `1000000` using CRAM `gs://fc-aou-datasets-controlled/pooled/wgs/cram/v8_delta/wgs_1000000.cram`.
   - Outputs verified on GCS (proc bam/bai, mean coverage, duplicate metrics).
+  - Feb 11 update (Stage01 resubmission):
+    - Failed: `3618d29f-112c-40b4-88e7-ef2f752f2221` (missing `wdl_deps.zip` / relative import error).
+    - Re-submitted: `0beb83ea-3a1e-4b04-8ca5-ef416efe977c` (running).
 - Stage 02 (AlignAndCallR1)
   - Success workflow: `d3e371d2-05ab-4412-919b-27f942a6a0f1`.
   - Output roots used to populate Stage 03:

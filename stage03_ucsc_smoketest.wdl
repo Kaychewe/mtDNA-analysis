@@ -11,13 +11,22 @@ task UcscToolsSmoke {
     tar -xzf "~{ucsc_tools_bundle}" -C .
     export PATH="$PWD/ucsc_tools/bin:$PWD/ucsc_tools:$PATH"
 
+    IGVTOOLS_JAR=""
+    if [ -f "$PWD/ucsc_tools/igvtools.jar" ]; then
+      IGVTOOLS_JAR="$PWD/ucsc_tools/igvtools.jar"
+    fi
+
     {
       echo "chainSwap:"
       chainSwap 2>&1 | head -n 1 || true
       echo "liftOver:"
       liftOver 2>&1 | head -n 1 || true
       echo "igvtools:"
-      igvtools version 2>&1 | head -n 1 || true
+      if [ -n "${IGVTOOLS_JAR}" ]; then
+        java -jar "${IGVTOOLS_JAR}" --version 2>&1 | head -n 1 || true
+      else
+        igvtools version 2>&1 | head -n 1 || true
+      fi
     } > versions.txt
 
     for tool in chainSwap liftOver igvtools; do

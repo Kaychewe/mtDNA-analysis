@@ -723,12 +723,19 @@ task MongoChainSwapLiftoverBed {
     this_target_sample="~{input_target_name}"
     this_target_path=out/"~{input_target_name}"
     this_base_path=out/"~{this_bed_basename}"
-    IGVTOOLS="${igvtools:-igvtools}"
+    IGVTOOLS_JAR=""
+    if [ -f "$PWD/ucsc_tools/igvtools.jar" ]; then
+      IGVTOOLS_JAR="$PWD/ucsc_tools/igvtools.jar"
+    fi
     chain_file="~{source_chain}"
 
     chainSwap "~{d}{this_chain}" "~{d}{this_target_path}_to_~{input_source_name}.chain"
     liftOver ~{input_bed} "$chain_file" "~{d}{this_base_path}.~{d}{this_target_sample}.liftedOver.bed" "~{d}{this_base_path}.~{d}{this_target_sample}.liftedOverRejects.unmapped"
-    "${IGVTOOLS}" index "~{d}{this_base_path}.~{d}{this_target_sample}.liftedOver.bed"
+    if [ -n "${IGVTOOLS_JAR}" ]; then
+      java -jar "${IGVTOOLS_JAR}" index "~{d}{this_base_path}.~{d}{this_target_sample}.liftedOver.bed"
+    else
+      igvtools index "~{d}{this_base_path}.~{d}{this_target_sample}.liftedOver.bed"
+    fi
   >>>
 
   output {

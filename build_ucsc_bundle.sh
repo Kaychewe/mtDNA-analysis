@@ -52,15 +52,11 @@ unzip -q "${workdir}/igvtools.zip" -d "${workdir}/igvtools_unpack"
 
 # Try to locate igvtools jar or wrapper script in the extracted archive
 igv_jar="$(find "${workdir}/igvtools_unpack" -type f -name 'igvtools*.jar' | head -n 1 || true)"
-igv_bin="$(find "${workdir}/igvtools_unpack" -type f -name 'igvtools' | head -n 1 || true)"
 
 if [ -n "${igv_jar}" ]; then
   cp "${igv_jar}" "${workdir}/ucsc_tools/igvtools.jar"
-elif [ -n "${igv_bin}" ]; then
-  cp "${igv_bin}" "${workdir}/ucsc_tools/bin/igvtools"
-  chmod +x "${workdir}/ucsc_tools/bin/igvtools"
 else
-  echo "ERROR: could not find igvtools jar or wrapper script in the downloaded zip."
+  echo "ERROR: could not find igvtools jar in the downloaded zip."
   exit 1
 fi
 

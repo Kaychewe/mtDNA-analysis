@@ -54,6 +54,9 @@ Scope: `scatterWrapper_MitoPipeline_v2_5.wdl` (workflow `MitochondriaPipelineWra
       - missing `GLIBC_2.28`, `GLIBC_2.33`, `GLIBC_2.34`.
     - Indicates UCSC binaries are too new for the base image’s glibc.
     - Next step: run the diagnostic using a newer glibc + Java base image (e.g., `eclipse-temurin:17-jdk`) or rebuild/bundle UCSC tools against older glibc.
+  - Feb 10 update (igvtools wrapper issue):
+    - DiagnosticChainSwapLiftover failed: `igvtools` wrapper expects `igv.args`.
+    - Fix: bundle `igvtools.jar` only and call `java -jar` in tasks (no wrapper).
 
 ## Current Status (AoU Jupyter)
 

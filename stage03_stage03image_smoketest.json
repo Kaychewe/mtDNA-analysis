@@ -1,3 +1,3 @@
 {
-  "Stage03ImageSmokeTest.docker_image": "REPLACE_ME"
+  "Stage03ImageSmokeTest.docker_image": "kchewe/mtdna-stage03:0.1.0"
 }

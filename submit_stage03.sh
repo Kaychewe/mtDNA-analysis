@@ -43,9 +43,10 @@ if ws:
     if set_if_placeholder("StageProduceSelfReferenceFiles.ucsc_tools_bundle", bundle):
         changed = True
 
-# If using a UCSC bundle, ensure ucsc_docker has Java (prefer the Stage03 image).
+# If using a UCSC bundle, force ucsc_docker to a Java-capable image.
 if data.get("StageProduceSelfReferenceFiles.ucsc_tools_bundle"):
-    if set_if_placeholder("StageProduceSelfReferenceFiles.ucsc_docker", "kchewe/mtdna-stage03:0.1.0"):
+    if data.get("StageProduceSelfReferenceFiles.ucsc_docker") != "kchewe/mtdna-stage03:0.1.0":
+        data["StageProduceSelfReferenceFiles.ucsc_docker"] = "kchewe/mtdna-stage03:0.1.0"
         changed = True
 
 if changed:

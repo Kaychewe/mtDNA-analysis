@@ -51,6 +51,32 @@ Scope: `scatterWrapper_MitoPipeline_v2_5.wdl` (workflow `MitochondriaPipelineWra
   - Feb 10 update (UCSC bundle plan):
     - Added optional `ucsc_tools_bundle` input to `MongoChainSwapLiftoverBed` to bypass docker tool availability.
     - Added `stage03_ucsc_smoketest.wdl/json` to validate `chainSwap`, `liftOver`, `igvtools` from the bundle.
+  - Feb 11 update (Stage03 success):
+    - Workflow `35446e3a-7e61-4811-9658-55715cad2dc5` succeeded using `kchewe/mtdna-stage03:0.1.1` and UCSC tools bundle.
+    - Workflow root:
+      `gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/workflows/cromwell-executions/StageProduceSelfReferenceFiles/35446e3a-7e61-4811-9658-55715cad2dc5/`
+    - Key outputs:
+      `mt_self`: `.../call-FinalizeMtFasta/out/1000000.self.ref.fasta`
+      `mt_self_index`: `.../call-FinalizeMtFasta/out/1000000.self.ref.fasta.fai`
+      `mt_self_dict`: `.../call-FinalizeMtFasta/out/1000000.self.ref.dict`
+      `mt_shifted_self`: `.../call-ShiftMtReference/attempt-2/out/1000000.self.ref.shifted_by_8000_bases.fasta`
+      `mt_shifted_self_index`: `.../call-ShiftMtReference/attempt-2/out/1000000.self.ref.shifted_by_8000_bases.fasta.fai`
+      `mt_shifted_self_dict`: `.../call-ShiftMtReference/attempt-2/out/1000000.self.ref.shifted_by_8000_bases.dict`
+      `ref_to_self_chain`: `.../call-MtConsensus/out/reference_to_1000000.chain`
+      `self_to_ref_chain`: `.../call-ChainSwapLiftoverBed/out/1000000_to_reference.chain`
+      `self_shift_back_chain`: `.../call-ShiftMtReference/attempt-2/out/1000000.self.ref.shifted_by_8000_bases.shift_back_8000_bases.chain`
+      `force_call_vcf`: `.../call-ForceCallVcfs/out/1000000.self.ref.reversed.selfRef.homoplasmies.vcf.bgz`
+      `force_call_vcf_idx`: `.../call-ForceCallVcfs/out/1000000.self.ref.reversed.selfRef.homoplasmies.vcf.bgz.tbi`
+      `force_call_vcf_filters`: `.../call-ForceCallVcfs/out/1000000.self.ref.reversed.withfilters.selfRef.homoplasmies.vcf.bgz`
+      `force_call_vcf_filters_idx`: `.../call-ForceCallVcfs/out/1000000.self.ref.reversed.withfilters.selfRef.homoplasmies.vcf.bgz.tbi`
+      `force_call_vcf_shifted`: `.../call-ForceCallVcfs/out/1000000.self.ref.reversed.selfRef.shifted.homoplasmies.vcf.bgz`
+      `force_call_vcf_shifted_idx`: `.../call-ForceCallVcfs/out/1000000.self.ref.reversed.selfRef.shifted.homoplasmies.vcf.bgz.tbi`
+      `mt_interval_list_self`: `.../call-LiftIntervals/out/chrM.hg38.1000000.SelfRefLiftover.interval_list`
+      `non_control_interval_self`: `.../call-LiftIntervals/out/non_control_region.chrM.1000000.SelfRefLiftover.interval_list`
+      `control_shifted_self`: `.../call-LiftIntervals/out/control_region_shifted.chrM.1000000.SelfRefLiftover.interval_list`
+      `blacklisted_sites_self`: `.../call-ChainSwapLiftoverBed/out/blacklist_sites.hg38.chrM.1000000.liftedOver.bed`
+      `blacklisted_sites_index_self`: `.../call-ChainSwapLiftoverBed/out/blacklist_sites.hg38.chrM.1000000.liftedOver.bed.idx`
+      `nuc_variants_dropped`: `0`, `mtdna_consensus_overlaps`: `0`, `nuc_consensus_overlaps`: `0`
   - Feb 10 update (UCSC bundle smoketest in flight):
     - UCSC tools bundle built and uploaded to `gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/tools/ucsc/ucsc-tools-linux-x86_64.tar.gz`.
     - Submitted `Stage03UcscSmokeTest` workflow: `a055f5c8-d69c-4b24-a4e7-5b6674eac892` (running).

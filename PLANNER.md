@@ -49,6 +49,10 @@ Scope: `scatterWrapper_MitoPipeline_v2_5.wdl` (workflow `MitochondriaPipelineWra
     - UCSC tools bundle built and uploaded to `gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/tools/ucsc/ucsc-tools-linux-x86_64.tar.gz`.
     - Submitted `Stage03UcscSmokeTest` workflow: `a055f5c8-d69c-4b24-a4e7-5b6674eac892` (running).
     - Re-run smoketest succeeded: `a3e8a954-918e-46ec-9edf-88f580c0ec3b`.
+    - Latest smoketest succeeded: `b1168d84-0a1b-4e91-9893-61a469826e1c` (chainSwap/liftOver/igvtools OK).
+  - Feb 11 update (ChainSwap diagnostic re-run):
+    - Submitted `DiagnosticChainSwapLiftover` with bundle + `eclipse-temurin:17-jdk`: `336cdfd4-b1be-43d5-8397-d69a96e2dcd6` (running).
+    - Diagnostic succeeded; outputs produced (chain + lifted bed + index).
   - Feb 10 update (ChainSwap diagnostic failure):
     - DiagnosticChainSwapLiftover failed with GLIBC errors from `chainSwap`:
       - missing `GLIBC_2.28`, `GLIBC_2.33`, `GLIBC_2.34`.

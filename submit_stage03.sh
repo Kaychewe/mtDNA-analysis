@@ -54,6 +54,29 @@ for k,v in data.items():
         sys.exit(1)
 PY
 
+echo "=== Stage03 Submission Params ==="
+echo "WDL:  $WDL_PATH"
+echo "JSON: $JSON_PATH"
+echo "DEPS: $DEPS_PATH"
+echo
+echo "=== WDL Inputs (stage03_produce_self_reference.wdl) ==="
+awk '
+  /workflow[[:space:]]+StageProduceSelfReferenceFiles/ {in_wf=1}
+  in_wf && /input[[:space:]]*{/ {in_input=1; next}
+  in_input {print}
+  in_input && /}/ {in_input=0}
+' "$WDL_PATH" | sed 's/^/  /'
+echo
+echo "=== JSON Inputs (stage03_produce_self_reference.json) ==="
+python3 - <<PY
+import json
+p="${JSON_PATH}"
+data=json.load(open(p))
+for k in sorted(data.keys()):
+    print(f"{k}: {data[k]}")
+PY
+echo "=== End Params ==="
+
 DEPS_ARG=()
 if [ -f "$DEPS_PATH" ]; then
   # Warn if deps zip is older than any WDL in mtSwirl/WDL/v2.5_MongoSwirl_Single

@@ -9,6 +9,10 @@ task Stage04GotcSmoke {
     set -euo pipefail
 
     {
+      echo "bwa_path:";
+      command -v bwa || true
+      echo "bwa_symlink:";
+      ls -l /usr/gitc/bwa 2>&1 || true
       echo "bwa_version:";
       /usr/gitc/bwa 2>&1 | head -n 1 || true
       echo "samtools_version:";
@@ -43,8 +47,13 @@ task Stage04GatkSmoke {
     set -euo pipefail
 
     {
+      echo "gatk_path:";
+      command -v gatk || true
+      echo "gatk_ls:";
+      ls -l /opt/gatk 2>&1 || true
+      ls -l /opt/gatk/gatk-4.2.6.0 2>&1 || true
       echo "gatk_version:";
-      gatk --version 2>&1 | head -n 1
+      (gatk --version 2>&1 | head -n 5) || true
       echo "java_version:";
       java -version 2>&1 | head -n 1
     } > stage04_gatk_versions.txt

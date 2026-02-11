@@ -1469,7 +1469,7 @@ task MongoAlignToMtRegShiftedAndMetrics {
       ReorderSam \
       I="~{d}{this_output_bam_basename}_pre_mt_filt.bam" \
       O="~{d}{this_output_bam_basename}.bam" \
-      REFERENCE="~{d}{this_mt_fasta}" \
+      SEQUENCE_DICTIONARY="~{mt_dict}" \
       ALLOW_INCOMPLETE_DICT_CONCORDANCE=true \
       CREATE_INDEX=true
 
@@ -1538,7 +1538,7 @@ task MongoAlignToMtRegShiftedAndMetrics {
       ReorderSam \
       I="~{d}{this_output_bam_basename}.shifted_pre_mt_filt.bam" \
       O="~{d}{this_output_bam_basename}.shifted.bam" \
-      REFERENCE="~{d}{this_mt_shifted_fasta}" \
+      SEQUENCE_DICTIONARY="~{mt_shifted_dict}" \
       ALLOW_INCOMPLETE_DICT_CONCORDANCE=true \
       CREATE_INDEX=true
 

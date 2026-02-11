@@ -43,6 +43,11 @@ if ws:
     if set_if_placeholder("StageProduceSelfReferenceFiles.ucsc_tools_bundle", bundle):
         changed = True
 
+# If using a UCSC bundle, ensure ucsc_docker has Java (prefer the Stage03 image).
+if data.get("StageProduceSelfReferenceFiles.ucsc_tools_bundle"):
+    if set_if_placeholder("StageProduceSelfReferenceFiles.ucsc_docker", "kchewe/mtdna-stage03:0.1.0"):
+        changed = True
+
 if changed:
     json.dump(data, open(p,"w"), indent=2)
     print(f"Updated {p}")

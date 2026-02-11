@@ -216,6 +216,7 @@ workflow ProduceSelfReferenceFiles {
       mt_chain = MtConsensus.mt_chain,
       shift_forward_chain = ShiftMtReference.shift_forward_chain,
       shifted_mt_fasta = ShiftMtReference.shifted_mt_fasta,
+      shifted_mt_fasta_index = ShiftMtReference.shifted_mt_fasta_index,
       genomes_cloud_docker = genomes_cloud_docker,
       preemptible_tries = preemptible_tries
   }
@@ -851,6 +852,7 @@ task ForceCallVcfs {
     File mt_chain
     File shift_forward_chain
     File shifted_mt_fasta
+    File shifted_mt_fasta_index
     String genomes_cloud_docker
     Int? preemptible_tries
   }
@@ -895,8 +897,8 @@ task ForceCallVcfs {
     target.add_sequence("~{mt_fasta}", "~{mt_fasta_index}")
     source.add_sequence("~{mt_ref_fasta}", "~{mt_ref_fasta_index}")
     source.add_liftover("~{mt_chain}", "target_self")
-    shifted_target = hl.ReferenceGenome("target_self_shifted", ['chrM'], {'chrM':fai_to_len("~{shifted_mt_fasta}.fai")}, mt_contigs=['chrM'])
-    shifted_target.add_sequence("~{shifted_mt_fasta}", "~{shifted_mt_fasta}.fai")
+    shifted_target = hl.ReferenceGenome("target_self_shifted", ['chrM'], {'chrM':fai_to_len("~{shifted_mt_fasta_index}")}, mt_contigs=['chrM'])
+    shifted_target.add_sequence("~{shifted_mt_fasta}", "~{shifted_mt_fasta_index}")
     target.add_liftover("~{shift_forward_chain}", shifted_target)
 
     mt_new = hl.import_vcf("~{mt_vcf}", reference_genome='mtGRCh38').select_entries()

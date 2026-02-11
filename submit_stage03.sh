@@ -56,6 +56,15 @@ PY
 
 DEPS_ARG=()
 if [ -f "$DEPS_PATH" ]; then
+  # Warn if deps zip is older than any WDL in mtSwirl/WDL/v2.5_MongoSwirl_Single
+  WDL_ROOT="${ROOT_DIR}/mtSwirl/WDL/v2.5_MongoSwirl_Single"
+  if [ -d "$WDL_ROOT" ]; then
+    newest_wdl=$(find "$WDL_ROOT" -name "*.wdl" -type f -printf "%T@ %p\n" | sort -nr | head -n 1 | awk '{print $2}')
+    if [ -n "$newest_wdl" ] && [ "$newest_wdl" -nt "$DEPS_PATH" ]; then
+      echo "WARNING: $DEPS_PATH is older than $newest_wdl"
+      echo "Recreate with: python3 - <<'PY' ... (see README or prior commands)"
+    fi
+  fi
   DEPS_ARG=(-F workflowDependencies=@"$DEPS_PATH")
 else
   echo "WARNING: Missing workflowDependencies: $DEPS_PATH"

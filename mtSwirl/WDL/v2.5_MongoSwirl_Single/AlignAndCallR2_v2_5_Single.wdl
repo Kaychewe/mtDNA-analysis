@@ -65,6 +65,7 @@ workflow AlignAndCallR2 {
     Int? preemptible_tries
     Int? n_cpu
     Int? n_cpu_bwa
+    String? gotc_docker_override
   }
 
   parameter_meta {
@@ -99,7 +100,8 @@ workflow AlignAndCallR2 {
       coverage_cap = 100000,
       
       preemptible_tries = preemptible_tries,
-      n_cpu = n_cpu_bwa
+      n_cpu = n_cpu_bwa,
+      gotc_docker_override = gotc_docker_override
   }
 
   Int M2_mem = if AlignToMtRegShiftedAndMetrics.mean_coverage > 25000 then 14 else 7

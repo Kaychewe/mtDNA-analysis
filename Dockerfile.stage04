@@ -1,0 +1,56 @@
+FROM ubuntu:22.04
+
+ARG DEBIAN_FRONTEND=noninteractive
+ARG UCSC_BASE_URL="https://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64"
+ARG IGV_ZIP_URL="https://data.broadinstitute.org/igv/projects/downloads/2.16/IGV_2.16.2.zip"
+ARG PICARD_URL="https://github.com/broadinstitute/picard/releases/download/2.27.5/picard.jar"
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    bash \
+    ca-certificates \
+    curl \
+    git \
+    gzip \
+    locales \
+    openjdk-11-jre-headless \
+    python3 \
+    python3-pip \
+    r-base \
+    samtools \
+    bcftools \
+    tabix \
+    unzip \
+    wget \
+    bwa \
+    && rm -rf /var/lib/apt/lists/*
+
+# Provide /usr/gitc/bwa path expected by WDLs
+RUN mkdir -p /usr/gitc && ln -s /usr/bin/bwa /usr/gitc/bwa
+
+# Picard (used by Stage04 AlignToMtRegShiftedAndMetrics)
+RUN mkdir -p /opt/picard \
+    && curl -fsSL "${PICARD_URL}" -o /opt/picard/picard.jar \
+    && printf '%s\n' '#!/bin/bash' 'exec java -jar /opt/picard/picard.jar "$@"' > /usr/local/bin/picard \
+    && chmod +x /usr/local/bin/picard
+
+# UCSC tools (chainSwap, liftOver)
+RUN mkdir -p /opt/ucsc/bin \
+    && curl -fsSL "${UCSC_BASE_URL}/chainSwap" -o /opt/ucsc/bin/chainSwap \
+    && curl -fsSL "${UCSC_BASE_URL}/liftOver" -o /opt/ucsc/bin/liftOver \
+    && chmod +x /opt/ucsc/bin/chainSwap /opt/ucsc/bin/liftOver
+
+# IGV tools
+RUN mkdir -p /opt/igv \
+    && curl -fsSL "${IGV_ZIP_URL}" -o /tmp/igv.zip \
+    && unzip -q /tmp/igv.zip -d /opt/igv \
+    && rm -f /tmp/igv.zip \
+    && ln -s /opt/igv/IGV_2.16.2/igvtools /opt/igv/igvtools \
+    && ln -s /opt/igv/IGV_2.16.2/igv.args /opt/igv/igv.args
+
+ENV LANG=C.UTF-8 \
+    LC_ALL=C.UTF-8 \
+    JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64 \
+    IGVTOOLS_HOME=/opt/igv/IGV_2.16.2 \
+    PATH="/opt/ucsc/bin:/opt/igv:${JAVA_HOME}/bin:${PATH}"
+
+ENTRYPOINT ["/bin/bash"]

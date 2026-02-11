@@ -68,6 +68,7 @@ workflow StageAlignAndCallR2 {
     Int? preemptible_tries
     Int? n_cpu
     Int? n_cpu_bwa
+    String? gotc_docker_override
   }
 
   call AlignAndCallR2_Single.AlignAndCallR2 as AlignAndCallR2 {
@@ -121,7 +122,8 @@ workflow StageAlignAndCallR2 {
       contamination_major = contamination_major,
       contamination_minor = contamination_minor,
       n_cpu_bwa = n_cpu_bwa,
-      n_cpu = n_cpu
+      n_cpu = n_cpu,
+      gotc_docker_override = gotc_docker_override
   }
 
   output {

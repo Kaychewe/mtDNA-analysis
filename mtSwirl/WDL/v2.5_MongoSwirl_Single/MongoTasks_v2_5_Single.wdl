@@ -1366,6 +1366,7 @@ task MongoAlignToMtRegShiftedAndMetrics {
     Int? coverage_cap
     Int? n_cpu
 
+    String? gotc_docker_override
     Int? preemptible_tries
   }
 
@@ -1566,7 +1567,7 @@ task MongoAlignToMtRegShiftedAndMetrics {
     memory: "6 GB"
     cpu: this_cpu
     disks: "local-disk " + disk_size + " HDD"
-    docker: "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.2-1552931386"
+    docker: select_first([gotc_docker_override, "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.2-1552931386"])
   }
   output {
     File mt_aligned_bam = "out/~{this_output_bam_basename}.bam"

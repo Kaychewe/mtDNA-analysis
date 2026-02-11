@@ -218,6 +218,9 @@ replace_if_missing("StageAlignAndCallR2.f_score_beta", s2.get("StageAlignAndCall
 replace_if_missing("StageAlignAndCallR2.verifyBamID", s2.get("StageAlignAndCallR1.verifyBamID", ""))
 replace_if_missing("StageAlignAndCallR2.max_read_length", s2.get("StageAlignAndCallR1.max_read_length", ""))
 
+# Defaults for docker overrides (Stage04-specific)
+replace_if_missing("StageAlignAndCallR2.gatk_docker_override", s2.get("StageAlignAndCallR1.gatk_docker_override", ""))
+
 with open("${out_json}", "w", encoding="utf-8") as fh:
     json.dump(data, fh, indent=2, sort_keys=True)
     fh.write("\n")

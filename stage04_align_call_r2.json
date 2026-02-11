@@ -1,41 +1,32 @@
 {
   "StageAlignAndCallR2.sample_name": "REPLACE_ME",
   "StageAlignAndCallR2.unmapped_bam": "REPLACE_ME",
-
   "StageAlignAndCallR2.mt_interval_list_self": "REPLACE_ME",
-
   "StageAlignAndCallR2.mt_self": "REPLACE_ME",
   "StageAlignAndCallR2.mt_self_index": "REPLACE_ME",
   "StageAlignAndCallR2.mt_self_dict": "REPLACE_ME",
-
   "StageAlignAndCallR2.mt_andNuc_self": "REPLACE_ME",
   "StageAlignAndCallR2.mt_andNuc_self_index": "REPLACE_ME",
   "StageAlignAndCallR2.mt_andNuc_self_dict": "REPLACE_ME",
-
   "StageAlignAndCallR2.mt_shifted_self": "REPLACE_ME",
   "StageAlignAndCallR2.mt_shifted_self_index": "REPLACE_ME",
   "StageAlignAndCallR2.mt_shifted_self_dict": "REPLACE_ME",
-
   "StageAlignAndCallR2.mt_andNuc_shifted_self": "REPLACE_ME",
   "StageAlignAndCallR2.mt_andNuc_shifted_self_index": "REPLACE_ME",
   "StageAlignAndCallR2.mt_andNuc_shifted_self_dict": "REPLACE_ME",
-
   "StageAlignAndCallR2.blacklisted_sites_self": "REPLACE_ME",
   "StageAlignAndCallR2.blacklisted_sites_index_self": "REPLACE_ME",
-
   "StageAlignAndCallR2.force_call_vcf": "REPLACE_ME",
   "StageAlignAndCallR2.force_call_vcf_idx": "REPLACE_ME",
   "StageAlignAndCallR2.force_call_vcf_shifted": "REPLACE_ME",
   "StageAlignAndCallR2.force_call_vcf_shifted_idx": "REPLACE_ME",
-
   "StageAlignAndCallR2.self_shift_back_chain": "REPLACE_ME",
-
   "StageAlignAndCallR2.non_control_interval_self": "REPLACE_ME",
   "StageAlignAndCallR2.control_shifted_self": "REPLACE_ME",
-
   "StageAlignAndCallR2.hasContamination": "REPLACE_ME",
   "StageAlignAndCallR2.contamination_major": 0.0,
   "StageAlignAndCallR2.contamination_minor": 0.0,
-
-  "StageAlignAndCallR2.compress_output_vcf": false
+  "StageAlignAndCallR2.compress_output_vcf": false,
+  "StageAlignAndCallR2.gatk_docker_override": "us.gcr.io/broad-gatk/gatk:4.2.6.0",
+  "StageAlignAndCallR2.gotc_docker_override": "kchewe/mtdna-stage04:0.1.0"
 }

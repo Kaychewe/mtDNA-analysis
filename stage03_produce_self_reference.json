@@ -24,5 +24,6 @@
   "StageProduceSelfReferenceFiles.bcftools_docker": "us.gcr.io/broad-dsp-lrma/lr-basic:latest",
   "StageProduceSelfReferenceFiles.gotc_docker": "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.2-1552931386",
   "StageProduceSelfReferenceFiles.ucsc_docker": "docker.io/rahulg603/ucsc_genome_toolkit",
+  "StageProduceSelfReferenceFiles.ucsc_tools_bundle": "REPLACE_ME",
   "StageProduceSelfReferenceFiles.preemptible_tries": null
 }

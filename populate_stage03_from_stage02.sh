@@ -24,6 +24,7 @@ values are missing or REPLACE_ME. You can override defaults via environment:
   BCFTOOLS_DOCKER_DEFAULT
   GOTC_DOCKER_DEFAULT
   UCSC_DOCKER_DEFAULT
+  UCSC_TOOLS_BUNDLE_DEFAULT
 USAGE
 }
 
@@ -125,6 +126,7 @@ genomes_cloud_default="${GENOMES_CLOUD_DOCKER_DEFAULT:-us.gcr.io/broad-gotc-prod
 gotc_docker_default="${GOTC_DOCKER_DEFAULT:-${genomes_cloud_default}}"
 ucsc_docker_default="${UCSC_DOCKER_DEFAULT:-docker.io/rahulg603/ucsc_genome_toolkit}"
 bcftools_docker_default="${BCFTOOLS_DOCKER_DEFAULT:-${genomes_cloud_default}}"
+ucsc_tools_bundle_default="${UCSC_TOOLS_BUNDLE_DEFAULT:-}"
 
 outputs_tmp="$(mktemp)"
 if [ -n "${WF_ID}" ]; then
@@ -213,6 +215,8 @@ replace_if_missing("StageProduceSelfReferenceFiles.CheckHomOverlapScript", "${ch
 replace_if_missing("StageProduceSelfReferenceFiles.genomes_cloud_docker", "${genomes_cloud_default}")
 replace_if_missing("StageProduceSelfReferenceFiles.gotc_docker", "${gotc_docker_default}")
 replace_if_missing("StageProduceSelfReferenceFiles.ucsc_docker", "${ucsc_docker_default}")
+if "${ucsc_tools_bundle_default}":
+    replace_if_missing("StageProduceSelfReferenceFiles.ucsc_tools_bundle", "${ucsc_tools_bundle_default}")
 if "StageProduceSelfReferenceFiles.bcftools_docker" in data and "REPLACE_ME" in str(data.get("StageProduceSelfReferenceFiles.bcftools_docker")):
     if "${bcftools_docker_default}":
         data["StageProduceSelfReferenceFiles.bcftools_docker"] = "${bcftools_docker_default}"

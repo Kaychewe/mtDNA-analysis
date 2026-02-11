@@ -6,6 +6,10 @@ Scope: `scatterWrapper_MitoPipeline_v2_5.wdl` (workflow `MitochondriaPipelineWra
 
 ## Progress Log (AoU Jupyter)
 
+- Objective (clarified)
+  - Get Stage03 ProduceSelfReferenceFiles running reliably on AoU by removing docker pull/tooling fragility.
+  - Approach: bundle required command-line tools in GCS (bcftools + UCSC tools) and have WDLs localize and run them from tarballs, with smoketests to validate each bundle before full Stage03 runs.
+
 - Stage 01 (SubsetBamToChrMAndRevert)
   - Success on sample `1000000` using CRAM `gs://fc-aou-datasets-controlled/pooled/wgs/cram/v8_delta/wgs_1000000.cram`.
   - Outputs verified on GCS (proc bam/bai, mean coverage, duplicate metrics).

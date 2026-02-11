@@ -252,7 +252,8 @@ This planner will be updated as we refactor.
 - WDL: `stage04_align_call_r2.wdl` (new)
 - Inputs: Stage03 self-reference outputs, Stage01 subset bam/bai, intervals (self control/non-control), references, blacklist.
 - Outputs: `self_mt_aligned_bam` + bai, `self_ref_vcf` + index, `self_ref_split_vcf` + index, R2 stats/metrics.
-- Diagnostics: confirm self-reference files exist, confirm GATK docker available.
+- Diagnostics: confirm self-reference files exist, confirm GATK + GOTC images available.
+- Smoketest: `stage04_stage04image_smoketest.wdl/json` (checks GOTC tools and GATK image).
 
 **Stage05 Liftover**
 - WDL: `stage05_liftover.wdl` (new)
@@ -269,6 +270,7 @@ This planner will be updated as we refactor.
 **Stage Scripts and Reuse**
 - For each stage: add `populate_stageXX_from_stageYY.sh`, `submit_stageXX.sh`, and `diagnose_stageXX.sh`.
 - Added: `populate_stage04_from_stage03.sh`, `submit_stage04.sh`, `populate_stage05_from_stage04.sh`, `submit_stage05.sh`, `populate_stage06_from_stage05.sh`, `submit_stage06.sh`.
+- Added: `submit_stage04_with_tags.sh` (populate + submit with enforced GATK docker tag).
 - Add `--reuse-stageXX <workflow_id>` flags to `main_workflow.sh` so later stages can run without re-submitting earlier stages.
 
 ## Tooling/Docker Comparison (mtDNA vs long-read-pipelines 4.0.9)
@@ -283,6 +285,12 @@ Primary images referenced by `scatterWrapper_MitoPipeline_v2_5.wdl` and the impo
 - `genomes_cloud_docker`: `quay.io/biocontainers/bcftools:1.17--h3cc50cf_1`
 - `haplochecker_docker`: `eclipse-temurin:17-jdk`
 - `gatk_samtools_docker`: `docker.io/broadinstitute/gatk:4.2.6.0`
+
+Stage03/Stage04 tooling notes (AoU, Feb 11, 2026):
+- Stage03 image: `kchewe/mtdna-stage03:0.1.1` (Hail 0.2.128, Java 11, bcftools/bgzip/tabix, samtools, UCSC tools, R).
+- Stage03 UCSC bundle: `gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/tools/ucsc/ucsc-tools-linux-x86_64.tar.gz`.
+- Stage04 GOTC image (BWA/Picard/samtools/R): `us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.2-1552931386`.
+- Stage04 GATK image (Mutect2/liftover): `us.gcr.io/broad-gatk/gatk:4.2.6.0` (default via `gatk_version`).
 
 Additional image expectations found elsewhere in this repo:
 - `bcftools_docker` appears in v2.5 single pipeline inputs and in `portable_inputs_template.json`, but it is not defined in the wrapper inputs. This mismatch triggers the “Required workflow input … bcftools_docker not specified” error.

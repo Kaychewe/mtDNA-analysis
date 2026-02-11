@@ -1,0 +1,4 @@
+{
+  "Stage04ImageSmokeTest.gotc_docker": "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.2-1552931386",
+  "Stage04ImageSmokeTest.gatk_docker": "us.gcr.io/broad-gatk/gatk:4.2.6.0"
+}

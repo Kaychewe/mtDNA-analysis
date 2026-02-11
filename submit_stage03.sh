@@ -127,9 +127,9 @@ while IFS= read -r line; do
     echo "ERROR: Missing GCS input: $line"
     exit 1
   fi
-done < <(python3 - <<'PY'
+done < <(python3 - <<PY
 import json
-p="'"$JSON_PATH"'"
+p="${JSON_PATH}"
 data=json.load(open(p))
 gcs_keys = [
     "StageProduceSelfReferenceFiles.mt_dict",

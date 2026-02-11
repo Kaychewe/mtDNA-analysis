@@ -11,9 +11,54 @@ WDL_PATH="${ROOT_DIR}/stage03_produce_self_reference.wdl"
 JSON_PATH="${ROOT_DIR}/stage03_produce_self_reference.json"
 DEPS_PATH="${ROOT_DIR}/wdl_deps.zip"
 
+if [ ! -f "$JSON_PATH" ]; then
+  echo "Missing $JSON_PATH"
+  exit 1
+fi
+
+# Auto-fill common placeholders
+python3 - <<PY
+import json, sys
+p="${JSON_PATH}"
+data=json.load(open(p))
+
+def set_if_placeholder(key, value):
+    cur = data.get(key, "")
+    if (not cur) or ("REPLACE_ME" in str(cur)):
+        data[key] = value
+        return True
+    return False
+
+changed = False
+changed |= set_if_placeholder(
+    "StageProduceSelfReferenceFiles.genomes_cloud_docker",
+    "kchewe/mtdna-hail:0.2.128-ubuntu22.04",
+)
+
+# UCSC bundle (optional but recommended). Only set if WORKSPACE_BUCKET is defined.
+import os
+ws = os.environ.get("WORKSPACE_BUCKET")
+if ws:
+    bundle = f"{ws.rstrip('/')}/tools/ucsc/ucsc-tools-linux-x86_64.tar.gz"
+    if set_if_placeholder("StageProduceSelfReferenceFiles.ucsc_tools_bundle", bundle):
+        changed = True
+
+if changed:
+    json.dump(data, open(p,"w"), indent=2)
+    print(f"Updated {p}")
+
+# Fail fast if any REPLACE_ME remains
+for k,v in data.items():
+    if "REPLACE_ME" in str(v):
+        print(f"ERROR: {k} is still REPLACE_ME: {v}")
+        sys.exit(1)
+PY
+
 DEPS_ARG=()
 if [ -f "$DEPS_PATH" ]; then
   DEPS_ARG=(-F workflowDependencies=@"$DEPS_PATH")
+else
+  echo "WARNING: Missing workflowDependencies: $DEPS_PATH"
 fi
 
 curl -sS -X POST "http://localhost:8094/api/workflows/v1" \

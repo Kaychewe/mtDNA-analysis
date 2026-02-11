@@ -261,9 +261,9 @@ This planner will be updated as we refactor.
     - Submitted: `e9472e11-1e79-4e85-bafb-4bcd96e9f55e` (running).
     - Failed: `e9472e11-1e79-4e85-bafb-4bcd96e9f55e` (AlignToMtRegShiftedAndMetrics). stderr shows `picard: command not found` inside GOTC image.
   - Feb 11 update (Stage04 image fix):
-    - Built/pushed `kchewe/mtdna-stage04:0.1.0` (bwa, picard, samtools, R, Java 11).
+    - Built/pushed `kchewe/mtdna-stage04:0.1.1` (bwa, picard, samtools, R, Java 11, GATK 4.2.6.0).
     - Added `gotc_docker_override` wiring for `MongoAlignToMtRegShiftedAndMetrics`.
-    - Updated `stage04_stage04image_smoketest.json` to use `kchewe/mtdna-stage04:0.1.0`.
+    - Updated `stage04_stage04image_smoketest.json` to use `kchewe/mtdna-stage04:0.1.1` for both GOTC + GATK.
 
 **Stage05 Liftover**
 - WDL: `stage05_liftover.wdl` (new)
@@ -299,7 +299,7 @@ Primary images referenced by `scatterWrapper_MitoPipeline_v2_5.wdl` and the impo
 Stage03/Stage04 tooling notes (AoU, Feb 11, 2026):
 - Stage03 image: `kchewe/mtdna-stage03:0.1.1` (Hail 0.2.128, Java 11, bcftools/bgzip/tabix, samtools, UCSC tools, R).
 - Stage03 UCSC bundle: `gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/tools/ucsc/ucsc-tools-linux-x86_64.tar.gz`.
-- Stage04 GOTC image (BWA/Picard/samtools/R): `kchewe/mtdna-stage04:0.1.0` (Java 11, Picard present).
+- Stage04 GOTC image (BWA/Picard/samtools/R): `kchewe/mtdna-stage04:0.1.1` (Java 11, Picard present, GATK included).
 - Stage04 GATK image (Mutect2/liftover): `us.gcr.io/broad-gatk/gatk:4.2.6.0` (default via `gatk_version`).
 
 Additional image expectations found elsewhere in this repo:

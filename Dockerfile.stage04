@@ -4,6 +4,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 ARG UCSC_BASE_URL="https://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64"
 ARG IGV_ZIP_URL="https://data.broadinstitute.org/igv/projects/downloads/2.16/IGV_2.16.2.zip"
 ARG PICARD_URL="https://github.com/broadinstitute/picard/releases/download/2.27.5/picard.jar"
+ARG GATK_ZIP_URL="https://github.com/broadinstitute/gatk/releases/download/4.2.6.0/gatk-4.2.6.0.zip"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     bash \
@@ -32,6 +33,13 @@ RUN mkdir -p /opt/picard \
     && curl -fsSL "${PICARD_URL}" -o /opt/picard/picard.jar \
     && printf '%s\n' '#!/bin/bash' 'exec java -jar /opt/picard/picard.jar "$@"' > /usr/local/bin/picard \
     && chmod +x /usr/local/bin/picard
+
+# GATK (needed by Stage04)
+RUN mkdir -p /opt/gatk \
+    && curl -fsSL "${GATK_ZIP_URL}" -o /tmp/gatk.zip \
+    && unzip -q /tmp/gatk.zip -d /opt/gatk \
+    && rm -f /tmp/gatk.zip \
+    && ln -s /opt/gatk/gatk-4.2.6.0/gatk /usr/local/bin/gatk
 
 # UCSC tools (chainSwap, liftOver)
 RUN mkdir -p /opt/ucsc/bin \

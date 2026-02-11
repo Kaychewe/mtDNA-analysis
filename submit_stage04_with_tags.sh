@@ -16,8 +16,8 @@ STAGE02=""
 STAGE03=""
 SAMPLE_NAME=""
 OUTPUT_JSON="${ROOT_DIR}/stage04_align_call_r2.json"
-GATK_DOCKER="us.gcr.io/broad-gatk/gatk:4.2.6.0"
-GOTC_DOCKER="kchewe/mtdna-stage04:0.1.0"
+GATK_DOCKER="kchewe/mtdna-stage04:0.1.1"
+GOTC_DOCKER="kchewe/mtdna-stage04:0.1.1"
 
 while [ $# -gt 0 ]; do
   case "$1" in

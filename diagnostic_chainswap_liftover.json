@@ -1,11 +1,10 @@
 {
-  "DiagnosticChainSwapLiftover.source_chain": "REPLACE_ME",
-  "DiagnosticChainSwapLiftover.input_target_name": "REPLACE_ME",
+  "DiagnosticChainSwapLiftover.input_bed": "gs://gcp-public-data--broad-references/hg38/v0/chrM/blacklist_sites.hg38.chrM.bed",
+  "DiagnosticChainSwapLiftover.input_bed_index": "gs://gcp-public-data--broad-references/hg38/v0/chrM/blacklist_sites.hg38.chrM.bed.idx",
   "DiagnosticChainSwapLiftover.input_source_name": "reference",
-  "DiagnosticChainSwapLiftover.input_bed": "REPLACE_ME",
-  "DiagnosticChainSwapLiftover.input_bed_index": "REPLACE_ME",
+  "DiagnosticChainSwapLiftover.input_target_name": "1000000",
   "DiagnosticChainSwapLiftover.preemptible_tries": 0,
-  "DiagnosticChainSwapLiftover.ucsc_docker": "us-central1-docker.pkg.dev/all-of-us-rw-prod/aou-rw-gar-remote-repo-docker-prod/rahulg603/ucsc_genome_toolkit",
-  "DiagnosticChainSwapLiftover.ucsc_tools_bundle": "REPLACE_ME"
+  "DiagnosticChainSwapLiftover.source_chain": "gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/workflows/cromwell-executions/StageProduceSelfReferenceFiles/d8646a32-5af0-44c9-9201-33527fdb1b47/call-ProduceSelfReferenceFiles/ProduceSelfReferenceFiles/47c76a2b-fa30-450b-b072-3385462f2d0a/call-MtConsensus/out/reference_to_1000000.chain",
+  "DiagnosticChainSwapLiftover.ucsc_docker": "us.gcr.io/broad-dsp-lrma/lr-basic:latest",
+  "DiagnosticChainSwapLiftover.ucsc_tools_bundle": "gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/tools/ucsc/ucsc-tools-linux-x86_64.tar.gz"
 }
-

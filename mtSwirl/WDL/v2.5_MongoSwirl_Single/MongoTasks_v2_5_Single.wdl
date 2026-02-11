@@ -1663,6 +1663,43 @@ task MongoCallMtAndShifted {
     this_shifted_force_vcf="~{shifted_force_call_vcf}"
     this_self_shifted_fasta="~{shifted_mt_self}"
 
+    # Ensure BAMs have RG with SM; Mutect2 fails if samples are missing
+    has_sm_rg() {
+      samtools view -H "$1" | awk '$1=="@RG"{for(i=1;i<=NF;i++) if($i ~ /^SM:/) {exit 0}} END{exit 1}'
+    }
+
+    this_bam_for_m2="~{d}{this_bam}"
+    if ! has_sm_rg "~{d}{this_bam}"; then
+      this_bam_for_m2="out/~{sample_base_name}~{suffix}.rg.bam"
+      picard --java-options "-Xms5000m" \
+        AddOrReplaceReadGroups \
+        I="~{d}{this_bam}" \
+        O="~{d}{this_bam_for_m2}" \
+        RGID="~{sample_base_name}" \
+        RGLB="lib1" \
+        RGPL="ILLUMINA" \
+        RGPU="unit1" \
+        RGSM="~{sample_base_name}" \
+        VALIDATION_STRINGENCY=SILENT \
+        CREATE_INDEX=true
+    fi
+
+    this_shifted_bam_for_m2="~{d}{this_shifted_bam}"
+    if ! has_sm_rg "~{d}{this_shifted_bam}"; then
+      this_shifted_bam_for_m2="out/~{sample_base_name}~{suffix}.shifted.rg.bam"
+      picard --java-options "-Xms5000m" \
+        AddOrReplaceReadGroups \
+        I="~{d}{this_shifted_bam}" \
+        O="~{d}{this_shifted_bam_for_m2}" \
+        RGID="~{sample_base_name}" \
+        RGLB="lib1" \
+        RGPL="ILLUMINA" \
+        RGPU="unit1" \
+        RGSM="~{sample_base_name}" \
+        VALIDATION_STRINGENCY=SILENT \
+        CREATE_INDEX=true
+    fi
+
     touch "~{d}{this_sample}.bamout.bam"
     touch "~{d}{this_sample}.shifted.bamout.bam"
 
@@ -1676,7 +1713,7 @@ task MongoCallMtAndShifted {
 
     gatk --java-options "-Xmx~{command_mem}m" Mutect2 \
       -R "~{d}{this_self_fasta}" \
-      -I "~{d}{this_bam}" \
+      -I "~{d}{this_bam_for_m2}" \
       -L "~{d}{this_noncontrol}" \
       -O "~{d}{this_sample}.raw.vcf" \
       --genotype-filtered-alleles \
@@ -1696,7 +1733,7 @@ task MongoCallMtAndShifted {
 
     gatk --java-options "-Xmx~{command_mem}m" Mutect2 \
       -R "~{d}{this_self_shifted_fasta}" \
-      -I "~{d}{this_shifted_bam}" \
+      -I "~{d}{this_shifted_bam_for_m2}" \
       -L "~{d}{this_control}" \
       -O "~{d}{this_sample}.shifted.raw.vcf" \
       --genotype-filtered-alleles \

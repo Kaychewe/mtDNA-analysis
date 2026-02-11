@@ -41,8 +41,8 @@ data=json.load(open(p))
 bundle=data.get("DiagnosticChainSwapLiftover.ucsc_tools_bundle", "")
 img=data.get("DiagnosticChainSwapLiftover.ucsc_docker", "")
 if bundle and "REPLACE_ME" not in str(bundle):
-    # Always use a Java-capable base image when igvtools is in the bundle.
-    java_img="docker.io/broadinstitute/gatk:4.2.6.0"
+    # Always use a Java-capable base image with newer glibc when igvtools is in the bundle.
+    java_img="eclipse-temurin:17-jdk"
     if img != java_img:
         data["DiagnosticChainSwapLiftover.ucsc_docker"]=java_img
         json.dump(data, open(p,"w"), indent=2)

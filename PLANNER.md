@@ -49,6 +49,11 @@ Scope: `scatterWrapper_MitoPipeline_v2_5.wdl` (workflow `MitochondriaPipelineWra
     - UCSC tools bundle built and uploaded to `gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/tools/ucsc/ucsc-tools-linux-x86_64.tar.gz`.
     - Submitted `Stage03UcscSmokeTest` workflow: `a055f5c8-d69c-4b24-a4e7-5b6674eac892` (running).
     - Re-run smoketest succeeded: `a3e8a954-918e-46ec-9edf-88f580c0ec3b`.
+  - Feb 10 update (ChainSwap diagnostic failure):
+    - DiagnosticChainSwapLiftover failed with GLIBC errors from `chainSwap`:
+      - missing `GLIBC_2.28`, `GLIBC_2.33`, `GLIBC_2.34`.
+    - Indicates UCSC binaries are too new for the base image’s glibc.
+    - Next step: run the diagnostic using a newer glibc + Java base image (e.g., `eclipse-temurin:17-jdk`) or rebuild/bundle UCSC tools against older glibc.
 
 ## Current Status (AoU Jupyter)
 

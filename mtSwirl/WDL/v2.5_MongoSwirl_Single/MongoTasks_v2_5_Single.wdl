@@ -715,8 +715,7 @@ task MongoChainSwapLiftoverBed {
     mkdir out
 
     if [ -n "~{ucsc_tools_bundle}" ] && [ "~{ucsc_tools_bundle}" != "null" ]; then
-      mkdir -p ucsc_tools
-      tar -xzf "~{ucsc_tools_bundle}" -C ucsc_tools
+      tar -xzf "~{ucsc_tools_bundle}" -C .
       export PATH="$PWD/ucsc_tools/bin:$PWD/ucsc_tools:$PATH"
     fi
 

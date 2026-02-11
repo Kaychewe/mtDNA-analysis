@@ -45,6 +45,9 @@ Scope: `scatterWrapper_MitoPipeline_v2_5.wdl` (workflow `MitochondriaPipelineWra
   - Feb 10 update (UCSC bundle plan):
     - Added optional `ucsc_tools_bundle` input to `MongoChainSwapLiftoverBed` to bypass docker tool availability.
     - Added `stage03_ucsc_smoketest.wdl/json` to validate `chainSwap`, `liftOver`, `igvtools` from the bundle.
+  - Feb 10 update (UCSC bundle smoketest in flight):
+    - UCSC tools bundle built and uploaded to `gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/tools/ucsc/ucsc-tools-linux-x86_64.tar.gz`.
+    - Submitted `Stage03UcscSmokeTest` workflow: `a055f5c8-d69c-4b24-a4e7-5b6674eac892` (running).
 
 ## Current Status (AoU Jupyter)
 

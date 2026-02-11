@@ -8,8 +8,7 @@ task UcscToolsSmoke {
 
   command <<<
     set -euo pipefail
-    mkdir -p ucsc_tools
-    tar -xzf "~{ucsc_tools_bundle}" -C ucsc_tools
+    tar -xzf "~{ucsc_tools_bundle}" -C .
     export PATH="$PWD/ucsc_tools/bin:$PWD/ucsc_tools:$PATH"
 
     {

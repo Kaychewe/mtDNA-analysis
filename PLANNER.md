@@ -4,6 +4,12 @@ Purpose: keep all existing outputs while making the workflow easier to reason ab
 
 Scope: `scatterWrapper_MitoPipeline_v2_5.wdl` (workflow `MitochondriaPipelineWrapper`) and the merge task `MergeMitoMultiSampleOutputsInternal`. The core per-sample workflow is imported from `mtSwirl/WDL/v2.5_MongoSwirl_Single/fullMitoPipeline_v2_5_Single.wdl`.
 
+## Current Issue Summary
+
+- Primary blocker: Stage03 `ForceCallVcfs` fails because `hail` is missing in the `genomes_cloud_docker` image (stderr: `ImportError: No module named 'hail'`).
+- Secondary blocker: Artifact Registry API may be disabled or permission-restricted in AoU project `terra-vpc-sc-17dda7e1`, which prevents pushing a custom Hail image. This is an org/VPC-SC constraint, not a workflow misconfig.
+- Immediate objective: provide a Hail-capable docker image for Stage03 `genomes_cloud_docker` (ForceCallVcfs) or adjust task runtime to include Hail.
+
 ## Progress Log (AoU Jupyter)
 
 - Objective (clarified)

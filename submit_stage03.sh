@@ -32,7 +32,7 @@ def set_if_placeholder(key, value):
 changed = False
 changed |= set_if_placeholder(
     "StageProduceSelfReferenceFiles.genomes_cloud_docker",
-    "kchewe/mtdna-hail:0.2.128-ubuntu22.04",
+    "kchewe/mtdna-stage03:0.1.0",
 )
 
 # UCSC bundle (optional but recommended). Only set if WORKSPACE_BUCKET is defined.

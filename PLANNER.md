@@ -57,6 +57,7 @@ Scope: `scatterWrapper_MitoPipeline_v2_5.wdl` (workflow `MitochondriaPipelineWra
   - Feb 11 update (Hail image smoketest in flight):
     - Built and pushed DockerHub image `kchewe/mtdna-hail:0.2.128-ubuntu22.04` (Hail 0.2.128).
     - Submitted `Stage03HailSmokeTest` workflow: `04315bc4-7105-4e98-8763-41ff45e1cb5e` (succeeded).
+    - Hail smoketest output: `0.2.128-eead8100a1c1` and citation `Hail Team. Hail 0.2.128-eead8100a1c1. https://github.com/hail-is/hail/releases/tag/0.2.128.` (WF `f208188a-518f-49fd-8335-de5532477644`).
     - Re-run smoketest succeeded: `a3e8a954-918e-46ec-9edf-88f580c0ec3b`.
     - Latest smoketest succeeded: `b1168d84-0a1b-4e91-9893-61a469826e1c` (chainSwap/liftOver/igvtools OK).
   - Feb 11 update (ChainSwap diagnostic re-run):

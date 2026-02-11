@@ -34,19 +34,19 @@ if (not cur) or ("REPLACE_ME" in str(cur)):
 PY
 fi
 
-# If using the bundle, prefer a known-good base image (avoid GAR pull issues)
 python3 - <<PY
 import json
 p="${JSON_PATH}"
 data=json.load(open(p))
 bundle=data.get("DiagnosticChainSwapLiftover.ucsc_tools_bundle", "")
 img=data.get("DiagnosticChainSwapLiftover.ucsc_docker", "")
-safe_img="us.gcr.io/broad-dsp-lrma/lr-basic:latest"
 if bundle and "REPLACE_ME" not in str(bundle):
-    if (not img) or ("rahulg603/ucsc_genome_toolkit" in str(img)) or ("REPLACE_ME" in str(img)):
-        data["DiagnosticChainSwapLiftover.ucsc_docker"]=safe_img
+    # Always use a Java-capable base image when igvtools is in the bundle.
+    java_img="docker.io/broadinstitute/gatk:4.2.6.0"
+    if img != java_img:
+        data["DiagnosticChainSwapLiftover.ucsc_docker"]=java_img
         json.dump(data, open(p,"w"), indent=2)
-        print("Updated", p, "ucsc_docker ->", safe_img)
+        print("Updated", p, "ucsc_docker ->", java_img)
 PY
 
 if [ ! -f "$DEPS_PATH" ]; then

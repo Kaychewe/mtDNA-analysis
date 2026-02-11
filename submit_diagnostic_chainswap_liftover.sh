@@ -11,6 +11,35 @@ WDL_PATH="${ROOT_DIR}/diagnostic_chainswap_liftover.wdl"
 JSON_PATH="${ROOT_DIR}/diagnostic_chainswap_liftover.json"
 DEPS_PATH="${ROOT_DIR}/wdl_deps.zip"
 
+for f in "$WDL_PATH" "$JSON_PATH"; do
+  if [ ! -f "$f" ]; then
+    echo "Missing required file: $f"
+    exit 1
+  fi
+done
+
+# Auto-fill bundle path from WORKSPACE_BUCKET if still REPLACE_ME
+if [ -n "${WORKSPACE_BUCKET:-}" ]; then
+  python3 - <<PY
+import json
+p="${JSON_PATH}"
+data=json.load(open(p))
+bundle="gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/tools/ucsc/ucsc-tools-linux-x86_64.tar.gz"
+key="DiagnosticChainSwapLiftover.ucsc_tools_bundle"
+cur=data.get(key, "")
+if (not cur) or ("REPLACE_ME" in str(cur)):
+    data[key]=bundle
+    json.dump(data, open(p,"w"), indent=2)
+    print("Updated", p, "->", bundle)
+PY
+fi
+
+if [ ! -f "$DEPS_PATH" ]; then
+  echo "Missing workflowDependencies: $DEPS_PATH"
+  echo "Recreate with: python3 - <<'PY' ... (see README or prior commands)"
+  exit 1
+fi
+
 curl -sS -X POST "http://localhost:8094/api/workflows/v1" \
   -H "accept: application/json" \
   -F workflowSource=@"$WDL_PATH" \

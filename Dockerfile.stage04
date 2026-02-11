@@ -34,7 +34,17 @@ RUN mkdir -p /usr/gitc && ln -s /usr/bin/bwa /usr/gitc/bwa
 # Picard (used by Stage04 AlignToMtRegShiftedAndMetrics)
 RUN mkdir -p /opt/picard \
     && curl -fsSL "${PICARD_URL}" -o /opt/picard/picard.jar \
-    && printf '%s\n' '#!/bin/bash' 'exec java -jar /opt/picard/picard.jar "$@"' > /usr/local/bin/picard \
+    && printf '%s\n' \
+      '#!/bin/bash' \
+      'set -euo pipefail' \
+      'JAVA_OPTS=""' \
+      'if [ "${1:-}" = "--java-options" ]; then' \
+      '  shift' \
+      '  JAVA_OPTS="${1:-}"' \
+      '  shift || true' \
+      'fi' \
+      'exec java ${JAVA_OPTS} -jar /opt/picard/picard.jar "$@"' \
+      > /usr/local/bin/picard \
     && chmod +x /usr/local/bin/picard
 
 # GATK (needed by Stage04)

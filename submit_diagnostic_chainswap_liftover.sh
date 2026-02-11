@@ -34,6 +34,21 @@ if (not cur) or ("REPLACE_ME" in str(cur)):
 PY
 fi
 
+# If using the bundle, prefer a known-good base image (avoid GAR pull issues)
+python3 - <<PY
+import json
+p="${JSON_PATH}"
+data=json.load(open(p))
+bundle=data.get("DiagnosticChainSwapLiftover.ucsc_tools_bundle", "")
+img=data.get("DiagnosticChainSwapLiftover.ucsc_docker", "")
+safe_img="us.gcr.io/broad-dsp-lrma/lr-basic:latest"
+if bundle and "REPLACE_ME" not in str(bundle):
+    if (not img) or ("rahulg603/ucsc_genome_toolkit" in str(img)) or ("REPLACE_ME" in str(img)):
+        data["DiagnosticChainSwapLiftover.ucsc_docker"]=safe_img
+        json.dump(data, open(p,"w"), indent=2)
+        print("Updated", p, "ucsc_docker ->", safe_img)
+PY
+
 if [ ! -f "$DEPS_PATH" ]; then
   echo "Missing workflowDependencies: $DEPS_PATH"
   echo "Recreate with: python3 - <<'PY' ... (see README or prior commands)"

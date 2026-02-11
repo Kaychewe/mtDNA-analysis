@@ -41,6 +41,7 @@ workflow StageProduceSelfReferenceFiles {
     String bcftools_docker = "us.gcr.io/broad-dsp-lrma/lr-basic:latest"
     String gotc_docker
     String ucsc_docker
+    File? ucsc_tools_bundle
   }
 
   call ProduceSelfReferenceFiles_Single.ProduceSelfReferenceFiles as ProduceSelfReferenceFiles {
@@ -70,6 +71,7 @@ workflow StageProduceSelfReferenceFiles {
       bcftools_docker = bcftools_docker,
       gotc_docker = gotc_docker,
       ucsc_docker = ucsc_docker,
+      ucsc_tools_bundle = ucsc_tools_bundle,
       preemptible_tries = preemptible_tries
   }
 

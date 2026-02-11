@@ -69,6 +69,7 @@ workflow ProduceSelfReferenceFiles {
     String bcftools_docker = "us.gcr.io/broad-dsp-lrma/lr-basic:latest"
     String gotc_docker
     String ucsc_docker
+    File? ucsc_tools_bundle
   }
 
   call PrepIntervalsAndRenamedFastas {
@@ -228,6 +229,7 @@ workflow ProduceSelfReferenceFiles {
       input_bed = blacklisted_sites,
       input_bed_index = blacklisted_sites_index,
       ucsc_docker = ucsc_docker,
+      ucsc_tools_bundle = ucsc_tools_bundle,
       preemptible_tries = preemptible_tries
   }
 

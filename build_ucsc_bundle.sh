@@ -10,13 +10,11 @@ Usage:
 
 Environment:
   UCSC_BASE_URL   Base URL for UCSC binaries (default: https://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64)
-  IGVTOOLS_URL    Direct URL to igvtools zip (REQUIRED)
+  IGVTOOLS_URL    Direct URL to igvtools zip (default: https://data.broadinstitute.org/igv/projects/downloads/igvtools_2.16.2.zip)
   WORKSPACE_BUCKET  GCS bucket (e.g. gs://...); if set and --no-upload not given, uploads to $WORKSPACE_BUCKET/tools/ucsc/
 
 Examples:
-  IGVTOOLS_URL="https://data.broadinstitute.org/igv/projects/downloads/igvtools_2.16.2.zip" \
-    WORKSPACE_BUCKET="gs://my-bucket" \
-    bash build_ucsc_bundle.sh
+  WORKSPACE_BUCKET="gs://my-bucket" bash build_ucsc_bundle.sh
 USAGE
 }
 
@@ -35,13 +33,7 @@ if [ "${1:-}" = "-h" ] || [ "${1:-}" = "--help" ]; then
 fi
 
 UCSC_BASE_URL="${UCSC_BASE_URL:-https://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64}"
-IGVTOOLS_URL="${IGVTOOLS_URL:-}"
-
-if [ -z "${IGVTOOLS_URL}" ]; then
-  echo "ERROR: IGVTOOLS_URL is required (direct link to igvtools zip)."
-  usage
-  exit 1
-fi
+IGVTOOLS_URL="${IGVTOOLS_URL:-https://data.broadinstitute.org/igv/projects/downloads/igvtools_2.16.2.zip}"
 
 workdir="$(mktemp -d)"
 cleanup() { rm -rf "${workdir}"; }

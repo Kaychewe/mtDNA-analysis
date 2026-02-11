@@ -9,7 +9,12 @@ task HailSmoke {
     set -euo pipefail
     python3 - <<'PY' > hail_version.txt
 import hail as hl
-print(hl.__version__)
+try:
+    v = hl.version()
+except Exception:
+    v = None
+print(v or getattr(hl, "__version__", None) or "UNKNOWN")
+print(hl.citation())
 PY
   >>>
 

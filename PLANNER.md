@@ -54,6 +54,9 @@ Scope: `scatterWrapper_MitoPipeline_v2_5.wdl` (workflow `MitochondriaPipelineWra
   - Feb 10 update (UCSC bundle smoketest in flight):
     - UCSC tools bundle built and uploaded to `gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/tools/ucsc/ucsc-tools-linux-x86_64.tar.gz`.
     - Submitted `Stage03UcscSmokeTest` workflow: `a055f5c8-d69c-4b24-a4e7-5b6674eac892` (running).
+  - Feb 11 update (Hail image smoketest in flight):
+    - Built and pushed DockerHub image `kchewe/mtdna-hail:0.2.128-ubuntu22.04` (Hail 0.2.128).
+    - Submitted `Stage03HailSmokeTest` workflow: `04315bc4-7105-4e98-8763-41ff45e1cb5e` (succeeded).
     - Re-run smoketest succeeded: `a3e8a954-918e-46ec-9edf-88f580c0ec3b`.
     - Latest smoketest succeeded: `b1168d84-0a1b-4e91-9893-61a469826e1c` (chainSwap/liftOver/igvtools OK).
   - Feb 11 update (ChainSwap diagnostic re-run):

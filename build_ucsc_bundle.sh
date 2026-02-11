@@ -10,7 +10,7 @@ Usage:
 
 Environment:
   UCSC_BASE_URL   Base URL for UCSC binaries (default: https://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64)
-  IGVTOOLS_URL    Direct URL to igvtools zip (default: https://data.broadinstitute.org/igv/projects/downloads/igvtools_2.16.2.zip)
+  IGVTOOLS_URL    Direct URL to igvtools/IGV zip (default: https://data.broadinstitute.org/igv/projects/downloads/2.16/IGV_2.16.2.zip)
   WORKSPACE_BUCKET  GCS bucket (e.g. gs://...); if set and --no-upload not given, uploads to $WORKSPACE_BUCKET/tools/ucsc/
 
 Examples:
@@ -33,7 +33,7 @@ if [ "${1:-}" = "-h" ] || [ "${1:-}" = "--help" ]; then
 fi
 
 UCSC_BASE_URL="${UCSC_BASE_URL:-https://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64}"
-IGVTOOLS_URL="${IGVTOOLS_URL:-https://data.broadinstitute.org/igv/projects/downloads/igvtools_2.16.2.zip}"
+IGVTOOLS_URL="${IGVTOOLS_URL:-https://data.broadinstitute.org/igv/projects/downloads/2.16/IGV_2.16.2.zip}"
 
 workdir="$(mktemp -d)"
 cleanup() { rm -rf "${workdir}"; }

@@ -236,6 +236,39 @@ with open("${out_json}", "w", encoding="utf-8") as fh:
     fh.write("\n")
 PY
 
+# Fallback: if chain paths are still missing and WORKSPACE_BUCKET is set, try gsutil search.
+python3 - <<PY
+import json, os, sys, subprocess
+p="${out_json}"
+data=json.load(open(p))
+
+need_ref_to_self = (not str(data.get("StageLiftover.chain_ref_to_self","")).strip()) or ("REPLACE_ME" in str(data.get("StageLiftover.chain_ref_to_self","")))
+need_self_to_ref = (not str(data.get("StageLiftover.chain_self_to_ref","")).strip()) or ("REPLACE_ME" in str(data.get("StageLiftover.chain_self_to_ref","")))
+
+ws = os.environ.get("WORKSPACE_BUCKET","").strip()
+stage03 = "${stage03_wf}"
+if ws and (need_ref_to_self or need_self_to_ref):
+    base = f"{ws}/workflows/cromwell-executions/StageProduceSelfReferenceFiles/{stage03}/call-ProduceSelfReferenceFiles/ProduceSelfReferenceFiles"
+    if need_ref_to_self:
+        try:
+            out = subprocess.check_output(["gsutil","ls",f\"{base}/*/call-MtConsensus/out/reference_to_*.chain\"], text=True).strip().splitlines()
+            if out:
+                data["StageLiftover.chain_ref_to_self"] = out[0]
+        except Exception as e:
+            print(f\"WARNING: failed to resolve chain_ref_to_self via gsutil: {e}\", file=sys.stderr)
+    if need_self_to_ref:
+        try:
+            out = subprocess.check_output(["gsutil","ls",f\"{base}/*/call-ChainSwapLiftoverBed/out/*_to_reference.chain\"], text=True).strip().splitlines()
+            if out:
+                data["StageLiftover.chain_self_to_ref"] = out[0]
+        except Exception as e:
+            print(f\"WARNING: failed to resolve chain_self_to_ref via gsutil: {e}\", file=sys.stderr)
+
+with open(p, "w", encoding="utf-8") as fh:
+    json.dump(data, fh, indent=2, sort_keys=True)
+    fh.write("\\n")
+PY
+
 rm -f "$stage03_tmp" "$stage04_tmp" "$stage02_tmp" "$stage01_tmp"
 
 printf 'Wrote %s\n' "$out_json"

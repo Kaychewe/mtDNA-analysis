@@ -1990,6 +1990,11 @@ task MongoLiftoverVCFAndGetCoverage {
     exec > >(tee /mnt/disks/cromwell_root/stdout) 2> >(tee /mnt/disks/cromwell_root/stderr >&2)
     trap 'echo "ERROR: LiftOverAfterSelf failed with exit code $?" >&2' EXIT
 
+    # Early heartbeat so log uploaders have files to ship
+    echo "START $(date -u)" | tee /mnt/disks/cromwell_root/stdout
+    echo "START $(date -u)" | tee /mnt/disks/cromwell_root/stderr >&2
+    ls -la /mnt/disks/cromwell_root | tee -a /mnt/disks/cromwell_root/stdout
+
     mkdir out
 
     this_sample_name="~{sample_name}"

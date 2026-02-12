@@ -117,6 +117,18 @@ sample_stage_succeeded() {
   ' "${SAMPLES_STATUS_TSV}"
 }
 
+get_last_success_wf_id() {
+  local sample_id="$1"
+  local stage="$2"
+  if [ ! -f "${SAMPLES_STATUS_TSV}" ]; then
+    return 0
+  fi
+  awk -F'\t' -v s="${sample_id}" -v st="${stage}" '
+    $1==s && $2==st && $4=="Succeeded" { last=$3 }
+    END { if (length(last)) print last }
+  ' "${SAMPLES_STATUS_TSV}"
+}
+
 get_wf_status() {
   local wf_id="$1"
   curl -s "http://localhost:8094/api/workflows/v1/${wf_id}/status" | python3 -c 'import json,sys

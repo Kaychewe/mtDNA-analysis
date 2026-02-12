@@ -69,6 +69,7 @@ make_run_dir
 check_cromwell
 ensure_wdl_deps
 init_samples_status
+SKIP_ALREADY_PROCESSED="${SKIP_ALREADY_PROCESSED:-1}"
 
 list_dir="${LIST_DIR}"
 if [ ! -d "$list_dir" ]; then
@@ -102,7 +103,7 @@ for i in "${!samples[@]}"; do
     continue
   fi
 
-  if sample_stage_succeeded "${sample_name}" "stage06"; then
+  if [ "${SKIP_ALREADY_PROCESSED}" = "1" ] && sample_stage_succeeded "${sample_name}" "stage06"; then
     log "Sample ${sample_name} already has Stage06 success; skipping."
     continue
   fi
@@ -110,6 +111,7 @@ for i in "${!samples[@]}"; do
   log "=== Processing sample ${sample_name} (index ${i}) ==="
 
   # Stage01
+  wf_id_stage01=""
   if [ -n "$REUSE_STAGE01" ] && [ -z "${SAMPLE_NAME}" ]; then
     log "WARNING: --reuse-stage01 provided but multiple samples are present; ignoring reuse."
     REUSE_STAGE01=""
@@ -118,7 +120,17 @@ for i in "${!samples[@]}"; do
   if [ -n "$REUSE_STAGE01" ]; then
     wf_id_stage01="$REUSE_STAGE01"
     log "Reusing Stage 01 workflow ID: ${wf_id_stage01}"
-  else
+  elif [ "${SKIP_ALREADY_PROCESSED}" = "1" ] && sample_stage_succeeded "${sample_name}" "stage01"; then
+    wf_id_stage01="$(get_last_success_wf_id "${sample_name}" "stage01")"
+    if [ -n "${wf_id_stage01}" ]; then
+      log "Stage 01 already succeeded for ${sample_name}; reusing workflow ID: ${wf_id_stage01}"
+      append_sample_status "${sample_name}" "stage01" "${wf_id_stage01}" "Succeeded" "reused"
+    else
+      log "Stage 01 marked succeeded but no workflow ID found; re-running."
+    fi
+  fi
+
+  if [ -z "${wf_id_stage01}" ]; then
     python3 - <<PY
 import json
 path = "${PROJECT_ROOT}/stage01_subset_bam.json"
@@ -149,6 +161,7 @@ PY
   fi
 
   # Stage02
+  wf_id_stage02=""
   if [ -n "$REUSE_STAGE02" ] && [ -z "${SAMPLE_NAME}" ]; then
     log "WARNING: --reuse-stage02 provided but multiple samples are present; ignoring reuse."
     REUSE_STAGE02=""
@@ -157,7 +170,17 @@ PY
     wf_id_stage02="$REUSE_STAGE02"
     log "Reusing Stage 02 workflow ID: ${wf_id_stage02}"
     watch_status "$wf_id_stage02"
-  else
+  elif [ "${SKIP_ALREADY_PROCESSED}" = "1" ] && sample_stage_succeeded "${sample_name}" "stage02"; then
+    wf_id_stage02="$(get_last_success_wf_id "${sample_name}" "stage02")"
+    if [ -n "${wf_id_stage02}" ]; then
+      log "Stage 02 already succeeded for ${sample_name}; reusing workflow ID: ${wf_id_stage02}"
+      append_sample_status "${sample_name}" "stage02" "${wf_id_stage02}" "Succeeded" "reused"
+    else
+      log "Stage 02 marked succeeded but no workflow ID found; re-running."
+    fi
+  fi
+
+  if [ -z "${wf_id_stage02}" ]; then
     log "Populating Stage 02 inputs from Stage 01 outputs."
     bash "${PROJECT_ROOT}/populate_stage02_from_stage01.sh" "$wf_id_stage01" "${PROJECT_ROOT}/stage02_align_call_r1.json"
     log "Running Stage 02 diagnostics."
@@ -190,6 +213,7 @@ except Exception:
   fi
 
   # Stage03
+  wf_id_stage03=""
   if [ -n "$REUSE_STAGE03" ] && [ -z "${SAMPLE_NAME}" ]; then
     log "WARNING: --reuse-stage03 provided but multiple samples are present; ignoring reuse."
     REUSE_STAGE03=""
@@ -198,7 +222,17 @@ except Exception:
     wf_id_stage03="$REUSE_STAGE03"
     log "Reusing Stage 03 workflow ID: ${wf_id_stage03}"
     watch_status "$wf_id_stage03"
-  else
+  elif [ "${SKIP_ALREADY_PROCESSED}" = "1" ] && sample_stage_succeeded "${sample_name}" "stage03"; then
+    wf_id_stage03="$(get_last_success_wf_id "${sample_name}" "stage03")"
+    if [ -n "${wf_id_stage03}" ]; then
+      log "Stage 03 already succeeded for ${sample_name}; reusing workflow ID: ${wf_id_stage03}"
+      append_sample_status "${sample_name}" "stage03" "${wf_id_stage03}" "Succeeded" "reused"
+    else
+      log "Stage 03 marked succeeded but no workflow ID found; re-running."
+    fi
+  fi
+
+  if [ -z "${wf_id_stage03}" ]; then
     log "Populating Stage 03 inputs from Stage 02 outputs."
     bash "${PROJECT_ROOT}/populate_stage03_from_stage02.sh" "$wf_id_stage02" "${PROJECT_ROOT}/stage03_produce_self_reference.json"
     log "Running Stage 03 diagnostics."
@@ -231,6 +265,7 @@ except Exception:
   fi
 
   # Stage04
+  wf_id_stage04=""
   if [ -n "$REUSE_STAGE04" ] && [ -z "${SAMPLE_NAME}" ]; then
     log "WARNING: --reuse-stage04 provided but multiple samples are present; ignoring reuse."
     REUSE_STAGE04=""
@@ -239,7 +274,17 @@ except Exception:
     wf_id_stage04="$REUSE_STAGE04"
     log "Reusing Stage 04 workflow ID: ${wf_id_stage04}"
     watch_status "$wf_id_stage04"
-  else
+  elif [ "${SKIP_ALREADY_PROCESSED}" = "1" ] && sample_stage_succeeded "${sample_name}" "stage04"; then
+    wf_id_stage04="$(get_last_success_wf_id "${sample_name}" "stage04")"
+    if [ -n "${wf_id_stage04}" ]; then
+      log "Stage 04 already succeeded for ${sample_name}; reusing workflow ID: ${wf_id_stage04}"
+      append_sample_status "${sample_name}" "stage04" "${wf_id_stage04}" "Succeeded" "reused"
+    else
+      log "Stage 04 marked succeeded but no workflow ID found; re-running."
+    fi
+  fi
+
+  if [ -z "${wf_id_stage04}" ]; then
     log "Populating Stage 04 inputs from Stage 01/02/03 outputs."
     bash "${PROJECT_ROOT}/populate_stage04_from_stage03.sh" --stage01 "$wf_id_stage01" --stage02 "$wf_id_stage02" --stage03 "$wf_id_stage03" "${PROJECT_ROOT}/stage04_align_call_r2.json"
     log "Submitting Stage 04 workflow."
@@ -270,6 +315,7 @@ except Exception:
   fi
 
   # Stage05
+  wf_id_stage05=""
   if [ -n "$REUSE_STAGE05" ] && [ -z "${SAMPLE_NAME}" ]; then
     log "WARNING: --reuse-stage05 provided but multiple samples are present; ignoring reuse."
     REUSE_STAGE05=""
@@ -278,7 +324,17 @@ except Exception:
     wf_id_stage05="$REUSE_STAGE05"
     log "Reusing Stage 05 workflow ID: ${wf_id_stage05}"
     watch_status "$wf_id_stage05"
-  else
+  elif [ "${SKIP_ALREADY_PROCESSED}" = "1" ] && sample_stage_succeeded "${sample_name}" "stage05"; then
+    wf_id_stage05="$(get_last_success_wf_id "${sample_name}" "stage05")"
+    if [ -n "${wf_id_stage05}" ]; then
+      log "Stage 05 already succeeded for ${sample_name}; reusing workflow ID: ${wf_id_stage05}"
+      append_sample_status "${sample_name}" "stage05" "${wf_id_stage05}" "Succeeded" "reused"
+    else
+      log "Stage 05 marked succeeded but no workflow ID found; re-running."
+    fi
+  fi
+
+  if [ -z "${wf_id_stage05}" ]; then
     log "Populating Stage 05 inputs from Stage 03/04 outputs."
     bash "${PROJECT_ROOT}/populate_stage05_from_stage04.sh" --stage03 "$wf_id_stage03" --stage04 "$wf_id_stage04" --stage02 "$wf_id_stage02" --stage01 "$wf_id_stage01" "${PROJECT_ROOT}/stage05_liftover.json"
     log "Submitting Stage 05 workflow."
@@ -309,6 +365,7 @@ except Exception:
   fi
 
   # Stage06
+  wf_id_stage06=""
   if [ -n "$REUSE_STAGE06" ] && [ -z "${SAMPLE_NAME}" ]; then
     log "WARNING: --reuse-stage06 provided but multiple samples are present; ignoring reuse."
     REUSE_STAGE06=""
@@ -317,7 +374,17 @@ except Exception:
     wf_id_stage06="$REUSE_STAGE06"
     log "Reusing Stage 06 workflow ID: ${wf_id_stage06}"
     watch_status "$wf_id_stage06"
-  else
+  elif [ "${SKIP_ALREADY_PROCESSED}" = "1" ] && sample_stage_succeeded "${sample_name}" "stage06"; then
+    wf_id_stage06="$(get_last_success_wf_id "${sample_name}" "stage06")"
+    if [ -n "${wf_id_stage06}" ]; then
+      log "Stage 06 already succeeded for ${sample_name}; reusing workflow ID: ${wf_id_stage06}"
+      append_sample_status "${sample_name}" "stage06" "${wf_id_stage06}" "Succeeded" "reused"
+    else
+      log "Stage 06 marked succeeded but no workflow ID found; re-running."
+    fi
+  fi
+
+  if [ -z "${wf_id_stage06}" ]; then
     log "Populating Stage 06 inputs from Stage 05 outputs."
     bash "${PROJECT_ROOT}/populate_stage06_from_stage05.sh" "$wf_id_stage05" "${PROJECT_ROOT}/stage06_merge.json"
     log "Submitting Stage 06 workflow."

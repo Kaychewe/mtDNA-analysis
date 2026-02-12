@@ -99,6 +99,19 @@ fetch_outputs "$stage01_wf" "$s1_tmp"
 fetch_outputs "$stage02_wf" "$s2_tmp"
 fetch_outputs "$stage03_wf" "$s3_tmp"
 
+unmapped_bam_override=""
+sample_name_fallback=""
+if [ -n "${WORKSPACE_BUCKET:-}" ]; then
+  gcs_out="${WORKSPACE_BUCKET}/workflows/cromwell-executions/StageSubsetBamToChrMAndRevert/${stage01_wf}/call-SubsetBamToChrMAndRevert/out"
+  unmapped_bam_override="$(gsutil ls "${gcs_out}"/*.unmap.bam 2>/dev/null | head -n 1 || true)"
+  if [ -n "${unmapped_bam_override}" ]; then
+    base_name="$(basename "${unmapped_bam_override}")"
+    sample_name_fallback="${base_name%.unmap.bam}"
+  fi
+fi
+
+UNMAPPED_BAM_OVERRIDE="${unmapped_bam_override}" \
+SAMPLE_NAME_FALLBACK="${sample_name_fallback}" \
 python3 - <<PY
 import json
 import sys
@@ -142,7 +155,10 @@ def replace_if_missing(key, value):
             data[key] = value
 
 # Stage01 output
-replace_if_missing("StageAlignAndCallR2.unmapped_bam", get_out(s1, "StageSubsetBamToChrMAndRevert.unmapped_bam"))
+unmapped_bam = get_out(s1, "StageSubsetBamToChrMAndRevert.unmapped_bam")
+if not unmapped_bam:
+    unmapped_bam = "${UNMAPPED_BAM_OVERRIDE}"
+replace_if_missing("StageAlignAndCallR2.unmapped_bam", unmapped_bam)
 
 # Stage03 outputs
 replace_if_missing("StageAlignAndCallR2.mt_interval_list_self", get_out(s3, "StageProduceSelfReferenceFiles.mt_interval_list_self"))
@@ -205,6 +221,19 @@ if not sample_name:
     sample_name = get_out(s2o, "StageAlignAndCallR1.sample_name")
 if not sample_name:
     sample_name = get_out(s3, "StageProduceSelfReferenceFiles.sample_name")
+if not sample_name:
+    sample_name = "${SAMPLE_NAME_FALLBACK}"
+if not sample_name:
+    mt_self = get_out(s3, "StageProduceSelfReferenceFiles.mt_self")
+    if mt_self and mt_self.endswith(".self.ref.fasta"):
+        base = mt_self.rsplit("/", 1)[-1]
+        sample_name = base.replace(".self.ref.fasta", "")
+if not sample_name:
+    force_vcf = get_out(s3, "StageProduceSelfReferenceFiles.force_call_vcf")
+    if force_vcf:
+        base = force_vcf.rsplit("/", 1)[-1]
+        if ".self.ref" in base:
+            sample_name = base.split(".self.ref", 1)[0]
 if sample_name:
     data["StageAlignAndCallR2.sample_name"] = sample_name
 

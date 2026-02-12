@@ -17,7 +17,7 @@ You can override defaults via environment variables:
   MT_INTERVAL_LIST_DEFAULT, NUC_INTERVAL_LIST_DEFAULT
   BLACKLIST_SITES_DEFAULT, BLACKLIST_SITES_INDEX_DEFAULT
   HAPLOCHECK_ZIP_DEFAULT
-  GATK_DOCKER_DEFAULT, GATK_OVERRIDE_DEFAULT
+  GATK_DOCKER_DEFAULT
 EOF
 }
 
@@ -60,7 +60,6 @@ else
 fi
 
 gatk_docker_default="${GATK_DOCKER_DEFAULT:-kchewe/mtdna-stage04:0.1.3}"
-gatk_override_default="${GATK_OVERRIDE_DEFAULT:-/opt/gatk/gatk-4.2.6.0/gatk-package-4.2.6.0-local.jar}"
 
 stage01_json="${STAGE01_JSON:-stage01_subset_bam.json}"
 if [ ! -f "$stage01_json" ]; then
@@ -181,7 +180,6 @@ replace_if_missing("StageAlignAndCallR1.blacklisted_sites", "${blacklist_sites_d
 replace_if_missing("StageAlignAndCallR1.blacklisted_sites_index", "${blacklist_sites_index_default}")
 replace_if_missing("StageAlignAndCallR1.haplocheck_zip", "${haplocheck_zip_default}")
 replace_if_missing("StageAlignAndCallR1.gatk_docker_override", "${gatk_docker_default}")
-replace_if_missing("StageAlignAndCallR1.gatk_override", "${gatk_override_default}")
 
 with open("${out_json}", "w", encoding="utf-8") as fh:
     json.dump(data, fh, indent=2)

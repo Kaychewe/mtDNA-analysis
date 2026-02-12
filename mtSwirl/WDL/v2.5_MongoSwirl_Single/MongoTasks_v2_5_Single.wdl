@@ -1978,7 +1978,8 @@ task MongoLiftoverVCFAndGetCoverage {
   
   Float ref_size = size(ref_fasta, "GB") + size(ref_fasta_index, "GB") + size(mt_self, "GB") + size(mt_self_shifted, "GB")
   Float bam_size = size(input_bam_regular_ref, 'GB') + size(input_bam_shifted_ref, 'GB')
-  Int disk_size = ceil(bam_size) + ceil(size(original_filtered_vcf, "GB") + size(new_self_ref_vcf, "GB") + size(reversed_hom_ref_vcf, "GB") + ref_size) *2 + 20
+  # Add a larger base to avoid small disks for liftover + Hail steps
+  Int disk_size = ceil(bam_size) + ceil(size(original_filtered_vcf, "GB") + size(new_self_ref_vcf, "GB") + size(reversed_hom_ref_vcf, "GB") + ref_size) *2 + 120
   String d = "$" # a stupid trick to get ${} indexing in bash to work in Cromwell
 
   command <<<
@@ -2192,8 +2193,8 @@ PY
   
   runtime {
     disks: "local-disk " + disk_size + " HDD"
-    memory: "3000 MB"
-    cpu: select_first([n_cpu, 2])
+    memory: "16 GB"
+    cpu: select_first([n_cpu, 4])
     docker: genomes_cloud_docker
     preemptible: select_first([preemptible_tries, 5])
   }

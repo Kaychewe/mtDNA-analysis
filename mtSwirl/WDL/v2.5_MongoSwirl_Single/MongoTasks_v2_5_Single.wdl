@@ -1986,14 +1986,14 @@ task MongoLiftoverVCFAndGetCoverage {
     set -e
     set -x
 
-    # Always emit logs even on early failure
-    exec > >(tee /mnt/disks/cromwell_root/stdout) 2> >(tee /mnt/disks/cromwell_root/stderr >&2)
+    # Always emit logs even on early failure (avoid bash-only process substitution)
+    exec > /mnt/disks/cromwell_root/stdout 2> /mnt/disks/cromwell_root/stderr
     trap 'echo "ERROR: LiftOverAfterSelf failed with exit code $?" >&2' EXIT
 
     # Early heartbeat so log uploaders have files to ship
-    echo "START $(date -u)" | tee /mnt/disks/cromwell_root/stdout
-    echo "START $(date -u)" | tee /mnt/disks/cromwell_root/stderr >&2
-    ls -la /mnt/disks/cromwell_root | tee -a /mnt/disks/cromwell_root/stdout
+    echo "START $(date -u)" >> /mnt/disks/cromwell_root/stdout
+    echo "START $(date -u)" >> /mnt/disks/cromwell_root/stderr
+    ls -la /mnt/disks/cromwell_root >> /mnt/disks/cromwell_root/stdout
 
     mkdir out
 

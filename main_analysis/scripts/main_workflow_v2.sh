@@ -3,8 +3,8 @@
 DEBUG=0
 SKIP_ALREADY_PROCESSED="${SKIP_ALREADY_PROCESSED:-1}"
 SAMPLE_NAME=""
-BATCH_SIZE=""
-BATCH_INDEX=""
+BATCH_SIZE="${BATCH_SIZE:-}"
+BATCH_INDEX="${BATCH_INDEX:-}"
 while [ "$#" -gt 0 ]; do
   case "$1" in
     --debug)
@@ -15,16 +15,8 @@ while [ "$#" -gt 0 ]; do
       SAMPLE_NAME="${2:-}"
       shift 2
       ;;
-    --batch-size)
-      BATCH_SIZE="${2:-}"
-      shift 2
-      ;;
-    --batch-index)
-      BATCH_INDEX="${2:-}"
-      shift 2
-      ;;
     --help|-h)
-      echo "Usage: $(basename "$0") [--debug] [--sample-name <id>] [--batch-size <n> --batch-index <n>]"
+      echo "Usage: $(basename "$0") [--debug] [--sample-name <id>]"
       exit 0
       ;;
     *)
@@ -50,21 +42,27 @@ check_cromwell
 ensure_wdl_deps
 init_samples_status
 SKIP_ALREADY_PROCESSED="${SKIP_ALREADY_PROCESSED:-1}"
+BATCH_SIZE="${BATCH_SIZE:-}"
+BATCH_INDEX="${BATCH_INDEX:-}"
 
 MANIFEST_CSV="${PROJECT_ROOT}/manifest.csv"
 if [ ! -f "${MANIFEST_CSV}" ]; then
-  log "Manifest not found: ${MANIFEST_CSV}"
-  exit 1
+  log "Manifest not found: ${MANIFEST_CSV}. Attempting to generate."
+  bash "${PROJECT_ROOT}/main_analysis/scripts/utilities.sh" generate-manifest --manifest "${MANIFEST_CSV}"
+  if [ ! -f "${MANIFEST_CSV}" ]; then
+    log "Manifest still missing after generation attempt: ${MANIFEST_CSV}"
+    exit 1
+  fi
 fi
 
 if { [ -n "${BATCH_SIZE}" ] && [ -z "${BATCH_INDEX}" ]; } || { [ -z "${BATCH_SIZE}" ] && [ -n "${BATCH_INDEX}" ]; }; then
-  log "Both --batch-size and --batch-index are required together."
+  log "Both BATCH_SIZE and BATCH_INDEX must be set together (env vars in run.env)."
   exit 1
 fi
 
 if [ -n "${BATCH_SIZE}" ] && [ -n "${BATCH_INDEX}" ]; then
   if ! [[ "${BATCH_SIZE}" =~ ^[0-9]+$ ]] || ! [[ "${BATCH_INDEX}" =~ ^[0-9]+$ ]]; then
-    log "--batch-size and --batch-index must be positive integers."
+    log "BATCH_SIZE and BATCH_INDEX must be positive integers."
     exit 1
   fi
 fi

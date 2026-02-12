@@ -2005,6 +2005,7 @@ task MongoLiftoverVCFAndGetCoverage {
     this_sample=out/"~{d}{this_sample_name}"
     this_basename="~{d}{this_sample}~{self_suffix}.split"
     this_logging="~{d}{this_basename}_fix_liftover.log"
+    tooling_log="~{d}{this_basename}.tooling.txt"
 
     # Preflight tool checks
     for tool in bgzip tabix bcftools bedtools picard python3 R; do
@@ -2013,6 +2014,34 @@ task MongoLiftoverVCFAndGetCoverage {
         exit 1
       fi
     done
+
+    # Prefer Java 11 for Picard if available (avoid Java 17 compatibility issues)
+    if [ -d "/usr/lib/jvm/java-11-openjdk-amd64" ]; then
+      export JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
+      export PATH="${JAVA_HOME}/bin:${PATH}"
+    fi
+
+    {
+      echo "=== Tooling Versions ==="
+      bcftools --version | head -n 1 || true
+      bgzip --version 2>&1 | head -n 1 || true
+      tabix --version 2>&1 | head -n 1 || true
+      bedtools --version 2>&1 | head -n 1 || true
+      java -version 2>&1 | head -n 1 || true
+      python3 --version 2>&1 | head -n 1 || true
+      R --version 2>&1 | head -n 1 || true
+      echo "=== Picard Help (header) ==="
+      picard -h 2>&1 | head -n 3 || true
+      echo "=== Hail Import Check ==="
+      python3 - <<'PY'
+try:
+    import hail as hl
+    print("hail", hl.__version__)
+except Exception as e:
+    print("hail_import_error", e)
+PY
+      echo "=== End Tooling ==="
+    } > "$tooling_log"
 
     bgzip -c "~{d}{this_self_ref_vcf}" > "~{d}{this_self_ref_vcf}.bgz" && tabix "~{d}{this_self_ref_vcf}.bgz"
     tabix "~{d}{this_rev_hom_ref_vcf}"

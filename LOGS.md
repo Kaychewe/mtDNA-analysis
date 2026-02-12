@@ -107,3 +107,32 @@ Stage 02 takes the cleaned mitochondrial reads from Stage 01, calls variants, an
 
 ### Stage 03 Purpose (simple, non-technical)
 Stage 03 builds a personalized mitochondrial reference for the sample and prepares the key reference files and variant calls needed for the next alignment and liftover steps.
+
+## 2026-02-12 — Stage 04 (AlignAndCallR2) Succeeded
+
+- Workflow ID: `7cc00ffa-f81a-4f9a-b3ae-a3a3324cb9c9`
+- Sample: `1000000`
+- Status: `Succeeded`
+
+### Call Root
+- `gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/workflows/cromwell-executions/StageAlignAndCallR2/7cc00ffa-f81a-4f9a-b3ae-a3a3324cb9c9/call-AlignAndCallR2/AlignAndCallR2/8db7940e-8e54-4e78-bdab-a6fa944c2c45/`
+
+### Outputs (GCS, selected)
+- `call-AlignToMtRegShiftedAndMetrics/out/1000000.self.ref_r2_mean_coverage.txt`
+- `call-AlignToMtRegShiftedAndMetrics/out/1000000.self.ref_r2_median_coverage.txt`
+- `call-AlignToMtRegShiftedAndMetrics/out/1000000.self.ref_r2_wgs_metrics.txt`
+- `call-AlignToMtRegShiftedAndMetrics/out/1000000.self.ref_r2_wgs_theoretical_sensitivity.txt`
+- `call-AlignToMtRegShiftedAndMetrics/out/1000000.unmap.remap.self.ref.bam` + `.bai`
+- `call-AlignToMtRegShiftedAndMetrics/out/1000000.unmap.remap.self.ref.shifted.bam` + `.bai`
+- `call-CallMtAndShifted/out/1000000.self.ref.raw.vcf` + `.idx` + `.stats`
+- `call-CallMtAndShifted/out/1000000.self.ref.shifted.raw.vcf` + `.idx` + `.stats`
+- `call-LiftoverCombineMergeFilterContamSplit/out/1000000.self.ref.vcf` + `.idx`
+- `call-LiftoverCombineMergeFilterContamSplit/out/1000000.self.ref.split.vcf` + `.idx`
+- `call-LiftoverCombineMergeFilterContamSplit/out/1000000.self.ref.raw.merged.vcf` + `.idx`
+- `call-LiftoverCombineMergeFilterContamSplit/out/1000000.self.ref.raw.rejected.vcf`
+- `call-LiftoverCombineMergeFilterContamSplit/out/1000000.self.ref.raw.combined.stats`
+- `call-LiftoverCombineMergeFilterContamSplit/out/1000000.self.ref.r2.hc_contam.txt`
+- `call-LiftoverCombineMergeFilterContamSplit/out/1000000.self.ref.n_failed_vars.txt`
+
+### Stage 04 Purpose (simple, non-technical)
+Stage 04 realigns the reads to the new personalized reference, calls variants again, and produces the refined VCFs and coverage/quality summaries used for liftover.

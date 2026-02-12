@@ -206,6 +206,44 @@ except Exception:
     log "Stage 03 did not succeed (status=${stage03_status})."
     return 1
   fi
+  echo "${wf_id_stage03}"
+  return 0
+}
+
+submit_stage04_for_sample() {
+  local wf_id_stage01="$1"
+  local wf_id_stage02="$2"
+  local wf_id_stage03="$3"
+  local sample_name="$4"
+  log "Populating Stage 04 inputs from Stage 01/02/03 outputs."
+  bash "${PROJECT_ROOT}/populate_stage04_from_stage03.sh" --stage01 "$wf_id_stage01" --stage02 "$wf_id_stage02" --stage03 "$wf_id_stage03" "${PROJECT_ROOT}/stage04_align_call_r2.json"
+  log "Submitting Stage 04 workflow."
+  local wf_id_stage04
+  wf_id_stage04="$(bash "${PROJECT_ROOT}/submit_stage04.sh")"
+  wf_id_stage04="$(echo "$wf_id_stage04" | python3 -c 'import json,sys
+try:
+    data = json.load(sys.stdin)
+    print(data.get("id",""))
+except Exception:
+    print("")
+')"
+  if [ -z "$wf_id_stage04" ]; then
+    log "Failed to parse Stage 04 workflow ID."
+    return 1
+  fi
+  append_sample_status "${sample_name}" "stage04" "${wf_id_stage04}" "Submitted"
+  log "Stage 04 submitted: ${wf_id_stage04}"
+  log "Stage 04 status URL: http://localhost:8094/api/workflows/v1/${wf_id_stage04}/status"
+  log "Stage 04 metadata URL: http://localhost:8094/api/workflows/v1/${wf_id_stage04}/metadata"
+  watch_status "$wf_id_stage04"
+  local stage04_status
+  stage04_status="$(get_wf_status "${wf_id_stage04}")"
+  append_sample_status "${sample_name}" "stage04" "${wf_id_stage04}" "${stage04_status}"
+  if [ "$stage04_status" != "Succeeded" ]; then
+    log "Stage 04 did not succeed (status=${stage04_status})."
+    return 1
+  fi
+  echo "${wf_id_stage04}"
   return 0
 }
 
@@ -283,7 +321,25 @@ while IFS=$'\t' read -r sample_name cram crai; do
     fi
   fi
 
-  if ! submit_stage03_for_sample "${wf_id_stage02}" "${sample_name}"; then
+  wf_id_stage03=""
+  wf_id_stage03="$(submit_stage03_for_sample "${wf_id_stage02}" "${sample_name}")" || true
+  if [ -z "${wf_id_stage03}" ]; then
+    continue
+  fi
+
+  # Stage04 chain: populate inputs and submit for this sample.
+  if [ "${SKIP_ALREADY_PROCESSED}" = "1" ] && sample_stage_succeeded "${sample_name}" "stage04"; then
+    wf_id_stage04="$(get_last_success_wf_id "${sample_name}" "stage04")"
+    if [ -n "${wf_id_stage04}" ]; then
+      log "Sample ${sample_name} already has Stage04 success; reusing workflow ID: ${wf_id_stage04}"
+      append_sample_status "${sample_name}" "stage04" "${wf_id_stage04}" "Succeeded" "reused"
+      continue
+    fi
+  fi
+
+  wf_id_stage04=""
+  wf_id_stage04="$(submit_stage04_for_sample "${wf_id_stage01}" "${wf_id_stage02}" "${wf_id_stage03}" "${sample_name}")" || true
+  if [ -z "${wf_id_stage04}" ]; then
     continue
   fi
 done < <(

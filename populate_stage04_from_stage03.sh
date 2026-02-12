@@ -158,6 +158,12 @@ def replace_if_missing(key, value):
 unmapped_bam = get_out(s1, "StageSubsetBamToChrMAndRevert.unmapped_bam")
 if not unmapped_bam:
     unmapped_bam = "${UNMAPPED_BAM_OVERRIDE:-}"
+if not unmapped_bam:
+    input_bam = s2.get("StageAlignAndCallR1.input_bam", "")
+    if not input_bam:
+        input_bam = get_out(s2o, "StageAlignAndCallR1.input_bam")
+    if input_bam:
+        unmapped_bam = input_bam.replace(".proc.bam", ".unmap.bam")
 replace_if_missing("StageAlignAndCallR2.unmapped_bam", unmapped_bam)
 
 # Stage03 outputs

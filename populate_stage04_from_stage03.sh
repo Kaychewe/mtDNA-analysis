@@ -218,6 +218,8 @@ sample_name = "${sample_name_override}"
 if not sample_name:
     sample_name = data.get("StageAlignAndCallR2.sample_name", "")
 if not sample_name:
+    sample_name = s2.get("StageAlignAndCallR1.sample_name", "")
+if not sample_name:
     sample_name = get_out(s2o, "StageAlignAndCallR1.sample_name")
 if not sample_name:
     sample_name = get_out(s3, "StageProduceSelfReferenceFiles.sample_name")

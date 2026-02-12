@@ -171,6 +171,7 @@ except Exception:
     log "Stage 02 did not succeed (status=${stage02_status})."
     return 1
   fi
+  echo "${wf_id_stage02}"
   return 0
 }
 
@@ -266,7 +267,9 @@ while IFS=$'\t' read -r sample_name cram crai; do
     fi
   fi
 
-  if ! submit_stage02_for_sample "${wf_id_stage01}" "${sample_name}"; then
+  wf_id_stage02=""
+  wf_id_stage02="$(submit_stage02_for_sample "${wf_id_stage01}" "${sample_name}")" || true
+  if [ -z "${wf_id_stage02}" ]; then
     continue
   fi
 
@@ -288,3 +291,12 @@ done < <(
     NR>=s && NR<=e { print $1 "\t" $2 "\t" $3 }
   ' "${MANIFEST_CSV}"
 )
+
+# -------------------
+# Post-run quick check
+# -------------------
+STATUS_TAIL_N="${STATUS_TAIL_N:-5}"
+if [ -f "${SAMPLES_STATUS_TSV}" ]; then
+  log "Recent status entries (last ${STATUS_TAIL_N}):"
+  tail -n "${STATUS_TAIL_N}" "${SAMPLES_STATUS_TSV}"
+fi

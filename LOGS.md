@@ -77,3 +77,33 @@ Stage 01 takes a huge genome file and keeps only the mitochondrial parts we care
 
 ### Stage 02 Purpose (simple, non-technical)
 Stage 02 takes the cleaned mitochondrial reads from Stage 01, calls variants, and produces the main VCFs plus basic contamination/haplogroup summaries for the sample.
+
+## 2026-02-12 — Stage 03 (ProduceSelfReferenceFiles) Succeeded
+
+- Workflow ID: `c0ac2938-85df-481d-bb5d-8b42b6d6a0e3`
+- Sample: `1000000`
+- Status: `Succeeded`
+
+### Call Root
+- `gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/workflows/cromwell-executions/StageProduceSelfReferenceFiles/c0ac2938-85df-481d-bb5d-8b42b6d6a0e3/call-ProduceSelfReferenceFiles/ProduceSelfReferenceFiles/bec4112e-6567-4e86-bdbe-fb8186687a08/`
+
+### Outputs (GCS, selected)
+- `call-ChainSwapLiftoverBed/out/1000000_to_reference.chain`
+- `call-ChainSwapLiftoverBed/out/blacklist_sites.hg38.chrM.1000000.liftedOver.bed` + `.idx`
+- `call-FinalizeMtFasta/out/1000000.self.ref.fasta` + `.fai` + `.dict`
+- `call-FinalizeNucFastas/out/1000000NucOnly.self.ref.fasta` + `.fai` + `.dict`
+- `call-FinalizeNucFastas/out/1000000andNuc.self.ref.fasta` + `.fai` + `.dict`
+- `call-ForceCallVcfs/out/1000000.self.ref.reversed.selfRef.homoplasmies.vcf.bgz` + `.tbi`
+- `call-ForceCallVcfs/out/1000000.self.ref.reversed.withfilters.selfRef.homoplasmies.vcf.bgz` + `.tbi`
+- `call-ForceCallVcfs/out/1000000.self.ref.reversed.selfRef.shifted.homoplasmies.vcf.bgz` + `.tbi`
+- `call-LiftIntervals/out/chrM.hg38.1000000.SelfRefLiftover.interval_list`
+- `call-LiftIntervals/out/control_region_shifted.chrM.1000000.SelfRefLiftover.interval_list`
+- `call-LiftIntervals/out/non_control_region.chrM.1000000.SelfRefLiftover.interval_list`
+- `call-MtConsensus/out/reference_to_1000000.chain`
+- `call-NucConsensus/out/reference_to_1000000NucOnly.chain`
+- `call-ShiftMtReference/out/1000000.self.ref.shifted_by_8000_bases.fasta` + `.fai` + `.dict`
+- `call-ShiftMtReference/out/1000000.self.ref.shifted_by_8000_bases.shift_back_8000_bases.chain`
+- `call-ShiftMtReference/out/1000000.self.ref.shifted_by_8000_bases.shift_fwd_8000_bases.chain`
+
+### Stage 03 Purpose (simple, non-technical)
+Stage 03 builds a personalized mitochondrial reference for the sample and prepares the key reference files and variant calls needed for the next alignment and liftover steps.

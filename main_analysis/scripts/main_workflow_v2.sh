@@ -122,6 +122,58 @@ fi
 # ----------------
 # Main sample loop
 # ----------------
+update_stage01_json() {
+  local sample_name="$1"
+  local cram="$2"
+  local crai="$3"
+  python3 - <<PY
+import json
+path = "${PROJECT_ROOT}/stage01_subset_bam.json"
+with open(path, "r", encoding="utf-8") as fh:
+    data = json.load(fh)
+data["StageSubsetBamToChrMAndRevert.wgs_aligned_input_bam_or_cram"] = "${cram}"
+data["StageSubsetBamToChrMAndRevert.wgs_aligned_input_bam_or_cram_index"] = "${crai}"
+data["StageSubsetBamToChrMAndRevert.sample_name"] = "${sample_name}"
+with open(path, "w", encoding="utf-8") as fh:
+    json.dump(data, fh, indent=2)
+    fh.write("\\n")
+PY
+}
+
+submit_stage02_for_sample() {
+  local wf_id_stage01="$1"
+  local sample_name="$2"
+  log "Populating Stage 02 inputs from Stage 01 outputs."
+  bash "${PROJECT_ROOT}/populate_stage02_from_stage01.sh" "$wf_id_stage01" "${PROJECT_ROOT}/stage02_align_call_r1.json"
+  log "Submitting Stage 02 workflow."
+  local wf_id_stage02
+  wf_id_stage02="$(bash "${PROJECT_ROOT}/submit_stage02.sh")"
+  wf_id_stage02="$(echo "$wf_id_stage02" | python3 -c 'import json,sys
+try:
+    data = json.load(sys.stdin)
+    print(data.get("id",""))
+except Exception:
+    print("")
+')"
+  if [ -z "$wf_id_stage02" ]; then
+    log "Failed to parse Stage 02 workflow ID."
+    return 1
+  fi
+  append_sample_status "${sample_name}" "stage02" "${wf_id_stage02}" "Submitted"
+  log "Stage 02 submitted: ${wf_id_stage02}"
+  log "Stage 02 status URL: http://localhost:8094/api/workflows/v1/${wf_id_stage02}/status"
+  log "Stage 02 metadata URL: http://localhost:8094/api/workflows/v1/${wf_id_stage02}/metadata"
+  watch_status "$wf_id_stage02"
+  local stage02_status
+  stage02_status="$(get_wf_status "${wf_id_stage02}")"
+  append_sample_status "${sample_name}" "stage02" "${wf_id_stage02}" "${stage02_status}"
+  if [ "$stage02_status" != "Succeeded" ]; then
+    log "Stage 02 did not succeed (status=${stage02_status})."
+    return 1
+  fi
+  return 0
+}
+
 while IFS=$'\t' read -r sample_name cram crai; do
   sample_name="$(echo "${sample_name}" | tr -d '\r')"
   cram="$(echo "${cram}" | tr -d '\r')"
@@ -152,18 +204,7 @@ while IFS=$'\t' read -r sample_name cram crai; do
   log "=== Processing sample ${sample_name} ==="
 
   # Update Stage01 input JSON for this sample.
-  python3 - <<PY
-import json
-path = "${PROJECT_ROOT}/stage01_subset_bam.json"
-with open(path, "r", encoding="utf-8") as fh:
-    data = json.load(fh)
-data["StageSubsetBamToChrMAndRevert.wgs_aligned_input_bam_or_cram"] = "${cram}"
-data["StageSubsetBamToChrMAndRevert.wgs_aligned_input_bam_or_cram_index"] = "${crai}"
-data["StageSubsetBamToChrMAndRevert.sample_name"] = "${sample_name}"
-with open(path, "w", encoding="utf-8") as fh:
-    json.dump(data, fh, indent=2)
-    fh.write("\\n")
-PY
+  update_stage01_json "${sample_name}" "${cram}" "${crai}"
 
   # Submit Stage01 and wait for completion.
   log "Submitting Stage 01 workflow."
@@ -178,6 +219,21 @@ PY
   append_sample_status "${sample_name}" "stage01" "${wf_id_stage01}" "${stage01_status}"
   if [ "$stage01_status" != "Succeeded" ]; then
     log "Stage 01 did not succeed (status=${stage01_status})."
+    continue
+  fi
+
+  # Stage02 chain: populate inputs and submit for this sample.
+  if [ "${SKIP_ALREADY_PROCESSED}" = "1" ] && sample_stage_succeeded "${sample_name}" "stage02"; then
+    wf_id_stage02="$(get_last_success_wf_id "${sample_name}" "stage02")"
+    if [ -n "${wf_id_stage02}" ]; then
+      log "Sample ${sample_name} already has Stage02 success; reusing workflow ID: ${wf_id_stage02}"
+      append_sample_status "${sample_name}" "stage02" "${wf_id_stage02}" "Succeeded" "reused"
+      continue
+    fi
+  fi
+
+  if ! submit_stage02_for_sample "${wf_id_stage01}" "${sample_name}"; then
+    continue
   fi
 done < <(
   awk -F',' -v s="${start_line}" -v e="${end_line}" '

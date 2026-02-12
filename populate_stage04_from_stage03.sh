@@ -217,12 +217,20 @@ if not str(data.get("StageAlignAndCallR2.contamination_minor", "")).strip() or "
 sample_name = "${sample_name_override}"
 if not sample_name:
     sample_name = data.get("StageAlignAndCallR2.sample_name", "")
+if "REPLACE_ME" in str(sample_name):
+    sample_name = ""
 if not sample_name:
     sample_name = s2.get("StageAlignAndCallR1.sample_name", "")
+if "REPLACE_ME" in str(sample_name):
+    sample_name = ""
 if not sample_name:
     sample_name = get_out(s2o, "StageAlignAndCallR1.sample_name")
+if "REPLACE_ME" in str(sample_name):
+    sample_name = ""
 if not sample_name:
     sample_name = get_out(s3, "StageProduceSelfReferenceFiles.sample_name")
+if "REPLACE_ME" in str(sample_name):
+    sample_name = ""
 if not sample_name:
     sample_name = "${SAMPLE_NAME_FALLBACK:-}"
 if not sample_name:

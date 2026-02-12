@@ -59,6 +59,7 @@ workflow StageLiftover {
     # Tools
     String genomes_cloud_docker
     String ucsc_docker
+    File? ucsc_tools_bundle
 
     Int? preemptible_tries
     Int? n_cpu
@@ -116,6 +117,7 @@ workflow StageLiftover {
       mtdna_consensus_overlaps = mtdna_consensus_overlaps,
       nuc_consensus_overlaps = nuc_consensus_overlaps,
       ucsc_docker = ucsc_docker,
+      ucsc_tools_bundle = ucsc_tools_bundle,
       preemptible_tries = preemptible_tries
   }
 

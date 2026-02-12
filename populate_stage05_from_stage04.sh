@@ -14,8 +14,8 @@ Options:
 
 Populates stage05_liftover.json using Stage 03 + Stage 04 outputs.
 Defaults are sourced from stage02_align_call_r1.json when available and from env vars:
-  GENOMES_CLOUD_DOCKER_DEFAULT, UCSC_DOCKER_DEFAULT, HAIL_LIFTOVER_DEFAULT,
-  REF_FASTA_DEFAULT, REF_FASTA_INDEX_DEFAULT, REF_DICT_DEFAULT
+  GENOMES_CLOUD_DOCKER_DEFAULT, UCSC_DOCKER_DEFAULT, UCSC_TOOLS_BUNDLE_DEFAULT,
+  HAIL_LIFTOVER_DEFAULT, REF_FASTA_DEFAULT, REF_FASTA_INDEX_DEFAULT, REF_DICT_DEFAULT
 USAGE
 }
 
@@ -98,8 +98,9 @@ else
   hail_liftover_default="${HAIL_LIFTOVER_DEFAULT:-gs://REPLACE_ME/HailLiftover.jar}"
 fi
 
-genomes_cloud_default="${GENOMES_CLOUD_DOCKER_DEFAULT:-us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.2-1552931386}"
-ucsc_docker_default="${UCSC_DOCKER_DEFAULT:-quay.io/biocontainers/ucsc-bedgraphtobigwig:377--h73cb82a_3}"
+genomes_cloud_default="${GENOMES_CLOUD_DOCKER_DEFAULT:-kchewe/mtdna-stage05:0.1.0}"
+ucsc_docker_default="${UCSC_DOCKER_DEFAULT:-kchewe/mtdna-stage04:0.1.3}"
+ucsc_tools_bundle_default="${UCSC_TOOLS_BUNDLE_DEFAULT:-gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/tools/ucsc/ucsc-tools-linux-x86_64.tar.gz}"
 
 fetch_outputs() {
   local wf_id="$1"
@@ -223,6 +224,7 @@ replace_if_missing("StageLiftover.ref_dict", s2.get("StageAlignAndCallR1.ref_dic
 replace_if_missing("StageLiftover.HailLiftover", s2.get("StageAlignAndCallR1.HailLiftover", "${hail_liftover_default}"))
 replace_if_missing("StageLiftover.genomes_cloud_docker", s2.get("StageAlignAndCallR1.genomes_cloud_docker", "${genomes_cloud_default}"))
 replace_if_missing("StageLiftover.ucsc_docker", s2.get("StageAlignAndCallR1.ucsc_docker", "${ucsc_docker_default}"))
+replace_if_missing("StageLiftover.ucsc_tools_bundle", "${ucsc_tools_bundle_default}")
 
 with open("${out_json}", "w", encoding="utf-8") as fh:
     json.dump(data, fh, indent=2, sort_keys=True)

@@ -41,5 +41,6 @@
   "StageLiftover.median_coverage": 0.0,
 
   "StageLiftover.genomes_cloud_docker": "REPLACE_ME",
-  "StageLiftover.ucsc_docker": "REPLACE_ME"
+  "StageLiftover.ucsc_docker": "REPLACE_ME",
+  "StageLiftover.ucsc_tools_bundle": "REPLACE_ME"
 }

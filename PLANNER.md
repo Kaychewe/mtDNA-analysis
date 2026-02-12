@@ -21,7 +21,7 @@ Scope: `scatterWrapper_MitoPipeline_v2_5.wdl` (workflow `MitochondriaPipelineWra
   - Outputs verified on GCS (proc bam/bai, mean coverage, duplicate metrics).
   - Feb 11 update (Stage01 resubmission):
     - Failed: `3618d29f-112c-40b4-88e7-ef2f752f2221` (missing `wdl_deps.zip` / relative import error).
-    - Re-submitted: `0beb83ea-3a1e-4b04-8ca5-ef416efe977c` (running).
+    - Re-submitted: `0beb83ea-3a1e-4b04-8ca5-ef416efe977c` (succeeded).
 - Stage 02 (AlignAndCallR1)
   - Success workflow: `d3e371d2-05ab-4412-919b-27f942a6a0f1`.
   - Output roots used to populate Stage 03:
@@ -100,11 +100,47 @@ Scope: `scatterWrapper_MitoPipeline_v2_5.wdl` (workflow `MitochondriaPipelineWra
   - Feb 10 update (igvtools wrapper issue):
     - DiagnosticChainSwapLiftover failed: `igvtools` wrapper expects `igv.args`.
     - Fix: bundle `igvtools.jar` only and call `java -jar` in tasks (no wrapper).
+  - Feb 11 update (Stage04 image + full run):
+    - Built/published `kchewe/mtdna-stage04:0.1.3` (bwa, samtools, picard wrapper, GATK, Java 11, R).
+    - Stage04 image smoketest succeeded: `1710c48e-2194-4157-a497-c2b46629197c`.
+    - Fixed `ReorderSam` to use `SEQUENCE_DICTIONARY` instead of `REFERENCE`.
+    - Fixed `GATK_LOCAL_JAR` default to `/opt/gatk/gatk-4.2.6.0/gatk-package-4.2.6.0-local.jar`.
+    - Added RG/SM safeguard in `MongoCallMtAndShifted` to avoid Mutect2 `samples cannot be empty`.
+    - Stage04 full run succeeded: `325bf984-3e97-49f6-a565-7490aad06f19`.
+    - Workflow root:
+      `gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/workflows/cromwell-executions/StageAlignAndCallR2/325bf984-3e97-49f6-a565-7490aad06f19/`
+    - Subworkflow output root:
+      `.../call-AlignAndCallR2/AlignAndCallR2/fd195b53-9123-485f-8251-2effde41fb89/`
+    - Key outputs (examples):
+      `AlignToMtRegShiftedAndMetrics`:
+        `.../out/1000000.unmap.remap.self.ref.bam` + `.bai`
+        `.../out/1000000.unmap.remap.self.ref.shifted.bam` + `.bai`
+        `.../out/1000000.self.ref_r2_wgs_metrics.txt`
+        `.../out/1000000.self.ref_r2_wgs_theoretical_sensitivity.txt`
+        `.../out/1000000.self.ref_r2_mean_coverage.txt`
+        `.../out/1000000.self.ref_r2_median_coverage.txt`
+      `CallMtAndShifted`:
+        `.../out/1000000.self.ref.raw.vcf` + `.idx` + `.stats`
+        `.../out/1000000.self.ref.shifted.raw.vcf` + `.idx` + `.stats`
+      `LiftoverCombineMergeFilterContamSplit`:
+        `.../out/1000000.self.ref.vcf` + `.idx`
+        `.../out/1000000.self.ref.split.vcf` + `.idx`
+        `.../out/1000000.self.ref.raw.merged.vcf` + `.idx`
+        `.../out/1000000.self.ref.raw.rejected.vcf`
+        `.../out/1000000.self.ref.raw.combined.stats`
+        `.../out/1000000.self.ref.n_failed_vars.txt`
+        `.../out/1000000.self.ref.r2.hc_contam.txt`
+  - Feb 12 update (Stage05 prep):
+    - Added Stage05 image smoketest WDL/JSON + submit script (`stage05_stage05image_smoketest.wdl/json`, `submit_stage05_stage05image_smoketest.sh`).
+    - Added `submit_stage05_with_tags.sh` and hardened `submit_stage05.sh` with `wdl_deps.zip` + input validation.
+    - Stage05 liftover now supports optional UCSC tools bundle (`ucsc_tools_bundle`) for `liftOver`.
+    - Added `Dockerfile.stage05` (hail + bcftools/bedtools/picard/R/Java) to standardize Stage05 tooling.
 
 ## Current Status (AoU Jupyter)
 
 - Stage02 success: `d3e371d2-05ab-4412-919b-27f942a6a0f1`
 - Stage03 failed: `acc1dcf2-4afd-4a2e-8391-492954762a97` (FilterMtVcf stopped before completion)
+- Stage04 success: `325bf984-3e97-49f6-a565-7490aad06f19` (full run, outputs in log above)
 - bcftools docker smoketests:
   - `f2c39184-6acd-43e4-922f-02cdb9a0933f` (quay bcftools image; no GCS logs, likely blocked pull)
   - `fcc1c004-da4a-4855-9920-d530702fb0e8` (genomes-in-the-cloud image; stderr: `bcftools: command not found`)

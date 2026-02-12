@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -euo pipefail
 # Submit Stage04 align/call R2 to local Cromwell.
 # Inputs:
 # - workflowSource: stage04_align_call_r2.wdl
@@ -64,6 +64,12 @@ if missing:
     for k in missing:
         print(f"  - {k}")
     sys.exit(1)
+
+# Warn on floating docker tags (best effort)
+for k in ("StageAlignAndCallR2.gatk_docker_override", "StageAlignAndCallR2.gotc_docker_override"):
+    v = str(data.get(k, "")).strip()
+    if v and (v.endswith(":latest") or ":latest" in v):
+        print(f"WARNING: {k} uses a floating tag: {v}")
 
 # Emit GCS paths to verify existence downstream in bash
 gcs_paths = []

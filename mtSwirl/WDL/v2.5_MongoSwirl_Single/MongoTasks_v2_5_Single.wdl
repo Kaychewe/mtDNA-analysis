@@ -372,7 +372,7 @@ task MongoProduceSelfReference {
   String d = "$" # a stupid trick to get ${} indexing in bash to work in Cromwell
 
   command <<<
-    set -e
+    set -euo pipefail
 
     mkdir out
 
@@ -2006,6 +2006,14 @@ task MongoLiftoverVCFAndGetCoverage {
     this_basename="~{d}{this_sample}~{self_suffix}.split"
     this_logging="~{d}{this_basename}_fix_liftover.log"
 
+    # Preflight tool checks
+    for tool in bgzip tabix bcftools bedtools picard python3 R; do
+      if ! command -v "$tool" >/dev/null 2>&1; then
+        echo "ERROR: required tool not found on PATH: $tool"
+        exit 1
+      fi
+    done
+
     bgzip -c "~{d}{this_self_ref_vcf}" > "~{d}{this_self_ref_vcf}.bgz" && tabix "~{d}{this_self_ref_vcf}.bgz"
     tabix "~{d}{this_rev_hom_ref_vcf}"
     bcftools isec -p intersected_vcfs -Ov "~{d}{this_self_ref_vcf}.bgz" "~{d}{this_rev_hom_ref_vcf}"
@@ -2200,6 +2208,7 @@ task MongoLiftoverSelfAndCollectOutputs {
     Int nuc_consensus_overlaps
 
     String ucsc_docker
+    File? ucsc_tools_bundle
     Int? preemptible_tries
   }
 
@@ -2207,7 +2216,7 @@ task MongoLiftoverSelfAndCollectOutputs {
   String d = "$" # a stupid trick to get ${} indexing in bash to work in Cromwell
 
   command <<<
-    set -e
+    set -euo pipefail
 
     mkdir out
 
@@ -2226,6 +2235,16 @@ task MongoLiftoverSelfAndCollectOutputs {
     this_nuc_var_drop="~{nuc_variants_dropped}"
     this_mt_overlap="~{mtdna_consensus_overlaps}"
     this_nuc_overlap="~{nuc_consensus_overlaps}"
+
+    # Optional UCSC tools bundle (liftOver)
+    if [ -n "~{ucsc_tools_bundle}" ] && [ "~{ucsc_tools_bundle}" != "null" ]; then
+      tar -xzf "~{ucsc_tools_bundle}" -C .
+      export PATH="$PWD/ucsc_tools/bin:$PWD/ucsc_tools:$PATH"
+    fi
+    if ! command -v liftOver >/dev/null 2>&1; then
+      echo "ERROR: liftOver not found on PATH (ucsc_docker or ucsc_tools_bundle required)."
+      exit 1
+    fi
 
     tail -n +2 "~{d}{this_self_ref_tab}" | awk '{OFS="\t"} {print $1"\t"$2-1"\t"$2"\t"$4}' > per_base_coverage.bed
     liftOver per_base_coverage.bed "~{d}{this_chain}" "~{d}{this_sample}.liftedOver.bed" "~{d}{this_sample}.liftedOver.unmapped"

@@ -34,6 +34,32 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 # shellcheck disable=SC1091
 source "${SCRIPT_DIR}/../lib/common.sh"
 
+generate_manifest_if_missing() {
+  local manifest_path="$1"
+  if [ -f "${manifest_path}" ]; then
+    return 0
+  fi
+  if ! command -v gsutil >/dev/null 2>&1; then
+    log "Manifest missing and gsutil not found: ${manifest_path}"
+    return 1
+  fi
+  local source_uri=""
+  if [ -n "${CDR_STORAGE_PATH:-}" ]; then
+    source_uri="${CDR_STORAGE_PATH}/wgs/cram/manifest.csv"
+  else
+    log "Manifest missing and CDR_STORAGE_PATH not set: ${manifest_path}"
+    return 1
+  fi
+  if [ -n "${GOOGLE_PROJECT:-}" ]; then
+    log "Downloading manifest with requester pays: ${source_uri}"
+    gsutil -u "${GOOGLE_PROJECT}" cp "${source_uri}" "${manifest_path}"
+  else
+    log "Downloading manifest: ${source_uri}"
+    gsutil cp "${source_uri}" "${manifest_path}"
+  fi
+  [ -f "${manifest_path}" ]
+}
+
 load_env
 log "Cromwell status URL: ${CROMWELL_STATUS_URL}"
 ensure_dirs
@@ -48,8 +74,7 @@ BATCH_INDEX="${BATCH_INDEX:-}"
 MANIFEST_CSV="${PROJECT_ROOT}/manifest.csv"
 if [ ! -f "${MANIFEST_CSV}" ]; then
   log "Manifest not found: ${MANIFEST_CSV}. Attempting to generate."
-  bash "${PROJECT_ROOT}/main_analysis/scripts/utilities.sh" generate-manifest --manifest "${MANIFEST_CSV}"
-  if [ ! -f "${MANIFEST_CSV}" ]; then
+  if ! generate_manifest_if_missing "${MANIFEST_CSV}"; then
     log "Manifest still missing after generation attempt: ${MANIFEST_CSV}"
     exit 1
   fi

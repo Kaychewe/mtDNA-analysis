@@ -14,7 +14,7 @@
   "StageSubsetBamToChrMAndRevert.printreads_extra_args": "",
   "StageSubsetBamToChrMAndRevert.gatk_version": "4.2.6.0",
   "StageSubsetBamToChrMAndRevert.gatk_override": null,
-  "StageSubsetBamToChrMAndRevert.gatk_samtools_docker": "docker.io/broadinstitute/gatk:4.2.6.0",
+  "StageSubsetBamToChrMAndRevert.gatk_samtools_docker": "kchewe/mtdna-stage04:0.1.3",
   "StageSubsetBamToChrMAndRevert.printreads_mem": null,
   "StageSubsetBamToChrMAndRevert.n_cpu_subsetbam": null,
   "StageSubsetBamToChrMAndRevert.preemptible_tries": null

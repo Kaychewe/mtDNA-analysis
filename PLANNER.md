@@ -22,6 +22,8 @@ Scope: `scatterWrapper_MitoPipeline_v2_5.wdl` (workflow `MitochondriaPipelineWra
   - Feb 11 update (Stage01 resubmission):
     - Failed: `3618d29f-112c-40b4-88e7-ef2f752f2221` (missing `wdl_deps.zip` / relative import error).
     - Re-submitted: `0beb83ea-3a1e-4b04-8ca5-ef416efe977c` (succeeded).
+  - Feb 12 update (Stage01 new run):
+    - Submitted: `0a18d80c-46e4-45b8-88f1-ca8cb22b53d6` (running at time of note).
 - Stage 02 (AlignAndCallR1)
   - Success workflow: `d3e371d2-05ab-4412-919b-27f942a6a0f1`.
   - Output roots used to populate Stage 03:
@@ -136,12 +138,21 @@ Scope: `scatterWrapper_MitoPipeline_v2_5.wdl` (workflow `MitochondriaPipelineWra
     - Stage05 liftover now supports optional UCSC tools bundle (`ucsc_tools_bundle`) for `liftOver`.
     - Added `Dockerfile.stage05` (hail + bcftools/bedtools/picard/R/Java) to standardize Stage05 tooling.
     - Stage05 image smoketest succeeded: `57eff00e-a2a1-4d50-b2ad-640572492bdc` (liftOver available from UCSC bundle).
+  - Feb 12 update (Stage05 liftover run failure):
+    - Workflow `ca9554e9-62dd-4392-a8b8-56137c5a256c` failed in `LiftOverAfterSelf`.
+    - Failure guard: `ERROR: There should not be any variants private to the reversed hom ref VCF.`
+    - Added logging outputs in `MongoLiftoverVCFAndGetCoverage` to capture `bcftools isec` counts and first 50 private records:
+      `out/<sample>.split.isec_summary.txt` and `out/<sample>.split.private_to_rev_hom_ref.head.txt`.
+  - Feb 12 update (Stage05 repopulation tooling):
+    - `populate_stage05_from_stage04.sh` enhanced to resolve missing chains + VCFs via `gsutil` when Cromwell outputs are unavailable.
+    - Still requires Stage03/04 IDs; run populate before submit to avoid `REPLACE_ME` values.
 
 ## Current Status (AoU Jupyter)
 
 - Stage02 success: `d3e371d2-05ab-4412-919b-27f942a6a0f1`
 - Stage03 failed: `acc1dcf2-4afd-4a2e-8391-492954762a97` (FilterMtVcf stopped before completion)
 - Stage04 success: `325bf984-3e97-49f6-a565-7490aad06f19` (full run, outputs in log above)
+- Stage01 running: `0a18d80c-46e4-45b8-88f1-ca8cb22b53d6`
 - bcftools docker smoketests:
   - `f2c39184-6acd-43e4-922f-02cdb9a0933f` (quay bcftools image; no GCS logs, likely blocked pull)
   - `fcc1c004-da4a-4855-9920-d530702fb0e8` (genomes-in-the-cloud image; stderr: `bcftools: command not found`)

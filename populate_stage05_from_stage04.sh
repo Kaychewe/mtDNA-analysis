@@ -251,18 +251,20 @@ if ws and (need_ref_to_self or need_self_to_ref):
     base = f"{ws}/workflows/cromwell-executions/StageProduceSelfReferenceFiles/{stage03}/call-ProduceSelfReferenceFiles/ProduceSelfReferenceFiles"
     if need_ref_to_self:
         try:
-            out = subprocess.check_output(["gsutil","ls",f\"{base}/*/call-MtConsensus/out/reference_to_*.chain\"], text=True).strip().splitlines()
+            pattern = f"{base}/*/call-MtConsensus/out/reference_to_*.chain"
+            out = subprocess.check_output(["gsutil","ls",pattern], text=True).strip().splitlines()
             if out:
                 data["StageLiftover.chain_ref_to_self"] = out[0]
         except Exception as e:
-            print(f\"WARNING: failed to resolve chain_ref_to_self via gsutil: {e}\", file=sys.stderr)
+            print(f"WARNING: failed to resolve chain_ref_to_self via gsutil: {e}", file=sys.stderr)
     if need_self_to_ref:
         try:
-            out = subprocess.check_output(["gsutil","ls",f\"{base}/*/call-ChainSwapLiftoverBed/out/*_to_reference.chain\"], text=True).strip().splitlines()
+            pattern = f"{base}/*/call-ChainSwapLiftoverBed/out/*_to_reference.chain"
+            out = subprocess.check_output(["gsutil","ls",pattern], text=True).strip().splitlines()
             if out:
                 data["StageLiftover.chain_self_to_ref"] = out[0]
         except Exception as e:
-            print(f\"WARNING: failed to resolve chain_self_to_ref via gsutil: {e}\", file=sys.stderr)
+            print(f"WARNING: failed to resolve chain_self_to_ref via gsutil: {e}", file=sys.stderr)
 
 with open(p, "w", encoding="utf-8") as fh:
     json.dump(data, fh, indent=2, sort_keys=True)

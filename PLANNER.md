@@ -135,6 +135,7 @@ Scope: `scatterWrapper_MitoPipeline_v2_5.wdl` (workflow `MitochondriaPipelineWra
     - Added `submit_stage05_with_tags.sh` and hardened `submit_stage05.sh` with `wdl_deps.zip` + input validation.
     - Stage05 liftover now supports optional UCSC tools bundle (`ucsc_tools_bundle`) for `liftOver`.
     - Added `Dockerfile.stage05` (hail + bcftools/bedtools/picard/R/Java) to standardize Stage05 tooling.
+    - Stage05 image smoketest succeeded: `57eff00e-a2a1-4d50-b2ad-640572492bdc` (liftOver available from UCSC bundle).
 
 ## Current Status (AoU Jupyter)
 

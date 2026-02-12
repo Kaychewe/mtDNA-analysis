@@ -15,7 +15,8 @@ Options:
 Populates stage05_liftover.json using Stage 03 + Stage 04 outputs.
 Defaults are sourced from stage02_align_call_r1.json when available and from env vars:
   GENOMES_CLOUD_DOCKER_DEFAULT, UCSC_DOCKER_DEFAULT, UCSC_TOOLS_BUNDLE_DEFAULT,
-  HAIL_LIFTOVER_DEFAULT, REF_FASTA_DEFAULT, REF_FASTA_INDEX_DEFAULT, REF_DICT_DEFAULT
+  HAIL_LIFTOVER_DEFAULT, REF_FASTA_DEFAULT, REF_FASTA_INDEX_DEFAULT, REF_DICT_DEFAULT,
+  MAJOR_HAPLOGROUP_DEFAULT
 USAGE
 }
 
@@ -101,6 +102,7 @@ fi
 genomes_cloud_default="${GENOMES_CLOUD_DOCKER_DEFAULT:-kchewe/mtdna-stage05:0.1.0}"
 ucsc_docker_default="${UCSC_DOCKER_DEFAULT:-kchewe/mtdna-stage04:0.1.3}"
 ucsc_tools_bundle_default="${UCSC_TOOLS_BUNDLE_DEFAULT:-gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/tools/ucsc/ucsc-tools-linux-x86_64.tar.gz}"
+major_haplogroup_default="${MAJOR_HAPLOGROUP_DEFAULT:-UNKNOWN}"
 
 fetch_outputs() {
   local wf_id="$1"
@@ -225,6 +227,9 @@ replace_if_missing("StageLiftover.HailLiftover", s2.get("StageAlignAndCallR1.Hai
 replace_if_missing("StageLiftover.genomes_cloud_docker", s2.get("StageAlignAndCallR1.genomes_cloud_docker", "${genomes_cloud_default}"))
 replace_if_missing("StageLiftover.ucsc_docker", s2.get("StageAlignAndCallR1.ucsc_docker", "${ucsc_docker_default}"))
 replace_if_missing("StageLiftover.ucsc_tools_bundle", "${ucsc_tools_bundle_default}")
+
+# Final fallback for major_haplogroup if still missing
+replace_if_missing("StageLiftover.major_haplogroup", "${major_haplogroup_default}")
 
 with open("${out_json}", "w", encoding="utf-8") as fh:
     json.dump(data, fh, indent=2, sort_keys=True)

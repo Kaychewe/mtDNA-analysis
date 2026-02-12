@@ -212,10 +212,32 @@ replace_if_missing("StageLiftover.n_reads_unpaired_dropped", get_out(s1o, "Stage
 sample_name = "${sample_name_override}"
 if not sample_name:
     sample_name = data.get("StageLiftover.sample_name", "")
+if "REPLACE_ME" in str(sample_name):
+    sample_name = ""
+if not sample_name:
+    sample_name = s2.get("StageAlignAndCallR1.sample_name", "")
+if "REPLACE_ME" in str(sample_name):
+    sample_name = ""
 if not sample_name:
     sample_name = get_out(s4, "StageAlignAndCallR2.sample_name")
+if "REPLACE_ME" in str(sample_name):
+    sample_name = ""
 if not sample_name:
     sample_name = get_out(s3, "StageProduceSelfReferenceFiles.sample_name")
+if "REPLACE_ME" in str(sample_name):
+    sample_name = ""
+if not sample_name:
+    new_self_ref_vcf = get_out(s4, "StageAlignAndCallR2.split_vcf")
+    if new_self_ref_vcf:
+        base = new_self_ref_vcf.rsplit("/", 1)[-1]
+        if base.endswith(".self.ref.split.vcf"):
+            sample_name = base.replace(".self.ref.split.vcf", "")
+if not sample_name:
+    ref_homoplasmies = get_out(s3, "StageProduceSelfReferenceFiles.ref_homoplasmies_vcf")
+    if ref_homoplasmies:
+        base = ref_homoplasmies.rsplit("/", 1)[-1]
+        if base.endswith(".vcf"):
+            sample_name = base.replace(".vcf", "").replace(".self.ref", "")
 if sample_name:
     data["StageLiftover.sample_name"] = sample_name
 

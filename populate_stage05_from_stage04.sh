@@ -244,6 +244,8 @@ data=json.load(open(p))
 
 need_ref_to_self = (not str(data.get("StageLiftover.chain_ref_to_self","")).strip()) or ("REPLACE_ME" in str(data.get("StageLiftover.chain_ref_to_self","")))
 need_self_to_ref = (not str(data.get("StageLiftover.chain_self_to_ref","")).strip()) or ("REPLACE_ME" in str(data.get("StageLiftover.chain_self_to_ref","")))
+need_force_call_filters = (not str(data.get("StageLiftover.force_call_vcf_filters","")).strip()) or ("REPLACE_ME" in str(data.get("StageLiftover.force_call_vcf_filters","")))
+need_ref_homoplasmies = (not str(data.get("StageLiftover.ref_homoplasmies_vcf","")).strip()) or ("REPLACE_ME" in str(data.get("StageLiftover.ref_homoplasmies_vcf","")))
 
 ws = os.environ.get("WORKSPACE_BUCKET","").strip()
 stage03 = "${stage03_wf}"
@@ -265,6 +267,22 @@ if ws and (need_ref_to_self or need_self_to_ref):
                 data["StageLiftover.chain_self_to_ref"] = out[0]
         except Exception as e:
             print(f"WARNING: failed to resolve chain_self_to_ref via gsutil: {e}", file=sys.stderr)
+    if need_force_call_filters:
+        try:
+            pattern = f"{base}/*/call-ForceCallVcfs/out/*.withfilters*.vcf.bgz"
+            out = subprocess.check_output(["gsutil","ls",pattern], text=True).strip().splitlines()
+            if out:
+                data["StageLiftover.force_call_vcf_filters"] = out[0]
+        except Exception as e:
+            print(f"WARNING: failed to resolve force_call_vcf_filters via gsutil: {e}", file=sys.stderr)
+    if need_ref_homoplasmies:
+        try:
+            pattern = f"{base}/*/call-RemoveMtOverlaps/cleaned_mt.vcf"
+            out = subprocess.check_output(["gsutil","ls",pattern], text=True).strip().splitlines()
+            if out:
+                data["StageLiftover.ref_homoplasmies_vcf"] = out[0]
+        except Exception as e:
+            print(f"WARNING: failed to resolve ref_homoplasmies_vcf via gsutil: {e}", file=sys.stderr)
 
 with open(p, "w", encoding="utf-8") as fh:
     json.dump(data, fh, indent=2, sort_keys=True)

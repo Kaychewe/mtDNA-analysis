@@ -1,35 +1,3 @@
 {
-  "Stage05LiftoverSmokeTest.sample_name": "REPLACE_ME",
-  "Stage05LiftoverSmokeTest.self_suffix": ".self.ref",
-
-  "Stage05LiftoverSmokeTest.ref_homoplasmies_vcf": "REPLACE_ME",
-  "Stage05LiftoverSmokeTest.force_call_vcf_filters": "REPLACE_ME",
-
-  "Stage05LiftoverSmokeTest.mt_self": "REPLACE_ME",
-  "Stage05LiftoverSmokeTest.mt_self_index": "REPLACE_ME",
-  "Stage05LiftoverSmokeTest.mt_self_dict": "REPLACE_ME",
-  "Stage05LiftoverSmokeTest.mt_self_shifted": "REPLACE_ME",
-  "Stage05LiftoverSmokeTest.mt_self_shifted_index": "REPLACE_ME",
-  "Stage05LiftoverSmokeTest.mt_self_shifted_dict": "REPLACE_ME",
-  "Stage05LiftoverSmokeTest.chain_self_to_ref": "REPLACE_ME",
-  "Stage05LiftoverSmokeTest.chain_ref_to_self": "REPLACE_ME",
-
-  "Stage05LiftoverSmokeTest.self_control_region_shifted_reference_interval_list": "REPLACE_ME",
-  "Stage05LiftoverSmokeTest.self_non_control_region_interval_list": "REPLACE_ME",
-
-  "Stage05LiftoverSmokeTest.new_self_ref_vcf": "REPLACE_ME",
-
-  "Stage05LiftoverSmokeTest.input_bam_regular_ref": "REPLACE_ME",
-  "Stage05LiftoverSmokeTest.input_bam_regular_ref_index": "REPLACE_ME",
-  "Stage05LiftoverSmokeTest.input_bam_shifted_ref": "REPLACE_ME",
-  "Stage05LiftoverSmokeTest.input_bam_shifted_ref_index": "REPLACE_ME",
-
-  "Stage05LiftoverSmokeTest.ref_fasta": "REPLACE_ME",
-  "Stage05LiftoverSmokeTest.ref_fasta_index": "REPLACE_ME",
-  "Stage05LiftoverSmokeTest.ref_dict": "REPLACE_ME",
-  "Stage05LiftoverSmokeTest.HailLiftover": "REPLACE_ME",
-
-  "Stage05LiftoverSmokeTest.genomes_cloud_docker": "REPLACE_ME",
-  "Stage05LiftoverSmokeTest.preemptible_tries": 0,
-  "Stage05LiftoverSmokeTest.n_cpu": 4
+  "Stage05LiftoverSmokeTest.genomes_cloud_docker": "kchewe/mtdna-stage05:0.1.0"
 }

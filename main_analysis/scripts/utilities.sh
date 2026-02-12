@@ -24,7 +24,11 @@ dry_run_batch() {
   local batch_size="$2"
   local batch_index="$3"
   if [ ! -f "${manifest}" ]; then
-    echo "Manifest not found: ${manifest}" >&2
+    echo "Manifest not found: ${manifest}. Attempting to generate." >&2
+    generate_manifest "${manifest}" "" "${GOOGLE_PROJECT:-}"
+  fi
+  if [ ! -f "${manifest}" ]; then
+    echo "Manifest still missing: ${manifest}" >&2
     exit 1
   fi
   if ! [[ "${batch_size}" =~ ^[0-9]+$ ]] || ! [[ "${batch_index}" =~ ^[0-9]+$ ]]; then

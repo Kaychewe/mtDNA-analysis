@@ -1984,6 +1984,11 @@ task MongoLiftoverVCFAndGetCoverage {
 
   command <<<
     set -e
+    set -x
+
+    # Always emit logs even on early failure
+    exec > >(tee /mnt/disks/cromwell_root/stdout) 2> >(tee /mnt/disks/cromwell_root/stderr >&2)
+    trap 'echo "ERROR: LiftOverAfterSelf failed with exit code $?" >&2' EXIT
 
     mkdir out
 

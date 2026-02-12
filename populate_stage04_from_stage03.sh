@@ -157,7 +157,7 @@ def replace_if_missing(key, value):
 # Stage01 output
 unmapped_bam = get_out(s1, "StageSubsetBamToChrMAndRevert.unmapped_bam")
 if not unmapped_bam:
-    unmapped_bam = "${UNMAPPED_BAM_OVERRIDE}"
+    unmapped_bam = "${UNMAPPED_BAM_OVERRIDE:-}"
 replace_if_missing("StageAlignAndCallR2.unmapped_bam", unmapped_bam)
 
 # Stage03 outputs
@@ -222,7 +222,7 @@ if not sample_name:
 if not sample_name:
     sample_name = get_out(s3, "StageProduceSelfReferenceFiles.sample_name")
 if not sample_name:
-    sample_name = "${SAMPLE_NAME_FALLBACK}"
+    sample_name = "${SAMPLE_NAME_FALLBACK:-}"
 if not sample_name:
     mt_self = get_out(s3, "StageProduceSelfReferenceFiles.mt_self")
     if mt_self and mt_self.endswith(".self.ref.fasta"):

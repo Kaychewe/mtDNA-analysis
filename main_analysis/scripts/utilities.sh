@@ -10,12 +10,14 @@ usage() {
 Usage:
   utilities.sh dry-run --batch-size <n> --batch-index <n> [--manifest <path>]
   utilities.sh generate-manifest [--manifest <path>] [--source-uri <gs://.../manifest.csv>] [--project <gcp_project>]
+  utilities.sh check-wdl-deps
 
 Examples:
   bash main_analysis/scripts/utilities.sh dry-run --batch-size 10 --batch-index 1
   bash main_analysis/scripts/utilities.sh dry-run --batch-size 10 --batch-index 2 --manifest /path/to/manifest.csv
   bash main_analysis/scripts/utilities.sh generate-manifest
   bash main_analysis/scripts/utilities.sh generate-manifest --source-uri gs://path/to/manifest.csv
+  bash main_analysis/scripts/utilities.sh check-wdl-deps
 EOF
 }
 
@@ -140,6 +142,11 @@ case "${cmd}" in
       esac
     done
     generate_manifest "${manifest}" "${source_uri}" "${project}"
+    ;;
+  check-wdl-deps)
+    load_env
+    check_wdl_deps
+    echo "WDL deps zip is ready: ${WDL_DEPS_ZIP}"
     ;;
   ""|--help|-h)
     usage

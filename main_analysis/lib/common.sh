@@ -211,6 +211,23 @@ print("Wrote", out_zip)
 PY
 }
 
+check_wdl_deps() {
+  if [ ! -f "${WDL_DEPS_ZIP}" ]; then
+    log "WDL deps zip missing; rebuilding."
+    ensure_wdl_deps
+    return 0
+  fi
+  if ! command -v unzip >/dev/null 2>&1; then
+    log "unzip not found; skipping WDL deps zip validation."
+    return 0
+  fi
+  if ! unzip -tq "${WDL_DEPS_ZIP}" >/dev/null 2>&1; then
+    log "WDL deps zip invalid; rebuilding."
+    rm -f "${WDL_DEPS_ZIP}"
+    ensure_wdl_deps
+  fi
+}
+
 pick_first_list() {
   local pattern="$1"
   local dir="$2"

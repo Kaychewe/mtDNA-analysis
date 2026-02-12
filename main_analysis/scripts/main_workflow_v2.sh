@@ -1,10 +1,17 @@
 #!/bin/bash
+# Author: Kasonde Chewe 
+# Pipeline: 
+# Stage01-only, batch-aware workflow runner (manifest-driven).
 
 DEBUG=0
 SKIP_ALREADY_PROCESSED="${SKIP_ALREADY_PROCESSED:-1}"
 SAMPLE_NAME=""
 BATCH_SIZE="${BATCH_SIZE:-}"
 BATCH_INDEX="${BATCH_INDEX:-}"
+
+# ---------
+# Arguments
+# ---------
 while [ "$#" -gt 0 ]; do
   case "$1" in
     --debug)
@@ -30,10 +37,16 @@ if [ "$DEBUG" = "1" ]; then
 fi
 export DEBUG
 
+# ------------
+# Dependencies
+# ------------
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 # shellcheck disable=SC1091
 source "${SCRIPT_DIR}/../lib/common.sh"
 
+# ------------------------
+# Manifest bootstrap helper
+# ------------------------
 generate_manifest_if_missing() {
   local manifest_path="$1"
   if [ -f "${manifest_path}" ]; then
@@ -60,17 +73,23 @@ generate_manifest_if_missing() {
   [ -f "${manifest_path}" ]
 }
 
+# -------------
+# Preflight init
+# -------------
 load_env
 log "Cromwell status URL: ${CROMWELL_STATUS_URL}"
 ensure_dirs
 make_run_dir
 check_cromwell
-ensure_wdl_deps
+check_wdl_deps
 init_samples_status
 SKIP_ALREADY_PROCESSED="${SKIP_ALREADY_PROCESSED:-1}"
 BATCH_SIZE="${BATCH_SIZE:-}"
 BATCH_INDEX="${BATCH_INDEX:-}"
 
+# --------------------
+# Manifest + batching
+# --------------------
 MANIFEST_CSV="${PROJECT_ROOT}/manifest.csv"
 if [ ! -f "${MANIFEST_CSV}" ]; then
   log "Manifest not found: ${MANIFEST_CSV}. Attempting to generate."
@@ -100,6 +119,9 @@ if [ -n "${BATCH_SIZE}" ] && [ -n "${BATCH_INDEX}" ]; then
   log "Processing batch ${BATCH_INDEX} (size ${BATCH_SIZE}), lines ${start_line}-${end_line} of ${MANIFEST_CSV}."
 fi
 
+# ----------------
+# Main sample loop
+# ----------------
 while IFS=$'\t' read -r sample_name cram crai; do
   sample_name="$(echo "${sample_name}" | tr -d '\r')"
   cram="$(echo "${cram}" | tr -d '\r')"
@@ -109,6 +131,7 @@ while IFS=$'\t' read -r sample_name cram crai; do
     continue
   fi
 
+  # Skip if already succeeded (TSV registry or GCS outputs).
   if [ "${SKIP_ALREADY_PROCESSED}" = "1" ] && sample_stage_succeeded "${sample_name}" "stage01"; then
     wf_id_stage01="$(get_last_success_wf_id "${sample_name}" "stage01")"
     if [ -n "${wf_id_stage01}" ]; then
@@ -128,6 +151,7 @@ while IFS=$'\t' read -r sample_name cram crai; do
 
   log "=== Processing sample ${sample_name} ==="
 
+  # Update Stage01 input JSON for this sample.
   python3 - <<PY
 import json
 path = "${PROJECT_ROOT}/stage01_subset_bam.json"
@@ -141,6 +165,7 @@ with open(path, "w", encoding="utf-8") as fh:
     fh.write("\\n")
 PY
 
+  # Submit Stage01 and wait for completion.
   log "Submitting Stage 01 workflow."
   wf_id_stage01="$(submit_stage01)"
   append_sample_status "${sample_name}" "stage01" "${wf_id_stage01}" "Submitted"

@@ -138,6 +138,14 @@ Scope: `scatterWrapper_MitoPipeline_v2_5.wdl` (workflow `MitochondriaPipelineWra
     - Stage05 liftover now supports optional UCSC tools bundle (`ucsc_tools_bundle`) for `liftOver`.
     - Added `Dockerfile.stage05` (hail + bcftools/bedtools/picard/R/Java) to standardize Stage05 tooling.
     - Stage05 image smoketest succeeded: `57eff00e-a2a1-4d50-b2ad-640572492bdc` (liftOver available from UCSC bundle).
+  - Feb 12 update (Stage05 smoketest re-run):
+    - Stage05ImageSmokeTest succeeded: `08f3e611-98c8-4429-9e90-68814a31aa3b`.
+    - UCSC smoketest outputs at call root (not `out/`), including:
+      `stage05_ucsc_versions.txt`.
+    - Verified in `stage05_ucsc_versions.txt`:
+      - `liftOver` resolved from UCSC bundle path.
+      - Java present.
+      - `R version 4.1.2 (2021-11-01)`.
   - Feb 12 update (Stage05 liftover run failure):
     - Workflow `ca9554e9-62dd-4392-a8b8-56137c5a256c` failed in `LiftOverAfterSelf`.
     - Failure guard: `ERROR: There should not be any variants private to the reversed hom ref VCF.`

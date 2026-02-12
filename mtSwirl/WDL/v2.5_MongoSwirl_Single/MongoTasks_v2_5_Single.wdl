@@ -710,8 +710,6 @@ task MongoChainSwapLiftoverBed {
   String d = "$" # a stupid trick to get ${} indexing in bash to work in Cromwell
 
   command <<<
-    set -e
-
     mkdir out
 
     if [ -n "~{ucsc_tools_bundle}" ] && [ "~{ucsc_tools_bundle}" != "null" ]; then

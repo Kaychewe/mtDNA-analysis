@@ -94,9 +94,9 @@ ref_fasta_index_default="${REF_FASTA_INDEX_DEFAULT:-gs://gcp-public-data--broad-
 ref_dict_default="${REF_DICT_DEFAULT:-gs://gcp-public-data--broad-references/hg38/v0/Homo_sapiens_assembly38.dict}"
 
 if [ -n "${WORKSPACE_BUCKET:-}" ]; then
-  hail_liftover_default="${HAIL_LIFTOVER_DEFAULT:-${WORKSPACE_BUCKET}/code/HailLiftover.jar}"
+  hail_liftover_default="${HAIL_LIFTOVER_DEFAULT:-${WORKSPACE_BUCKET}/code/fix_liftover.py}"
 else
-  hail_liftover_default="${HAIL_LIFTOVER_DEFAULT:-gs://REPLACE_ME/HailLiftover.jar}"
+  hail_liftover_default="${HAIL_LIFTOVER_DEFAULT:-gs://REPLACE_ME/code/fix_liftover.py}"
 fi
 
 genomes_cloud_default="${GENOMES_CLOUD_DOCKER_DEFAULT:-kchewe/mtdna-stage05:0.1.0}"

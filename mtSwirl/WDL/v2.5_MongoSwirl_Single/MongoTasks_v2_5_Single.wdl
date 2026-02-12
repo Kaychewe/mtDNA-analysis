@@ -57,7 +57,7 @@ task MongoSubsetBamToChrMAndRevert {
     }
   }
   command <<<
-    set -e
+    set -euo pipefail
     export GATK_LOCAL_JAR=~{default="/opt/gatk/gatk-4.2.6.0/gatk-package-4.2.6.0-local.jar" gatk_override}
 
     mkdir out
@@ -2018,11 +2018,27 @@ task MongoLiftoverVCFAndGetCoverage {
     tabix "~{d}{this_rev_hom_ref_vcf}"
     bcftools isec -p intersected_vcfs -Ov "~{d}{this_self_ref_vcf}.bgz" "~{d}{this_rev_hom_ref_vcf}"
 
+    # summarize bcftools isec outputs for debugging
+    isec_summary="~{d}{this_basename}.isec_summary.txt"
+    {
+      echo "vcf_0000_count: $(grep -c '^chrM' ./intersected_vcfs/0000.vcf || true)"
+      echo "vcf_0001_private_to_rev_hom_ref_count: $(grep -c '^chrM' ./intersected_vcfs/0001.vcf || true)"
+      echo "vcf_0002_intersection_count: $(grep -c '^chrM' ./intersected_vcfs/0002.vcf || true)"
+    } > "$isec_summary"
+
     # there should be no records private to reversed hom ref VCF
-    export private_to_rev_hom_ref=$(cat ./intersected_vcfs/0001.vcf | grep ^chrM | wc -l | sed 's/^ *//g')
-    if [ $private_to_rev_hom_ref -ne 0 ]; then
+    export private_to_rev_hom_ref=$(grep -c '^chrM' ./intersected_vcfs/0001.vcf || true)
+    private_head="~{d}{this_basename}.private_to_rev_hom_ref.head.txt"
+    if [ "$private_to_rev_hom_ref" -ne 0 ]; then
+      {
+        echo "private_to_rev_hom_ref_count: ${private_to_rev_hom_ref}"
+        echo "first_50_records:"
+        grep '^chrM' ./intersected_vcfs/0001.vcf | head -n 50
+      } > "$private_head"
       echo "ERROR: There should not be any variants private to the reversed hom ref VCF."
-      exit 1;
+      exit 1
+    else
+      echo "private_to_rev_hom_ref_count: 0" > "$private_head"
     fi
 
     picard LiftoverVcf \
@@ -2166,6 +2182,8 @@ task MongoLiftoverVCFAndGetCoverage {
     File gap_coverage = "out/~{sample_name}~{self_suffix}.split.round2liftover.deletions_coverage.tsv"
     File self_coverage_table = "out/~{sample_name}~{self_suffix}.split.per_base_coverage.tsv"
     File liftoverStats = "out/~{sample_name}~{self_suffix}.split.round2liftover.all_int_outputs.final.txt"
+    File liftover_isec_summary = "out/~{sample_name}~{self_suffix}.split.isec_summary.txt"
+    File liftover_private_to_rev_hom_ref_head = "out/~{sample_name}~{self_suffix}.split.private_to_rev_hom_ref.head.txt"
     
     # stats
     Int n_liftover_changed_selfref_and_passed = read_int('out/~{sample_name}_n_ref_pass_thru.txt')

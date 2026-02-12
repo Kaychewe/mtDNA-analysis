@@ -91,6 +91,16 @@ for k,v in data.items():
         sys.exit(1)
 PY
 
+echo "=== Stage05 Liftover Smoketest Inputs ==="
+python3 - <<PY
+import json
+p="${JSON_PATH}"
+data=json.load(open(p))
+for k in sorted(data.keys()):
+    print(f"{k}: {data[k]}")
+PY
+echo "=== End Inputs ==="
+
 DEPS_ARG=()
 if [ -f "$DEPS_PATH" ]; then
   DEPS_ARG=(-F workflowDependencies=@"$DEPS_PATH")

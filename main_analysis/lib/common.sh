@@ -129,6 +129,28 @@ get_last_success_wf_id() {
   ' "${SAMPLES_STATUS_TSV}"
 }
 
+find_stage01_success_in_gcs() {
+  local sample_id="$1"
+  local bucket="${WORKSPACE_BUCKET:-}"
+  if [ -z "${bucket}" ]; then
+    return 1
+  fi
+  if ! command -v gsutil >/dev/null 2>&1; then
+    return 1
+  fi
+  local pattern="${bucket}/workflows/cromwell-executions/StageSubsetBamToChrMAndRevert/*/call-SubsetBamToChrMAndRevert/out/${sample_id}.proc.bam"
+  local match
+  match="$(gsutil ls "${pattern}" 2>/dev/null | head -n 1 || true)"
+  if [ -z "${match}" ]; then
+    return 1
+  fi
+  # Extract workflow ID from path
+  # .../StageSubsetBamToChrMAndRevert/<wf_id>/call-SubsetBamToChrMAndRevert/out/<sample>.proc.bam
+  echo "${match}" | awk -F'/' '
+    { for (i=1; i<=NF; i++) if ($i=="StageSubsetBamToChrMAndRevert") { print $(i+1); exit } }
+  '
+}
+
 get_wf_status() {
   local wf_id="$1"
   curl -s "http://localhost:8094/api/workflows/v1/${wf_id}/status" | python3 -c 'import json,sys

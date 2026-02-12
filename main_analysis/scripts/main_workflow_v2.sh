@@ -94,6 +94,14 @@ while IFS=$'\t' read -r sample_name cram crai; do
       continue
     fi
   fi
+  if [ "${SKIP_ALREADY_PROCESSED}" = "1" ]; then
+    wf_id_stage01="$(find_stage01_success_in_gcs "${sample_name}")"
+    if [ -n "${wf_id_stage01}" ]; then
+      log "Sample ${sample_name} already has Stage01 outputs in GCS; reusing workflow ID: ${wf_id_stage01}"
+      append_sample_status "${sample_name}" "stage01" "${wf_id_stage01}" "Succeeded" "gcs-found"
+      continue
+    fi
+  fi
 
   log "=== Processing sample ${sample_name} ==="
 

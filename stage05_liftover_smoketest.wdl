@@ -149,16 +149,33 @@ task Stage05LiftoverPreflight {
 
     bgzip -c "~{new_self_ref_vcf}" > "out/new_self_ref.vcf.bgz"
     tabix "out/new_self_ref.vcf.bgz"
-    tabix "~{force_call_vcf_filters}"
 
     # Always include the primary force_call_vcf_filters in the overlap set
     all_candidates=( "~{force_call_vcf_filters}" ~{sep=' ' candidate_force_call_vcfs} )
 
     : > out/isec_summary.txt
+    mkdir -p out/candidates
     for vcf in "${all_candidates[@]}"; do
       base="$(basename "$vcf")"
+      cand_bgz="out/candidates/${base}.bgz"
+      use_vcf="$vcf"
+
+      if [[ "$vcf" == *.bgz ]]; then
+        if [[ -f "${vcf}.tbi" ]]; then
+          use_vcf="$vcf"
+        else
+          bgzip -c "$vcf" > "$cand_bgz"
+          tabix "$cand_bgz"
+          use_vcf="$cand_bgz"
+        fi
+      else
+        bgzip -c "$vcf" > "$cand_bgz"
+        tabix "$cand_bgz"
+        use_vcf="$cand_bgz"
+      fi
+
       outdir="out/isec_${base}"
-      bcftools isec -p "$outdir" -Ov "out/new_self_ref.vcf.bgz" "$vcf"
+      bcftools isec -p "$outdir" -Ov "out/new_self_ref.vcf.bgz" "$use_vcf"
       {
         echo "=== ${base} ==="
         echo "vcf_0000_count: $(grep -c '^chrM' ${outdir}/0000.vcf || true)"

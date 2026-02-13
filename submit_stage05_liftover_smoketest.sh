@@ -68,6 +68,8 @@ if not out:
         if isinstance(v, str) and v.strip() and "REPLACE_ME" not in v:
             cand.append(v)
     out[out_prefix + "candidate_force_call_vcfs"] = cand
+else:
+    out[out_prefix + "candidate_force_call_vcfs"] = []
 
 with open(out_path, "w", encoding="utf-8") as fh:
     json.dump(out, fh, indent=2, sort_keys=True)

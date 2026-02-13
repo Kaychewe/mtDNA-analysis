@@ -14,7 +14,7 @@ workflow Stage05LiftoverSmokeTest {
     File new_self_ref_vcf
     File ref_homoplasmies_vcf
     File force_call_vcf_filters
-    Array[File] candidate_force_call_vcfs
+    Array[File] candidate_force_call_vcfs = []
     File input_bam_regular_ref
     File input_bam_regular_ref_index
     File input_bam_shifted_ref
@@ -133,7 +133,7 @@ task Stage05LiftoverPreflight {
     String docker_image
     File new_self_ref_vcf
     File force_call_vcf_filters
-    Array[File] candidate_force_call_vcfs
+    Array[File] candidate_force_call_vcfs = []
   }
 
   command <<<

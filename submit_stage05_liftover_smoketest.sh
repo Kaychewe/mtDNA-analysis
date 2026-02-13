@@ -59,19 +59,17 @@ if not out:
     print("ERROR: No StageLiftover.* keys found in", src_path)
     sys.exit(1)
 
-    # Build candidate list for overlap testing
-    cand = []
-    for key in ("StageLiftover.force_call_vcf_filters", "StageLiftover.force_call_vcf_unfiltered", "StageLiftover.force_call_vcf_shifted"):
-        v = data.get(key, "")
-        if isinstance(v, str) and v.strip() and "REPLACE_ME" not in v:
-            cand.append(v)
-    out[out_prefix + "candidate_force_call_vcfs"] = cand
+# Build candidate list for overlap testing
+cand = []
+for key in ("StageLiftover.force_call_vcf_filters", "StageLiftover.force_call_vcf_unfiltered", "StageLiftover.force_call_vcf_shifted"):
+    v = data.get(key, "")
+    if isinstance(v, str) and v.strip() and "REPLACE_ME" not in v:
+        cand.append(v)
+out[out_prefix + "candidate_force_call_vcfs"] = cand
 
-    # Ensure only supported inputs are passed to the smoketest WDL
-    out.pop(out_prefix + "force_call_vcf_unfiltered", None)
-    out.pop(out_prefix + "force_call_vcf_shifted", None)
-else:
-    out[out_prefix + "candidate_force_call_vcfs"] = []
+# Ensure only supported inputs are passed to the smoketest WDL
+out.pop(out_prefix + "force_call_vcf_unfiltered", None)
+out.pop(out_prefix + "force_call_vcf_shifted", None)
 
 with open(out_path, "w", encoding="utf-8") as fh:
     json.dump(out, fh, indent=2, sort_keys=True)

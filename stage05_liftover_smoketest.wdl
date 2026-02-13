@@ -52,9 +52,18 @@ workflow Stage05LiftoverSmokeTest {
       self_non_control_region_interval_list = self_non_control_region_interval_list
   }
 
+  call Stage05LiftoverPreflight as Preflight {
+    input:
+      docker_image = genomes_cloud_docker,
+      new_self_ref_vcf = new_self_ref_vcf,
+      force_call_vcf_filters = force_call_vcf_filters
+  }
+
   output {
     File hello = InputsSmoke.hello
     File file_sizes = InputsSmoke.file_sizes
+    File preflight_ok = Preflight.preflight_ok
+    File isec_summary = Preflight.isec_summary
   }
 }
 
@@ -114,5 +123,52 @@ task Stage05InputsSmoke {
   output {
     File hello = "out/hello_world.txt"
     File file_sizes = "out/file_sizes.txt"
+  }
+}
+
+task Stage05LiftoverPreflight {
+  input {
+    String docker_image
+    File new_self_ref_vcf
+    File force_call_vcf_filters
+  }
+
+  command <<<
+    set -euo pipefail
+    mkdir -p out
+
+    for tool in bgzip tabix bcftools picard python3 R; do
+      if ! command -v "$tool" >/dev/null 2>&1; then
+        echo "ERROR: required tool not found on PATH: $tool" >&2
+        exit 1
+      fi
+    done
+
+    bgzip -c "~{new_self_ref_vcf}" > "out/new_self_ref.vcf.bgz"
+    tabix "out/new_self_ref.vcf.bgz"
+    tabix "~{force_call_vcf_filters}"
+
+    bcftools isec -p out/intersected_vcfs -Ov "out/new_self_ref.vcf.bgz" "~{force_call_vcf_filters}"
+
+    {
+      echo "vcf_0000_count: $(grep -c '^chrM' out/intersected_vcfs/0000.vcf || true)"
+      echo "vcf_0001_private_to_rev_hom_ref_count: $(grep -c '^chrM' out/intersected_vcfs/0001.vcf || true)"
+      echo "vcf_0002_intersection_count: $(grep -c '^chrM' out/intersected_vcfs/0002.vcf || true)"
+    } > out/isec_summary.txt
+
+    echo "preflight_ok" > out/preflight_ok.txt
+  >>>
+
+  runtime {
+    cpu: 1
+    memory: "2 GB"
+    disks: "local-disk 10 HDD"
+    docker: docker_image
+    preemptible: 0
+  }
+
+  output {
+    File preflight_ok = "out/preflight_ok.txt"
+    File isec_summary = "out/isec_summary.txt"
   }
 }

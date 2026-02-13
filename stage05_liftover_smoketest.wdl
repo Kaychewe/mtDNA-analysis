@@ -157,18 +157,20 @@ task Stage05LiftoverPreflight {
     mkdir -p out/candidates
     for vcf in "${all_candidates[@]}"; do
       base="$(basename "$vcf")"
-      cand_bgz="out/candidates/${base}.bgz"
       use_vcf="$vcf"
 
       if [[ "$vcf" == *.bgz ]]; then
-        if [[ -f "${vcf}.tbi" ]]; then
-          use_vcf="$vcf"
-        else
-          bgzip -c "$vcf" > "$cand_bgz"
-          tabix "$cand_bgz"
-          use_vcf="$cand_bgz"
+        if [[ ! -f "${vcf}.tbi" ]]; then
+          # Try indexing in place first; fallback to recompress if needed.
+          if ! tabix "$vcf"; then
+            cand_bgz="out/candidates/${base}"
+            bgzip -c "$vcf" > "$cand_bgz"
+            tabix "$cand_bgz"
+            use_vcf="$cand_bgz"
+          fi
         fi
       else
+        cand_bgz="out/candidates/${base}.bgz"
         bgzip -c "$vcf" > "$cand_bgz"
         tabix "$cand_bgz"
         use_vcf="$cand_bgz"

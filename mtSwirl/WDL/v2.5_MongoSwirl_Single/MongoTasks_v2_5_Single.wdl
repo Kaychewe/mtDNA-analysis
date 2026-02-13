@@ -70,12 +70,13 @@ task MongoSubsetBamToChrMAndRevert {
     ~{if force_manual_download then "gsutil " + requester_pays_prefix + " cp ~{d}{this_bai} bamfile.cram.crai" else ""}
     ~{if force_manual_download then "this_bam=bamfile.cram" else ""}
     ~{if force_manual_download then "this_bai=bamfile.cram.crai" else ""}
-    
+
+    # log removed 2 lines
+  
+
     gatk --java-options "-Xmx~{command_mem}m" PrintReads \
       ~{"-R " + ref_fasta} \
-      ~{"-L " + mt_interval_list} \
-      ~{"-L " + nuc_interval_list} \
-      ~{"-L " + contig_name} \
+      ~{"-L chrM" } \ 
       --read-filter MateOnSameContigOrNoMappedMateReadFilter \
       --read-filter MateUnmappedAndUnmappedReadFilter \
       ~{"--gcs-project-for-requester-pays " + requester_pays_project} \

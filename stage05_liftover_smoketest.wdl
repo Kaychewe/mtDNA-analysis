@@ -14,6 +14,7 @@ workflow Stage05LiftoverSmokeTest {
     File new_self_ref_vcf
     File ref_homoplasmies_vcf
     File force_call_vcf_filters
+    Array[File] candidate_force_call_vcfs
     File input_bam_regular_ref
     File input_bam_regular_ref_index
     File input_bam_shifted_ref
@@ -56,7 +57,8 @@ workflow Stage05LiftoverSmokeTest {
     input:
       docker_image = genomes_cloud_docker,
       new_self_ref_vcf = new_self_ref_vcf,
-      force_call_vcf_filters = force_call_vcf_filters
+      force_call_vcf_filters = force_call_vcf_filters,
+      candidate_force_call_vcfs = candidate_force_call_vcfs
   }
 
   output {
@@ -131,6 +133,7 @@ task Stage05LiftoverPreflight {
     String docker_image
     File new_self_ref_vcf
     File force_call_vcf_filters
+    Array[File] candidate_force_call_vcfs
   }
 
   command <<<
@@ -148,13 +151,21 @@ task Stage05LiftoverPreflight {
     tabix "out/new_self_ref.vcf.bgz"
     tabix "~{force_call_vcf_filters}"
 
-    bcftools isec -p out/intersected_vcfs -Ov "out/new_self_ref.vcf.bgz" "~{force_call_vcf_filters}"
+    # Always include the primary force_call_vcf_filters in the overlap set
+    all_candidates=( "~{force_call_vcf_filters}" ~{sep=' ' candidate_force_call_vcfs} )
 
-    {
-      echo "vcf_0000_count: $(grep -c '^chrM' out/intersected_vcfs/0000.vcf || true)"
-      echo "vcf_0001_private_to_rev_hom_ref_count: $(grep -c '^chrM' out/intersected_vcfs/0001.vcf || true)"
-      echo "vcf_0002_intersection_count: $(grep -c '^chrM' out/intersected_vcfs/0002.vcf || true)"
-    } > out/isec_summary.txt
+    : > out/isec_summary.txt
+    for vcf in "${all_candidates[@]}"; do
+      base="$(basename "$vcf")"
+      outdir="out/isec_${base}"
+      bcftools isec -p "$outdir" -Ov "out/new_self_ref.vcf.bgz" "$vcf"
+      {
+        echo "=== ${base} ==="
+        echo "vcf_0000_count: $(grep -c '^chrM' ${outdir}/0000.vcf || true)"
+        echo "vcf_0001_private_to_rev_hom_ref_count: $(grep -c '^chrM' ${outdir}/0001.vcf || true)"
+        echo "vcf_0002_intersection_count: $(grep -c '^chrM' ${outdir}/0002.vcf || true)"
+      } >> out/isec_summary.txt
+    done
 
     echo "preflight_ok" > out/preflight_ok.txt
   >>>

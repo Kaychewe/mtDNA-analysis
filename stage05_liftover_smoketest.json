@@ -7,6 +7,7 @@
   "Stage05LiftoverSmokeTest.new_self_ref_vcf": "REPLACE_ME",
   "Stage05LiftoverSmokeTest.ref_homoplasmies_vcf": "REPLACE_ME",
   "Stage05LiftoverSmokeTest.force_call_vcf_filters": "REPLACE_ME",
+  "Stage05LiftoverSmokeTest.candidate_force_call_vcfs": [],
   "Stage05LiftoverSmokeTest.input_bam_regular_ref": "REPLACE_ME",
   "Stage05LiftoverSmokeTest.input_bam_regular_ref_index": "REPLACE_ME",
   "Stage05LiftoverSmokeTest.input_bam_shifted_ref": "REPLACE_ME",

@@ -175,6 +175,8 @@ def replace_if_missing(key, value):
 # Stage03 outputs
 replace_if_missing("StageLiftover.ref_homoplasmies_vcf", get_out(s3, "StageProduceSelfReferenceFiles.ref_homoplasmies_vcf"))
 replace_if_missing("StageLiftover.force_call_vcf_filters", get_out(s3, "StageProduceSelfReferenceFiles.force_call_vcf_filters"))
+replace_if_missing("StageLiftover.force_call_vcf_unfiltered", get_out(s3, "StageProduceSelfReferenceFiles.force_call_vcf"))
+replace_if_missing("StageLiftover.force_call_vcf_shifted", get_out(s3, "StageProduceSelfReferenceFiles.force_call_vcf_shifted"))
 
 replace_if_missing("StageLiftover.mt_self", get_out(s3, "StageProduceSelfReferenceFiles.mt_self"))
 replace_if_missing("StageLiftover.mt_self_index", get_out(s3, "StageProduceSelfReferenceFiles.mt_self_index"))
@@ -267,6 +269,8 @@ data=json.load(open(p))
 need_ref_to_self = (not str(data.get("StageLiftover.chain_ref_to_self","")).strip()) or ("REPLACE_ME" in str(data.get("StageLiftover.chain_ref_to_self","")))
 need_self_to_ref = (not str(data.get("StageLiftover.chain_self_to_ref","")).strip()) or ("REPLACE_ME" in str(data.get("StageLiftover.chain_self_to_ref","")))
 need_force_call_filters = (not str(data.get("StageLiftover.force_call_vcf_filters","")).strip()) or ("REPLACE_ME" in str(data.get("StageLiftover.force_call_vcf_filters","")))
+need_force_call_unfiltered = (not str(data.get("StageLiftover.force_call_vcf_unfiltered","")).strip()) or ("REPLACE_ME" in str(data.get("StageLiftover.force_call_vcf_unfiltered","")))
+need_force_call_shifted = (not str(data.get("StageLiftover.force_call_vcf_shifted","")).strip()) or ("REPLACE_ME" in str(data.get("StageLiftover.force_call_vcf_shifted","")))
 need_ref_homoplasmies = (not str(data.get("StageLiftover.ref_homoplasmies_vcf","")).strip()) or ("REPLACE_ME" in str(data.get("StageLiftover.ref_homoplasmies_vcf","")))
 
 ws = os.environ.get("WORKSPACE_BUCKET","").strip()
@@ -297,6 +301,22 @@ if ws and (need_ref_to_self or need_self_to_ref):
                 data["StageLiftover.force_call_vcf_filters"] = out[0]
         except Exception as e:
             print(f"WARNING: failed to resolve force_call_vcf_filters via gsutil: {e}", file=sys.stderr)
+    if need_force_call_unfiltered:
+        try:
+            pattern = f"{base}/*/call-ForceCallVcfs/out/*.reversed.selfRef.homoplasmies.vcf.bgz"
+            out = subprocess.check_output(["gsutil","ls",pattern], text=True).strip().splitlines()
+            if out:
+                data["StageLiftover.force_call_vcf_unfiltered"] = out[0]
+        except Exception as e:
+            print(f"WARNING: failed to resolve force_call_vcf_unfiltered via gsutil: {e}", file=sys.stderr)
+    if need_force_call_shifted:
+        try:
+            pattern = f"{base}/*/call-ForceCallVcfs/out/*.reversed.selfRef.shifted.homoplasmies.vcf.bgz"
+            out = subprocess.check_output(["gsutil","ls",pattern], text=True).strip().splitlines()
+            if out:
+                data["StageLiftover.force_call_vcf_shifted"] = out[0]
+        except Exception as e:
+            print(f"WARNING: failed to resolve force_call_vcf_shifted via gsutil: {e}", file=sys.stderr)
     if need_ref_homoplasmies:
         try:
             pattern = f"{base}/*/call-RemoveMtOverlaps/cleaned_mt.vcf"

@@ -66,6 +66,10 @@ if not out:
         if isinstance(v, str) and v.strip() and "REPLACE_ME" not in v:
             cand.append(v)
     out[out_prefix + "candidate_force_call_vcfs"] = cand
+
+    # Ensure only supported inputs are passed to the smoketest WDL
+    out.pop(out_prefix + "force_call_vcf_unfiltered", None)
+    out.pop(out_prefix + "force_call_vcf_shifted", None)
 else:
     out[out_prefix + "candidate_force_call_vcfs"] = []
 

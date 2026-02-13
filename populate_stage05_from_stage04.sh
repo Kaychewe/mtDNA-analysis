@@ -275,7 +275,7 @@ need_ref_homoplasmies = (not str(data.get("StageLiftover.ref_homoplasmies_vcf","
 
 ws = os.environ.get("WORKSPACE_BUCKET","").strip()
 stage03 = "${stage03_wf}"
-if ws and (need_ref_to_self or need_self_to_ref):
+if ws and (need_ref_to_self or need_self_to_ref or need_force_call_filters or need_force_call_unfiltered or need_force_call_shifted or need_ref_homoplasmies):
     base = f"{ws}/workflows/cromwell-executions/StageProduceSelfReferenceFiles/{stage03}/call-ProduceSelfReferenceFiles/ProduceSelfReferenceFiles"
     if need_ref_to_self:
         try:

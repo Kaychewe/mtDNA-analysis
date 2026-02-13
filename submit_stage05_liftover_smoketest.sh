@@ -32,8 +32,6 @@ want_keys = {
     "new_self_ref_vcf",
     "ref_homoplasmies_vcf",
     "force_call_vcf_filters",
-    "force_call_vcf_unfiltered",
-    "force_call_vcf_shifted",
     "input_bam_regular_ref",
     "input_bam_regular_ref_index",
     "input_bam_shifted_ref",

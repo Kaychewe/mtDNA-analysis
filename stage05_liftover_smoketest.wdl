@@ -62,8 +62,7 @@ workflow Stage05LiftoverSmokeTest {
   }
 
   output {
-    File hello = InputsSmoke.hello
-    File file_sizes = InputsSmoke.file_sizes
+    FcdvvrfgFile file_sizes = InputsSmoke.file_sizes
     File preflight_ok = Preflight.preflight_ok
     File isec_summary = Preflight.isec_summary
   }

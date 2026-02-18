@@ -1,0 +1,4 @@
+{
+  "DiagnosticUCSCTools.ucsc_docker": "us-central1-docker.pkg.dev/all-of-us-rw-prod/aou-rw-gar-remote-repo-docker-prod/rahulg603/ucsc_genome_toolkit",
+  "DiagnosticUCSCTools.preemptible_tries": 0
+}

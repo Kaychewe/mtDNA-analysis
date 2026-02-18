@@ -1,0 +1,193 @@
+#!/bin/bash
+set -euo pipefail
+
+usage() {
+  cat <<'EOF'
+Usage: populate_stage02_from_stage01.sh <stage01_workflow_id> [output_json]
+
+Populates stage02_align_call_r1.json using Stage 01 outputs:
+  - output_bam
+  - output_bai
+  - mean_coverage
+
+Defaults for references and intervals are filled if values are missing or REPLACE_ME.
+You can override defaults via environment variables:
+  REF_FASTA_DEFAULT, REF_FASTA_INDEX_DEFAULT, REF_DICT_DEFAULT
+  MT_FASTA_DEFAULT, MT_FASTA_INDEX_DEFAULT, MT_DICT_DEFAULT
+  MT_INTERVAL_LIST_DEFAULT, NUC_INTERVAL_LIST_DEFAULT
+  BLACKLIST_SITES_DEFAULT, BLACKLIST_SITES_INDEX_DEFAULT
+  HAPLOCHECK_ZIP_DEFAULT
+  GATK_DOCKER_DEFAULT
+EOF
+}
+
+if [ "${1:-}" = "--help" ] || [ "${1:-}" = "-h" ]; then
+  usage
+  exit 0
+fi
+
+if [ -z "${1:-}" ]; then
+  usage
+  exit 1
+fi
+
+WF_ID="$1"
+out_json="${2:-stage02_align_call_r1.json}"
+
+if [ ! -f "$out_json" ]; then
+  echo "Missing output JSON template: $out_json"
+  exit 1
+fi
+
+ref_fasta_default="${REF_FASTA_DEFAULT:-gs://gcp-public-data--broad-references/hg38/v0/Homo_sapiens_assembly38.fasta}"
+ref_fasta_index_default="${REF_FASTA_INDEX_DEFAULT:-gs://gcp-public-data--broad-references/hg38/v0/Homo_sapiens_assembly38.fasta.fai}"
+ref_dict_default="${REF_DICT_DEFAULT:-gs://gcp-public-data--broad-references/hg38/v0/Homo_sapiens_assembly38.dict}"
+mt_fasta_default="${MT_FASTA_DEFAULT:-gs://gcp-public-data--broad-references/hg38/v0/chrM/Homo_sapiens_assembly38.chrM.fasta}"
+mt_fasta_index_default="${MT_FASTA_INDEX_DEFAULT:-gs://gcp-public-data--broad-references/hg38/v0/chrM/Homo_sapiens_assembly38.chrM.fasta.fai}"
+mt_dict_default="${MT_DICT_DEFAULT:-gs://gcp-public-data--broad-references/hg38/v0/chrM/Homo_sapiens_assembly38.chrM.dict}"
+mt_interval_list_default="${MT_INTERVAL_LIST_DEFAULT:-gs://gcp-public-data--broad-references/hg38/v0/chrM/chrM.hg38.interval_list}"
+
+if [ -n "${WORKSPACE_BUCKET:-}" ]; then
+  nuc_interval_list_default="${NUC_INTERVAL_LIST_DEFAULT:-${WORKSPACE_BUCKET}/intervals/NUMTv3_all385.hg38.interval_list}"
+  blacklist_sites_default="${BLACKLIST_SITES_DEFAULT:-gs://gcp-public-data--broad-references/hg38/v0/chrM/blacklist_sites.hg38.chrM.bed}"
+  blacklist_sites_index_default="${BLACKLIST_SITES_INDEX_DEFAULT:-gs://gcp-public-data--broad-references/hg38/v0/chrM/blacklist_sites.hg38.chrM.bed.idx}"
+  haplocheck_zip_default="${HAPLOCHECK_ZIP_DEFAULT:-${WORKSPACE_BUCKET}/haplocheck.zip}"
+else
+  nuc_interval_list_default="${NUC_INTERVAL_LIST_DEFAULT:-gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/intervals/NUMTv3_all385.hg38.interval_list}"
+  blacklist_sites_default="${BLACKLIST_SITES_DEFAULT:-gs://gcp-public-data--broad-references/hg38/v0/chrM/blacklist_sites.hg38.chrM.bed}"
+  blacklist_sites_index_default="${BLACKLIST_SITES_INDEX_DEFAULT:-gs://gcp-public-data--broad-references/hg38/v0/chrM/blacklist_sites.hg38.chrM.bed.idx}"
+  haplocheck_zip_default="${HAPLOCHECK_ZIP_DEFAULT:-gs://REPLACE_ME/haplocheck.zip}"
+fi
+
+gatk_docker_default="${GATK_DOCKER_DEFAULT:-kchewe/mtdna-stage04:0.1.3}"
+
+stage01_json="${STAGE01_JSON:-stage01_subset_bam.json}"
+if [ ! -f "$stage01_json" ]; then
+  echo "Missing Stage 01 JSON for sample_name lookup: $stage01_json"
+  exit 1
+fi
+
+# Try to derive sample name from list files if stage01 JSON is still REPLACE_ME.
+fallback_sample_name=""
+list_dir=""
+if [ -n "${LIST_DIR:-}" ] && [ -d "${LIST_DIR}" ]; then
+  list_dir="${LIST_DIR}"
+else
+  list_dir="${PROJECT_ROOT:-.}/mtDNA_v25_pilot_5"
+fi
+if [ -d "${list_dir}" ]; then
+  sample_list_file="$(ls -1 "${list_dir}"/sample_list*.txt 2>/dev/null | sort | head -n 1 || true)"
+  if [ -n "${sample_list_file}" ] && [ -f "${sample_list_file}" ]; then
+    fallback_sample_name="$(head -n 1 "${sample_list_file}" | tr -d '\r' || true)"
+  fi
+fi
+
+outputs_json="$(curl -s "http://localhost:8094/api/workflows/v1/${WF_ID}/outputs")"
+
+need_gcs_fallback=0
+if [ -z "${outputs_json}" ]; then
+  need_gcs_fallback=1
+fi
+if echo "${outputs_json}" | grep -q "Unrecognized workflow ID"; then
+  need_gcs_fallback=1
+fi
+
+output_bam_override=""
+output_bai_override=""
+mean_cov_override=""
+if [ "${need_gcs_fallback}" -eq 1 ]; then
+  if [ -z "${WORKSPACE_BUCKET:-}" ]; then
+    echo "ERROR: Cromwell outputs unavailable and WORKSPACE_BUCKET is not set."
+    exit 1
+  fi
+  gcs_out="${WORKSPACE_BUCKET}/workflows/cromwell-executions/StageSubsetBamToChrMAndRevert/${WF_ID}/call-SubsetBamToChrMAndRevert/out"
+  output_bam_override="$(gsutil ls "${gcs_out}"/*.proc.bam 2>/dev/null | head -n 1 || true)"
+  output_bai_override="$(gsutil ls "${gcs_out}"/*.proc.bai 2>/dev/null | head -n 1 || true)"
+  mean_cov_override="$(gsutil cat "${gcs_out}"/*.mean_coverage.txt 2>/dev/null | head -n 1 || true)"
+fi
+
+OUTPUT_BAM_OVERRIDE="${output_bam_override}" \
+OUTPUT_BAI_OVERRIDE="${output_bai_override}" \
+MEAN_COV_OVERRIDE="${mean_cov_override}" \
+python3 - <<PY
+import json
+import sys
+import os
+
+outputs = {}
+try:
+    outputs = json.loads("""${outputs_json}""")
+except Exception:
+    outputs = {}
+data = {}
+with open("${out_json}", "r", encoding="utf-8") as fh:
+    data = json.load(fh)
+
+def get_out(key):
+    return outputs.get("outputs", {}).get(key, "")
+
+output_bam = get_out("StageSubsetBamToChrMAndRevert.output_bam")
+output_bai = get_out("StageSubsetBamToChrMAndRevert.output_bai")
+mean_cov = get_out("StageSubsetBamToChrMAndRevert.mean_coverage")
+
+output_bam_override = os.environ.get("OUTPUT_BAM_OVERRIDE", "")
+output_bai_override = os.environ.get("OUTPUT_BAI_OVERRIDE", "")
+mean_cov_override = os.environ.get("MEAN_COV_OVERRIDE", "")
+if output_bam_override:
+    output_bam = output_bam_override
+if output_bai_override:
+    output_bai = output_bai_override
+if mean_cov_override:
+    try:
+        mean_cov = float(mean_cov_override)
+    except Exception:
+        mean_cov = mean_cov_override
+
+with open("${stage01_json}", "r", encoding="utf-8") as fh:
+    s1 = json.load(fh)
+sample_name = s1.get("StageSubsetBamToChrMAndRevert.sample_name", "")
+if not sample_name or "REPLACE_ME" in str(sample_name):
+    sample_name = outputs.get("outputs", {}).get("StageSubsetBamToChrMAndRevert.sample_name", "") or sample_name
+if not sample_name or "REPLACE_ME" in str(sample_name):
+    sample_name = "${fallback_sample_name}" or sample_name
+if output_bam and isinstance(output_bam, str):
+    # Derive from output_bam filename if possible (e.g., 1000000.proc.bam)
+    base = output_bam.rsplit("/", 1)[-1]
+    if base.endswith(".proc.bam"):
+        sample_name = base.replace(".proc.bam", "")
+
+def replace_if_missing(key, value):
+    current = data.get(key, "")
+    if not current or "REPLACE_ME" in str(current):
+        data[key] = value
+
+data["StageAlignAndCallR1.input_bam"] = output_bam or data.get("StageAlignAndCallR1.input_bam", "")
+data["StageAlignAndCallR1.input_bai"] = output_bai or data.get("StageAlignAndCallR1.input_bai", "")
+if sample_name:
+    data["StageAlignAndCallR1.sample_name"] = sample_name
+if isinstance(mean_cov, (int, float)):
+    data["StageAlignAndCallR1.mt_mean_coverage"] = int(mean_cov)
+
+replace_if_missing("StageAlignAndCallR1.ref_fasta", "${ref_fasta_default}")
+replace_if_missing("StageAlignAndCallR1.ref_fasta_index", "${ref_fasta_index_default}")
+replace_if_missing("StageAlignAndCallR1.ref_dict", "${ref_dict_default}")
+replace_if_missing("StageAlignAndCallR1.mt_fasta", "${mt_fasta_default}")
+replace_if_missing("StageAlignAndCallR1.mt_fasta_index", "${mt_fasta_index_default}")
+replace_if_missing("StageAlignAndCallR1.mt_dict", "${mt_dict_default}")
+replace_if_missing("StageAlignAndCallR1.mt_interval_list", "${mt_interval_list_default}")
+replace_if_missing("StageAlignAndCallR1.nuc_interval_list", "${nuc_interval_list_default}")
+replace_if_missing("StageAlignAndCallR1.blacklisted_sites", "${blacklist_sites_default}")
+replace_if_missing("StageAlignAndCallR1.blacklisted_sites_index", "${blacklist_sites_index_default}")
+replace_if_missing("StageAlignAndCallR1.haplocheck_zip", "${haplocheck_zip_default}")
+replace_if_missing("StageAlignAndCallR1.gatk_docker_override", "${gatk_docker_default}")
+
+with open("${out_json}", "w", encoding="utf-8") as fh:
+    json.dump(data, fh, indent=2)
+    fh.write("\n")
+
+print("Updated", "${out_json}")
+print("  input_bam:", output_bam)
+print("  input_bai:", output_bai)
+print("  mt_mean_coverage:", mean_cov)
+print("  sample_name:", sample_name)
+PY

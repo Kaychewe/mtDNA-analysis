@@ -1,3 +1,0 @@
-file	image	status	ok_tools	missing_tools	missing_list
-/home/jupyter/workspaces/mtdnaheteroplasmyandaginganalysis/mtDNA-analysis/docker_probe_reports/6be95521-0af4-49c3-9f3a-3aca0d761519/call-WriteUnsupportedReport/shard-0/docker_probe_report.txt	quay.io/biocontainers/ucsc-bedgraphtobigwig:377--h73cb82a_3	skipped	0	0	
-/home/jupyter/workspaces/mtdnaheteroplasmyandaginganalysis/mtDNA-analysis/docker_probe_reports/6be95521-0af4-49c3-9f3a-3aca0d761519/call-WriteUnsupportedReport/shard-1/docker_probe_report.txt	quay.io/biocontainers/bcftools:1.17--h3cc50cf_1	skipped	0	0	

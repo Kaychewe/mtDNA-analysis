@@ -1,6 +1,0 @@
-gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/workflows/cromwell-executions/StageSubsetBamToChrMAndRevert/458f1e9f-f886-47a5-9ac1-8dacb1ba21f3/call-SubsetBamToChrMAndRevert/out/1000000.ct_failed.txt
-gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/workflows/cromwell-executions/StageSubsetBamToChrMAndRevert/458f1e9f-f886-47a5-9ac1-8dacb1ba21f3/call-SubsetBamToChrMAndRevert/out/1000000.duplicate.metrics
-gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/workflows/cromwell-executions/StageSubsetBamToChrMAndRevert/458f1e9f-f886-47a5-9ac1-8dacb1ba21f3/call-SubsetBamToChrMAndRevert/out/1000000.mean_coverage.txt
-gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/workflows/cromwell-executions/StageSubsetBamToChrMAndRevert/458f1e9f-f886-47a5-9ac1-8dacb1ba21f3/call-SubsetBamToChrMAndRevert/out/1000000.proc.bai
-gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/workflows/cromwell-executions/StageSubsetBamToChrMAndRevert/458f1e9f-f886-47a5-9ac1-8dacb1ba21f3/call-SubsetBamToChrMAndRevert/out/1000000.proc.bam
-gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/workflows/cromwell-executions/StageSubsetBamToChrMAndRevert/458f1e9f-f886-47a5-9ac1-8dacb1ba21f3/call-SubsetBamToChrMAndRevert/out/1000000.unmap.bam

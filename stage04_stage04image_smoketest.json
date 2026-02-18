@@ -1,4 +1,0 @@
-{
-  "Stage04ImageSmokeTest.gotc_docker": "kchewe/mtdna-stage04:0.1.3",
-  "Stage04ImageSmokeTest.gatk_docker": "kchewe/mtdna-stage04:0.1.3"
-}

@@ -1,2 +1,0 @@
-#!/bin/bash
-source "/home/jupyter/.sdkman/bin/sdkman-init.sh" && sdk install java 17.0.8-tem && sdk use java 17.0.8-tem && echo "Validating WDL..." && java -jar womtool-91.jar validate /home/jupyter/workspaces/mtdnaheteroplasmyandaginganalysis/mtDNA-analysis/scatterWrapper_MitoPipeline_v2_5.wdl && java -Xmx32g -classpath ".:sqlite-jdbc.jar" -Dconfig.file=cromwell.batch.conf -Dwebservice.port=8094 -jar cromwell-91.jar server

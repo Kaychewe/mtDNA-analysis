@@ -1,5 +1,0 @@
-{
-  "Stage05ImageSmokeTest.genomes_cloud_docker": "kchewe/mtdna-stage05:0.1.0",
-  "Stage05ImageSmokeTest.ucsc_docker": "kchewe/mtdna-stage04:0.1.3",
-  "Stage05ImageSmokeTest.ucsc_tools_bundle": "gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/tools/ucsc/ucsc-tools-linux-x86_64.tar.gz"
-}

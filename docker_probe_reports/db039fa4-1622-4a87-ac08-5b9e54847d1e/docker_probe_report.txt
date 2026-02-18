@@ -1,4 +1,0 @@
-image=
-status=skipped
-reason=
-note=Probe not run for this image.

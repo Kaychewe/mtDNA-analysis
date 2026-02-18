@@ -1,5 +1,0 @@
-#!/bin/bash
-gsutil cp mtDNA_v25_pilot_5_prog_16.09.48'*' gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/tsv/mtDNA_v25_pilot_5/
-python mtSwirl/generate_mtdna_call_mt/AoU/aou_collate_tables.py --pipeline-output-path mtDNA_v25_pilot_5_prog_16.09.48.success.tsv --file-paths-table-flat-output gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/tsv/mtDNA_v25_pilot_5/tab_batch_file_paths.tsv --per-sample-stats-flat-output gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/tsv/mtDNA_v25_pilot_5/tab_per_sample_stats.tsv --file-paths-table-output gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/ht/mtDNA_v25_pilot_5/tab_batch_file_paths.ht --per-sample-stats-output gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/ht/mtDNA_v25_pilot_5/tab_per_sample_stats.ht
-python mtSwirl/generate_mtdna_call_mt/AoU/aou_update_sample_database.py --new-paths tsv/mtDNA_v25_pilot_5/tab_batch_file_paths.tsv --new-stats tsv/mtDNA_v25_pilot_5/tab_per_sample_stats.tsv --new-failures tsv/mtDNA_v25_pilot_5/mtDNA_v25_pilot_5_prog_16.09.48.failure.tsv
-

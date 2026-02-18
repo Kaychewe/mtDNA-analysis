@@ -1,4 +1,0 @@
-image=quay.io/biocontainers/bcftools:1.17--h3cc50cf_1
-status=skipped
-reason=skipped_by_policy
-note=Probe not run for this image.

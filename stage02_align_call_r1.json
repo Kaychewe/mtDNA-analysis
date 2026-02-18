@@ -1,6 +1,6 @@
 {
-  "StageAlignAndCallR1.input_bam": "gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/workflows/cromwell-executions/StageSubsetBamToChrMAndRevert/458f1e9f-f886-47a5-9ac1-8dacb1ba21f3/call-SubsetBamToChrMAndRevert/out/1000000.proc.bam",
-  "StageAlignAndCallR1.input_bai": "gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/workflows/cromwell-executions/StageSubsetBamToChrMAndRevert/458f1e9f-f886-47a5-9ac1-8dacb1ba21f3/call-SubsetBamToChrMAndRevert/out/1000000.proc.bai",
+  "StageAlignAndCallR1.input_bam": "gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/workflows/cromwell-executions/StageSubsetBamToChrMAndRevert/d4e2c730-fb3b-4b57-bb58-0572bc0bcee4/call-SubsetBamToChrMAndRevert/attempt-2/out/1000000.proc.bam",
+  "StageAlignAndCallR1.input_bai": "gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/workflows/cromwell-executions/StageSubsetBamToChrMAndRevert/d4e2c730-fb3b-4b57-bb58-0572bc0bcee4/call-SubsetBamToChrMAndRevert/attempt-2/out/1000000.proc.bai",
   "StageAlignAndCallR1.sample_name": "1000000",
   "StageAlignAndCallR1.ref_fasta": "gs://gcp-public-data--broad-references/hg38/v0/Homo_sapiens_assembly38.fasta",
   "StageAlignAndCallR1.ref_fasta_index": "gs://gcp-public-data--broad-references/hg38/v0/Homo_sapiens_assembly38.fasta.fai",

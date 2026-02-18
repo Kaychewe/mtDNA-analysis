@@ -1,8 +1,8 @@
 {
   "StageProduceSelfReferenceFiles.sample_name": "1000000",
   "StageProduceSelfReferenceFiles.suffix": ".self.ref",
-  "StageProduceSelfReferenceFiles.mtdna_variants": "gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/workflows/cromwell-executions/StageAlignAndCallR1/d3e371d2-05ab-4412-919b-27f942a6a0f1/call-AlignAndCallR1/AlignAndCallR1/fead12c7-c07e-431c-b9d4-9afb6b18a14a/call-FilterContamination/out/1000000.split.vcf",
-  "StageProduceSelfReferenceFiles.nuc_variants": "gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/workflows/cromwell-executions/StageAlignAndCallR1/d3e371d2-05ab-4412-919b-27f942a6a0f1/call-AlignAndCallR1/AlignAndCallR1/fead12c7-c07e-431c-b9d4-9afb6b18a14a/call-CallNucHCIntegrated/out/1000000.nuc.pass.split.vcf",
+  "StageProduceSelfReferenceFiles.mtdna_variants": "gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/workflows/cromwell-executions/StageAlignAndCallR1/6a071b3f-8da6-4b8a-85d2-df9915984985/call-AlignAndCallR1/AlignAndCallR1/218f8ce2-652e-401d-a3cb-f28024ba59c7/call-FilterContamination/out/1000000.split.vcf",
+  "StageProduceSelfReferenceFiles.nuc_variants": "gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/workflows/cromwell-executions/StageAlignAndCallR1/6a071b3f-8da6-4b8a-85d2-df9915984985/call-AlignAndCallR1/AlignAndCallR1/218f8ce2-652e-401d-a3cb-f28024ba59c7/call-CallNucHCIntegrated/out/1000000.nuc.pass.split.vcf",
   "StageProduceSelfReferenceFiles.mt_dict": "gs://gcp-public-data--broad-references/hg38/v0/chrM/Homo_sapiens_assembly38.chrM.dict",
   "StageProduceSelfReferenceFiles.mt_fasta": "gs://gcp-public-data--broad-references/hg38/v0/chrM/Homo_sapiens_assembly38.chrM.fasta",
   "StageProduceSelfReferenceFiles.mt_fasta_index": "gs://gcp-public-data--broad-references/hg38/v0/chrM/Homo_sapiens_assembly38.chrM.fasta.fai",

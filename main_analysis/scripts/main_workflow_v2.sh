@@ -2,6 +2,11 @@
 # Author: Kasonde Chewe 
 # Pipeline: 
 # Stage01-only, batch-aware workflow runner (manifest-driven).
+# Stages01 CRAM file read extraction 
+# Stages02 Variant calling with GATK
+# Stages03 NUMT (Nuclear mitochondial DNA contamination)
+# Stage04 
+
 
 DEBUG=0
 SKIP_ALREADY_PROCESSED="${SKIP_ALREADY_PROCESSED:-1}"

@@ -29,6 +29,7 @@ The new pipeline keeps the AoU-friendly CRAM/CRAI input model used by `mtSwirl`,
 - Cromwell API helpers: `scripts/cromwell_api.py`
 - Submission helper: `scripts/submit_one_sample.py`
 - Validation / local run helper: `scripts/validate_and_run_one_sample.sh`
+- Single-command test runner: `scripts/run_tests.py`
 
 ## Quick preflight
 
@@ -37,10 +38,23 @@ Run these checks before attempting a submission:
 ```bash
 cd /home/kchewe/projects/02.mtDNA/pipelines/mtDNA-analysis
 
+python scripts/run_tests.py
 python scripts/check_environment.py
 python scripts/write_cromwell_config.py
 python scripts/cromwell_server.py status
 ```
+
+## Run all tests
+
+Use one Python command to run the unit test suite:
+
+```bash
+cd /home/kchewe/projects/02.mtDNA/pipelines/mtDNA-analysis
+python scripts/run_tests.py
+```
+
+This checks the refactor structure, the AoU test inputs, config generation, and the
+core Cromwell helper functions without needing a live AoU submission.
 
 ## Check commands
 
@@ -77,6 +91,7 @@ sed -n '1,80p' config/cromwell.batch.conf
 ### Check helper CLIs
 
 ```bash
+python scripts/run_tests.py
 python scripts/submit_one_sample.py --help
 python scripts/cromwell_server.py --help
 ```
@@ -94,6 +109,7 @@ This validates the WDL with `womtool` and prints the exact submission command.
 ### Dry run 2: Environment and config only
 
 ```bash
+python scripts/run_tests.py
 python scripts/check_environment.py
 python scripts/write_cromwell_config.py
 python scripts/cromwell_server.py status
@@ -162,6 +178,7 @@ export SQL_DB_NAME="local_cromwell_run.db"
 
 python scripts/check_environment.py
 python scripts/write_cromwell_config.py
+python scripts/run_tests.py
 python scripts/validate_and_run_one_sample.sh
 python scripts/cromwell_server.py start
 python scripts/submit_one_sample.py --wait

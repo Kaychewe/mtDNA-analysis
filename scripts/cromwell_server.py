@@ -56,33 +56,31 @@ def start_server() -> None:
         return
 
     sdkman_init = Path.home() / ".sdkman" / "bin" / "sdkman-init.sh"
-    java_cmd = (
-        "java"
-        if not sdkman_init.exists()
-        else f"bash -lc 'source {sdkman_init} && "
-        f"nohup java -Xmx{settings.use_mem_gb}g "
-        f"-Dconfig.file={cromwell_conf} "
-        f"-Dwebservice.port={settings.port_id} "
-        f"-jar {cromwell_jar} server "
-        f">> {settings.cromwell_stdout_log} 2>> {settings.cromwell_stderr_log} "
-        f"& echo $!'"
-    )
+    stdout = open(settings.cromwell_stdout_log, "a")
+    stderr = open(settings.cromwell_stderr_log, "a")
 
     if sdkman_init.exists():
-        completed = subprocess.run(
-            java_cmd,
-            shell=True,
-            check=True,
+        # Use `exec java` so the recorded PID is the long-lived Cromwell JVM, not an
+        # intermediate shell process. `start_new_session=True` fully detaches it from
+        # the interactive terminal so Ctrl-C in the shell does not tear Cromwell down.
+        process = subprocess.Popen(
+            [
+                "bash",
+                "-lc",
+                (
+                    f"source {sdkman_init} && "
+                    f"exec java -Xmx{settings.use_mem_gb}g "
+                    f"-Dconfig.file={cromwell_conf} "
+                    f"-Dwebservice.port={settings.port_id} "
+                    f"-jar {cromwell_jar} server"
+                ),
+            ],
+            stdout=stdout,
+            stderr=stderr,
             cwd=settings.project_root,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True,
+            start_new_session=True,
         )
-        pid = completed.stdout.strip().splitlines()[-1]
-        settings.cromwell_pid_file.write_text(f"{pid}\n")
     else:
-        stdout = open(settings.cromwell_stdout_log, "a")
-        stderr = open(settings.cromwell_stderr_log, "a")
         process = subprocess.Popen(
             [
                 "java",
@@ -98,11 +96,14 @@ def start_server() -> None:
             cwd=settings.project_root,
             start_new_session=True,
         )
-        settings.cromwell_pid_file.write_text(f"{process.pid}\n")
+
+    settings.cromwell_pid_file.write_text(f"{process.pid}\n")
+    stdout.close()
+    stderr.close()
 
     for _ in range(30):
         if cromwell_up():
-            print("Cromwell is up.")
+            print(f"Cromwell is up in the background (PID {process.pid}).")
             return
         time.sleep(2)
 

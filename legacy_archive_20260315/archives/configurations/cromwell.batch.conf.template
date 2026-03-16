@@ -1,0 +1,67 @@
+include required(classpath("application"))
+
+google {
+  application-name = "cromwell"
+  auths = [{
+    name = "application_default"
+    scheme = "application_default"
+  }]
+}
+
+system {
+  new-workflow-poll-rate = 1
+  max-concurrent-workflows = 10
+  max-workflow-launch-count = 400
+  job-rate-control {
+    jobs = 50
+    per = "3 seconds"
+  }
+}
+
+backend {
+  default = "GCPBATCH"
+  providers {
+    Local.config.root = "/dev/null"
+
+    GCPBATCH {
+      actor-factory = "cromwell.backend.google.batch.GcpBatchBackendLifecycleActorFactory"
+
+      config {
+        project = "__GOOGLE_PROJECT__"
+        concurrent-job-limit = 10
+        root = "__WORKSPACE_BUCKET__/workflows/cromwell-executions"
+
+        virtual-private-cloud {
+          network-name = "__VPC_NETWORK__"
+          subnetwork-name = "__VPC_SUBNETWORK__"
+        }
+
+        batch {
+          auth = "application_default"
+          compute-service-account = "__PET_EMAIL__"
+          location = "__BATCH_LOCATION__"
+        }
+
+        default-runtime-attributes {
+          noAddress: true
+        }
+
+        filesystems {
+          gcs {
+            auth = "application_default"
+          }
+        }
+      }
+    }
+  }
+}
+
+database {
+  profile = "slick.jdbc.HsqldbProfile$"
+  insert-batch-size = 6000
+  db {
+    driver = "org.hsqldb.jdbcDriver"
+    url = "jdbc:hsqldb:file:local_cromwell_run.db;shutdown=false;hsqldb.default_table_type=cached;hsqldb.tx=mvcc;hsqldb.large_data=true;hsqldb.lob_compressed=true;hsqldb.script_format=3;hsqldb.result_max_memory_rows=20000"
+    connectionTimeout = 300000
+  }
+}

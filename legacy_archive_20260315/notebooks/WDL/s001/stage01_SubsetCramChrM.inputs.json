@@ -1,0 +1,9 @@
+{
+  "stage01_SubsetCramChrM.sample_id": "1016462",
+  "stage01_SubsetCramChrM.age": "28",
+  "stage01_SubsetCramChrM.sex": "Female",
+  "stage01_SubsetCramChrM.input_cram": "gs://fc-aou-datasets-controlled/pooled/wgs/cram/v8_delta/wgs_1016462.cram",
+  "stage01_SubsetCramChrM.input_crai": "gs://fc-aou-datasets-controlled/pooled/wgs/cram/v8_delta/wgs_1016462.cram.crai",
+  "stage01_SubsetCramChrM.ref_fasta": "gs://gcp-public-data--broad-references/hg38/v0/Homo_sapiens_assembly38.fasta",
+  "stage01_SubsetCramChrM.docker": "kchewe/mtdna-samtools:conda-latest"
+}

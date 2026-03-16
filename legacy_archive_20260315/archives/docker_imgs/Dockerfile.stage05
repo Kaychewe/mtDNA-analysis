@@ -1,0 +1,27 @@
+FROM kchewe/mtdna-hail:0.2.128-ubuntu22.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    bcftools \
+    samtools \
+    tabix \
+    bedtools \
+    r-base \
+    openjdk-11-jre-headless \
+    curl \
+    ca-certificates \
+  && rm -rf /var/lib/apt/lists/*
+
+# Picard
+ARG PICARD_VERSION=2.27.5
+RUN mkdir -p /opt/picard && \
+    curl -L -o /opt/picard/picard.jar \
+      https://github.com/broadinstitute/picard/releases/download/${PICARD_VERSION}/picard.jar && \
+    printf '#!/bin/bash\nexec java -jar /opt/picard/picard.jar "$@"\n' > /usr/local/bin/picard && \
+    chmod +x /usr/local/bin/picard
+
+# Ensure python is on PATH (hail base already includes python3)
+RUN ln -sf /usr/bin/python3 /usr/local/bin/python
+
+WORKDIR /

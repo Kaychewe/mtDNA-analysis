@@ -1,0 +1,5 @@
+{
+  "Stage02ToolProbe.docker_image": "kchewe/mtdna-tools:0.1.0",
+  "Stage02ToolProbe.preemptible": 0
+}
+

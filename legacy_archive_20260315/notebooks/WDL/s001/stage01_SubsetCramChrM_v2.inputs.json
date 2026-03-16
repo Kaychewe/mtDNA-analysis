@@ -1,0 +1,16 @@
+{
+  "stage01_SubsetCramChrM.input_cram": "gs://fc-aou-datasets-controlled/pooled/wgs/cram/v7_delta/wgs_1000696.cram",
+  "stage01_SubsetCramChrM.input_crai": "gs://fc-aou-datasets-controlled/pooled/wgs/cram/v7_delta/wgs_1000696.cram.crai",
+  "stage01_SubsetCramChrM.sample_id": "1000696",
+  "stage01_SubsetCramChrM.age": "84",
+  "stage01_SubsetCramChrM.sex": "Female",
+  "stage01_SubsetCramChrM.mt_interval_list": "gs://gcp-public-data--broad-references/hg38/v0/chrM/chrM.hg38.interval_list",
+  "stage01_SubsetCramChrM.numt_interval_list": "gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/intervals/NUMTv3_all385.hg38.interval_list",
+  "stage01_SubsetCramChrM.ref_fasta": "gs://gcp-public-data--broad-references/hg38/v0/Homo_sapiens_assembly38.fasta",
+  "stage01_SubsetCramChrM.ref_fasta_index": "gs://gcp-public-data--broad-references/hg38/v0/Homo_sapiens_assembly38.fasta.fai",
+  "stage01_SubsetCramChrM.ref_dict": "gs://gcp-public-data--broad-references/hg38/v0/Homo_sapiens_assembly38.dict",
+  "stage01_SubsetCramChrM.docker": "kchewe/mtdna-tools:0.1.0",
+  "stage01_SubsetCramChrM.requester_pays_project": "terra-vpc-sc-17dda7e1",
+  "stage01_SubsetCramChrM.mem_gb": 16,
+  "stage01_SubsetCramChrM.n_cpu": 4
+}

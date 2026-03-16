@@ -1,0 +1,8 @@
+{
+  "StageMerge.sample_name": ["REPLACE_ME"],
+  "StageMerge.variant_vcf": ["REPLACE_ME"],
+  "StageMerge.coverage_table": ["REPLACE_ME"],
+  "StageMerge.statistics": ["REPLACE_ME"],
+  "StageMerge.MergePerBatch": "REPLACE_ME",
+  "StageMerge.genomes_cloud_docker": "REPLACE_ME"
+}

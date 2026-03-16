@@ -1,0 +1,4 @@
+image=quay.io/biocontainers/ucsc-bedgraphtobigwig:377--h73cb82a_3
+status=skipped
+reason=skipped_by_policy
+note=Probe not run for this image.

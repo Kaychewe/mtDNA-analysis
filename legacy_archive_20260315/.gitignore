@@ -1,0 +1,23 @@
+
+# large binaries
+cromwell-*.jar
+womtool-*.jar
+
+# big generated outputs / manifests
+manifest.csv
+
+# Cromwell binaries
+cromwell-*.jar
+womtool-*.jar
+
+# Runtime DB
+local_cromwell_run.db.*
+
+# Logs
+
+# Large manifests
+manifest.csv
+
+# Archives
+*.zip
+

@@ -1,0 +1,23 @@
+{
+  "MongoProduceSelfReferenceDiagnostics.sample_name": "1000000",
+  "MongoProduceSelfReferenceDiagnostics.use_pseudo_vcfs": true,
+  "MongoProduceSelfReferenceDiagnostics.run_full": false,
+  "MongoProduceSelfReferenceDiagnostics.run_split": true,
+
+  "MongoProduceSelfReferenceDiagnostics.ref_fasta": "gs://gcp-public-data--broad-references/hg38/v0/Homo_sapiens_assembly38.fasta",
+  "MongoProduceSelfReferenceDiagnostics.ref_fasta_index": "gs://gcp-public-data--broad-references/hg38/v0/Homo_sapiens_assembly38.fasta.fai",
+  "MongoProduceSelfReferenceDiagnostics.mt_ref_fasta": "gs://gcp-public-data--broad-references/hg38/v0/chrM/Homo_sapiens_assembly38.chrM.fasta",
+  "MongoProduceSelfReferenceDiagnostics.mt_ref_fasta_index": "gs://gcp-public-data--broad-references/hg38/v0/chrM/Homo_sapiens_assembly38.chrM.fasta.fai",
+
+  "MongoProduceSelfReferenceDiagnostics.nuc_interval_list": "gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/intervals/NUMTv3_all385.hg38.interval_list",
+  "MongoProduceSelfReferenceDiagnostics.mt_interval_list": "gs://gcp-public-data--broad-references/hg38/v0/chrM/chrM.hg38.interval_list",
+  "MongoProduceSelfReferenceDiagnostics.non_control_region_interval_list": "gs://gcp-public-data--broad-references/hg38/v0/chrM/non_control_region.chrM.interval_list",
+
+  "MongoProduceSelfReferenceDiagnostics.fa_renaming_script": "gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/code/compatibilify_fa_intervals_consensus.R",
+  "MongoProduceSelfReferenceDiagnostics.variant_bounds_script": "gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/code/check_variant_bounds.R",
+  "MongoProduceSelfReferenceDiagnostics.check_hom_overlap_script": "gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/code/check_overlapping_homoplasmies.R",
+
+  "MongoProduceSelfReferenceDiagnostics.genomes_cloud_docker": "us.gcr.io/broad-gotc-prod/genomes-in-the-cloud:2.4.2-1552931386",
+  "MongoProduceSelfReferenceDiagnostics.bcftools_docker": "us.gcr.io/broad-dsp-lrma/lr-basic:latest",
+  "MongoProduceSelfReferenceDiagnostics.intertext": ""
+}

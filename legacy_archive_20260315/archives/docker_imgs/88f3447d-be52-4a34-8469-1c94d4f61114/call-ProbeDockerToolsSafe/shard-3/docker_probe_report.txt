@@ -1,0 +1,97 @@
+image=us.gcr.io/broad-dsp-lrma/lr-basic:0.1.1
+date_utc=2026-02-05T23:26:37Z
+whoami=root
+uname=Linux 8ab82e6e9ed1 6.6.111+ #1 SMP PREEMPT_DYNAMIC Mon Jan 19 09:47:41 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+MISSING:     bcftools
+
+OK: samtools -> /usr/local/bin/samtools
+samtools 1.13
+Using htslib 1.13
+Copyright (C) 2021 Genome Research Ltd.
+
+Samtools compilation details:
+    Features:       build=configure curses=no 
+    CC:             gcc
+    CPPFLAGS:       
+    CFLAGS:         -Wall -g -O2
+    LDFLAGS:        
+    HTSDIR:         htslib-1.13
+    LIBS:           
+    CURSES_LIB:     
+
+HTSlib compilation details:
+    Features:       build=configure plugins=no libcurl=yes S3=no GCS=yes libdeflate=no lzma=yes bzip2=yes htscodecs=1.1.1
+    CC:             gcc
+    CPPFLAGS:       
+    CFLAGS:         -Wall -g -O2 -fvisibility=hidden
+    LDFLAGS:        -fvisibility=hidden 
+
+HTSlib URL scheme handlers present:
+    built-in:	 preload, data, file
+    Google Cloud Storage:	 gs+http, gs+https, gs
+    libcurl:	 imaps, pop3, http, smb, gopher, ftps, imap, smtp, smtps, rtsp, ftp, telnet, rtmp, ldap, https, ldaps, tftp, pop3s, smbs, dict
+    crypt4gh-needed:	 crypt4gh
+    mem:	 mem
+
+MISSING: gatk
+
+MISSING: java
+
+MISSING: python
+
+OK: python3 -> /usr/bin/python3
+Python 3.6.9
+
+MISSING: R
+
+OK: bgzip -> /usr/local/bin/bgzip
+bgzip (htslib) 1.13
+Copyright (C) 2021 Genome Research Ltd.
+
+OK: tabix -> /usr/local/bin/tabix
+tabix (htslib) 1.13
+Copyright (C) 2021 Genome Research Ltd.
+
+MISSING: bedGraphToBigWig
+
+OK: awk -> /usr/bin/awk
+GNU Awk 4.1.4, API: 1.1 (GNU MPFR 4.0.1, GNU MP 6.1.2)
+Copyright (C) 1989, 1991-2016 Free Software Foundation.
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see http://www.gnu.org/licenses/.
+
+OK: sed -> /bin/sed
+sed (GNU sed) 4.4
+Copyright (C) 2017 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Written by Jay Fenlason, Tom Lord, Ken Pizzini,
+and Paolo Bonzini.
+GNU sed home page: <http://www.gnu.org/software/sed/>.
+General help using GNU software: <http://www.gnu.org/gethelp/>.
+E-mail bug reports to: <bug-sed@gnu.org>.
+
+OK: bash -> /bin/bash
+GNU bash, version 4.4.20(1)-release (x86_64-pc-linux-gnu)
+Copyright (C) 2016 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+
+This is free software; you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+DONE

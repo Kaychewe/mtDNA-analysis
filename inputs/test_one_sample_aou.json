@@ -1,0 +1,17 @@
+{
+  "AoUMitoHPCSingleSample.sample_name": "1000000",
+  "AoUMitoHPCSingleSample.wgs_aligned_input_cram": "gs://fc-aou-datasets-controlled/pooled/wgs/cram/v8_delta/wgs_1000000.cram",
+  "AoUMitoHPCSingleSample.wgs_aligned_input_cram_index": "gs://fc-aou-datasets-controlled/pooled/wgs/cram/v8_delta/wgs_1000000.cram.crai",
+  "AoUMitoHPCSingleSample.ref_fasta": "gs://gcp-public-data--broad-references/hg38/v0/Homo_sapiens_assembly38.fasta",
+  "AoUMitoHPCSingleSample.ref_fasta_index": "gs://gcp-public-data--broad-references/hg38/v0/Homo_sapiens_assembly38.fasta.fai",
+  "AoUMitoHPCSingleSample.ref_dict": "gs://gcp-public-data--broad-references/hg38/v0/Homo_sapiens_assembly38.dict",
+  "AoUMitoHPCSingleSample.requester_pays_project": "terra-vpc-sc-17dda7e1",
+  "AoUMitoHPCSingleSample.numt_regions": "chr1:629084-634672 chr17:22521208-22521639",
+  "AoUMitoHPCSingleSample.subsample_mt_reads": 222000,
+  "AoUMitoHPCSingleSample.iterations": 2,
+  "AoUMitoHPCSingleSample.min_dp": 50,
+  "AoUMitoHPCSingleSample.n_cpu": 4,
+  "AoUMitoHPCSingleSample.memory_gb": 16,
+  "AoUMitoHPCSingleSample.mito_caller": "mutect2",
+  "AoUMitoHPCSingleSample.docker": "dpuiu1/mitohpc:latest"
+}

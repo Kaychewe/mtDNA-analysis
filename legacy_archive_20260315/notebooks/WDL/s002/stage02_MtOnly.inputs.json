@@ -1,0 +1,14 @@
+{
+  "stage02_MtOnly.input_bam": "gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/workflows/cromwell-executions/stage01_SubsetCramChrM/9ae678fb-2b00-4982-a34d-23c0b88a9c04/call-SubsetChrM_Samtools/out/1000896_38_Male_chrM.bam",
+  "stage02_MtOnly.input_bai": "gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/workflows/cromwell-executions/stage01_SubsetCramChrM/9ae678fb-2b00-4982-a34d-23c0b88a9c04/call-SubsetChrM_Samtools/out/1000896_38_Male_chrM.bam.bai",
+  "stage02_MtOnly.sample_id": "1000896",
+  "stage02_MtOnly.age": "38",
+  "stage02_MtOnly.sex": "Male",
+  "stage02_MtOnly.mt_fasta": "gs://gcp-public-data--broad-references/hg38/v0/chrM/Homo_sapiens_assembly38.chrM.fasta",
+  "stage02_MtOnly.mt_fasta_index": "gs://gcp-public-data--broad-references/hg38/v0/chrM/Homo_sapiens_assembly38.chrM.fasta.fai",
+  "stage02_MtOnly.mt_dict": "gs://gcp-public-data--broad-references/hg38/v0/chrM/Homo_sapiens_assembly38.chrM.dict",
+  "stage02_MtOnly.mt_interval_list": "gs://gcp-public-data--broad-references/hg38/v0/chrM/chrM.hg38.interval_list",
+  "stage02_MtOnly.gatk_docker": "kchewe/mtdna-stage04:0.1.3",
+  "stage02_MtOnly.mem_gb": 8,
+  "stage02_MtOnly.n_cpu": 2
+}

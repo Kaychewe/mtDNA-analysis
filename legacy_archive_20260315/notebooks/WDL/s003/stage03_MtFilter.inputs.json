@@ -1,0 +1,9 @@
+{
+  "stage03_MtFilter.input_vcf": "gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/workflows/cromwell-executions/stage02_MtOnly/727614dc-95a8-4614-ae4b-f269b7d2aa29/call-CallMtVariants/out/1000896_38_Male_mt.filtered.vcf",
+  "stage03_MtFilter.input_vcf_index": "gs://fc-secure-76d68a64-00aa-40a7-b2c5-ca956db2719b/workflows/cromwell-executions/stage02_MtOnly/727614dc-95a8-4614-ae4b-f269b7d2aa29/call-CallMtVariants/out/1000896_38_Male_mt.filtered.vcf.idx",
+  "stage03_MtFilter.sample_id": "1000896",
+  "stage03_MtFilter.age": "38",
+  "stage03_MtFilter.sex": "Male",
+  "stage03_MtFilter.vaf_min": 0.01,
+  "stage03_MtFilter.docker": "kchewe/mtdna-tools:0.1.0"
+}

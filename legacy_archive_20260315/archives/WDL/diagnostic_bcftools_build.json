@@ -1,0 +1,4 @@
+{
+  "DiagnosticBcftoolsBuild.bcftools_url": "https://github.com/samtools/bcftools/releases/download/1.23/bcftools-1.23.tar.bz2",
+  "DiagnosticBcftoolsBuild.make_threads": 2
+}

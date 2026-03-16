@@ -6,6 +6,7 @@ import os
 import signal
 import subprocess
 import time
+from pathlib import Path
 
 from aou_config import ensure_dirs, load_settings
 from cromwell_api import cromwell_up
@@ -23,43 +24,81 @@ def cromwell_pid_running(pid_file: str) -> bool:
         return False
 
 
+def resolve_cromwell_jar(settings) -> Path:
+    for path in (settings.cromwell_jar_path, settings.cromwell_jar_path_legacy):
+        if path.exists():
+            return path
+    raise SystemExit(
+        f"Missing Cromwell jar. Checked {settings.cromwell_jar_path} and "
+        f"{settings.cromwell_jar_path_legacy}. Run check_environment.py first."
+    )
+
+
+def resolve_cromwell_conf(settings) -> Path:
+    for path in (settings.cromwell_conf_path, settings.cromwell_conf_path_legacy):
+        if path.exists():
+            return path
+    raise SystemExit(
+        f"Missing Cromwell config. Checked {settings.cromwell_conf_path} and "
+        f"{settings.cromwell_conf_path_legacy}. Run write_cromwell_config.py first."
+    )
+
+
 def start_server() -> None:
     settings = load_settings()
     ensure_dirs(settings)
 
-    tmp_dir = settings.project_root / ".tmp"
-    cromwell_jar = tmp_dir / "cromwell-91.jar"
-    if not cromwell_jar.exists():
-        raise SystemExit(f"Missing {cromwell_jar}. Run check_environment.py first.")
-
-    if not settings.cromwell_conf_path.exists():
-        raise SystemExit(
-            f"Missing {settings.cromwell_conf_path}. Run write_cromwell_config.py first."
-        )
+    cromwell_jar = resolve_cromwell_jar(settings)
+    cromwell_conf = resolve_cromwell_conf(settings)
 
     if cromwell_pid_running(str(settings.cromwell_pid_file)) and cromwell_up():
         print("Cromwell already running and healthy.")
         return
 
-    stdout = open(settings.cromwell_stdout_log, "a")
-    stderr = open(settings.cromwell_stderr_log, "a")
-    process = subprocess.Popen(
-        [
-            "java",
-            f"-Xmx{settings.use_mem_gb}g",
-            f"-Dconfig.file={settings.cromwell_conf_path}",
-            f"-Dwebservice.port={settings.port_id}",
-            "-jar",
-            str(cromwell_jar),
-            "server",
-        ],
-        stdout=stdout,
-        stderr=stderr,
-        cwd=settings.project_root,
-        start_new_session=True,
+    sdkman_init = Path.home() / ".sdkman" / "bin" / "sdkman-init.sh"
+    java_cmd = (
+        "java"
+        if not sdkman_init.exists()
+        else f"bash -lc 'source {sdkman_init} && "
+        f"nohup java -Xmx{settings.use_mem_gb}g "
+        f"-Dconfig.file={cromwell_conf} "
+        f"-Dwebservice.port={settings.port_id} "
+        f"-jar {cromwell_jar} server "
+        f">> {settings.cromwell_stdout_log} 2>> {settings.cromwell_stderr_log} "
+        f"& echo $!'"
     )
 
-    settings.cromwell_pid_file.write_text(f"{process.pid}\n")
+    if sdkman_init.exists():
+        completed = subprocess.run(
+            java_cmd,
+            shell=True,
+            check=True,
+            cwd=settings.project_root,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+        pid = completed.stdout.strip().splitlines()[-1]
+        settings.cromwell_pid_file.write_text(f"{pid}\n")
+    else:
+        stdout = open(settings.cromwell_stdout_log, "a")
+        stderr = open(settings.cromwell_stderr_log, "a")
+        process = subprocess.Popen(
+            [
+                "java",
+                f"-Xmx{settings.use_mem_gb}g",
+                f"-Dconfig.file={cromwell_conf}",
+                f"-Dwebservice.port={settings.port_id}",
+                "-jar",
+                str(cromwell_jar),
+                "server",
+            ],
+            stdout=stdout,
+            stderr=stderr,
+            cwd=settings.project_root,
+            start_new_session=True,
+        )
+        settings.cromwell_pid_file.write_text(f"{process.pid}\n")
 
     for _ in range(30):
         if cromwell_up():
@@ -67,7 +106,8 @@ def start_server() -> None:
             return
         time.sleep(2)
 
-    raise SystemExit("Cromwell did not start. Check the log files.")
+    tail_logs(40)
+    raise SystemExit("Cromwell did not start. Check the log files above.")
 
 
 def stop_server() -> None:
@@ -88,6 +128,8 @@ def status_server() -> None:
     settings = load_settings()
     print("cromwell_up():", cromwell_up())
     print("cromwell_pid_running():", cromwell_pid_running(str(settings.cromwell_pid_file)))
+    print("jar_path:", resolve_cromwell_jar(settings))
+    print("conf_path:", resolve_cromwell_conf(settings))
     print("stdout_log:", settings.cromwell_stdout_log)
     print("stderr_log:", settings.cromwell_stderr_log)
 

@@ -30,6 +30,10 @@ class AoUSettings:
         return self.project_root / "config" / "cromwell.batch.conf"
 
     @property
+    def cromwell_conf_path_legacy(self) -> Path:
+        return self.project_root / "cromwell.batch.conf"
+
+    @property
     def cromwell_stdout_log(self) -> Path:
         return self.project_root / "logs" / "cromwell_server_stdout.log"
 
@@ -40,6 +44,22 @@ class AoUSettings:
     @property
     def cromwell_pid_file(self) -> Path:
         return self.project_root / "logs" / "cromwell_server.pid"
+
+    @property
+    def cromwell_jar_path(self) -> Path:
+        return self.project_root / ".tmp" / "cromwell-91.jar"
+
+    @property
+    def cromwell_jar_path_legacy(self) -> Path:
+        return self.project_root / "cromwell-91.jar"
+
+    @property
+    def womtool_jar_path(self) -> Path:
+        return self.project_root / ".tmp" / "womtool-91.jar"
+
+    @property
+    def womtool_jar_path_legacy(self) -> Path:
+        return self.project_root / "womtool-91.jar"
 
 
 def load_settings() -> AoUSettings:

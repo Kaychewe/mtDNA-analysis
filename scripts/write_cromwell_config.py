@@ -79,7 +79,9 @@ database {{
 """
 
     settings.cromwell_conf_path.write_text(conf)
+    settings.cromwell_conf_path_legacy.write_text(conf)
     print(f"Wrote {settings.cromwell_conf_path}")
+    print(f"Wrote {settings.cromwell_conf_path_legacy}")
 
 
 if __name__ == "__main__":
